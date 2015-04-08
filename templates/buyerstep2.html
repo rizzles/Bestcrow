@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<title>hashVPN</title>
+</head>
+<body class="steps">
+	<div class="contain-to-grid">
+		<nav class="top-bar" data-topbar role="navigation">
+	  		<ul class="title-area">
+	    		<li class="name">
+	    			<h1><a href="/"><img src="/static/images/logo.png" class="logo"> BESTCROW</a></h1>
+	    		</li>
+	     		<!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+	    		<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+	  		</ul>
+
+	  		<section class="top-bar-section">
+	    		<!-- Right Nav Section -->
+	    		<ul class="right">
+	      			<li><a href="#">CONTACT</a></li>
+	      			<li><a href="#">ABOUT</a></li>
+	      			<li><a href="#" class="button secondary radius">DOWNLOAD</a></li>	
+	    		</ul>
+	  		</section>
+		</nav>
+	</div>
+
+	<div class="first">
+		<div class="row">
+			<div class="small-12 columns">
+				<h2>Bookmark this URL</h2>
+				<p>This unique web page address is the only way you can access this transaction</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="second">
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 large-8 large-offset-2 secondary-bg">
+				<img src="/static/images/icons/step2@2x.png" width="66">
+				<img src="/static/images/icons/www@2x.png" width="100" class="icon">
+				<label>You must save the url of this webpage</label>
+				<input type="text" name="address" class="radius" autocomplete="off" readonly value="http://www.escrow.com/buyer/4ja99djaOqur098s">
+				<a href="/buyerstep3" type="submit" class="button radius"><span>Next<div class="light">Only 2 steps left</div></span><img src="/static/images/icons/nextarrow@2x.png" width="18"></a>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="small-8 small-offset-2 warning">
+			<p>
+				<img src="/static/images/icons/warning.png"><span class="white">Save this URL:</span> You need it to complete the transaction
+			</p>
+		</div>
+	</div>
+
+	<script src="/static/js/javascript-min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$("input").on("click", function() {
+				console.log("Test");
+				this.select();
+			});
+		});
+	</script>
+</body>	
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<title>escrow</title>
+</head>
+<body class="index">
+	<div class="contain-to-grid">
+		<nav class="top-bar" data-topbar role="navigation">
+	  		<ul class="title-area">
+	    		<li class="name">
+	    			<h1><a href="/"><img src="/static/images/logo.png" class="logo"> BESTCROW</a></h1>
+	    		</li>
+	     		<!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+	    		<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+	  		</ul>
+
+	  		<section class="top-bar-section">
+	    		<!-- Right Nav Section -->
+	    		<ul class="right">
+	      			<li><a href="#">CONTACT</a></li>
+	      			<li><a href="#">ABOUT</a></li>
+	      			<li><a href="#" class="button secondary radius">DOWNLOAD</a></li>	
+	    		</ul>
+	  		</section>
+		</nav>
+	</div>
+
+	<div class="first">
+		<div class="row">
+			<div class="small-12 columns">
+				<img src="/static/images/monitor@2x.png" width="284">
+				<h2>A Bitcoin Escrow Service. <span class="blue">No Account Needed.</span></h2>
+				<p>Bitcoin offers for the first time in the history of the world the ability to secure funds in a safe escrow account for any size transaction. In the global economy of the internet, purchase anything with confidence. </p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="small-12 columns panel radius">
+				<form method="POST" action="/buysell">
+					<h5>Are you looking to securely buy or sell with Bitcoin?</h5>
+					<div class="switch round large">
+						<h6 class="buyer white">Buyer</h6>
+	  					<input id="buysell" type="checkbox" name="buyerseller">
+	  					<label for="buysell"></label>
+	  					<h6 class="seller">Seller</h6>
+					</div>
+					<button type="submit" class="button radius primary">Get Started</button>
+				</form>				
+			</div>
+		</div>
+	</div>
+
+	<div class="second">
+		<div class="row">
+			<h3>Your coins are held safely on the bitcoin blockchain</h3>
+			<p>Funds are not released to the seller until both parties are happy with the transaction. We offer dispute resolution for any problems that may arise.</p>
+		</div>
+		<div class="row">
+			<img src="/static/images/safe@2x.png" width="673">
+		</div>
+	</div>
+
+	<script src="/static/js/javascript-min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$("#buysell").change(function() {
+				console.log("change");
+				$('.buyer').toggleClass('white');
+				$('.seller').toggleClass('white');
+			});
+		});
+	</script>
+</body>	
+</html>

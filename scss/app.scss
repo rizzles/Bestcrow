@@ -1,0 +1,281 @@
+@import "settings";
+@import "foundation";
+
+// Or selectively include components
+// @import
+//   "foundation/components/accordion",
+//   "foundation/components/alert-boxes",
+//   "foundation/components/block-grid",
+//   "foundation/components/breadcrumbs",
+//   "foundation/components/button-groups",
+//   "foundation/components/buttons",
+//   "foundation/components/clearing",
+//   "foundation/components/dropdown",
+//   "foundation/components/dropdown-buttons",
+//   "foundation/components/flex-video",
+//   "foundation/components/forms",
+//   "foundation/components/grid",
+//   "foundation/components/inline-lists",
+//   "foundation/components/joyride",
+//   "foundation/components/keystrokes",
+//   "foundation/components/labels",
+//   "foundation/components/magellan",
+//   "foundation/components/orbit",
+//   "foundation/components/pagination",
+//   "foundation/components/panels",
+//   "foundation/components/pricing-tables",
+//   "foundation/components/progress-bars",
+//   "foundation/components/reveal",
+//   "foundation/components/side-nav",
+//   "foundation/components/split-buttons",
+//   "foundation/components/sub-nav",
+//   "foundation/components/switches",
+//   "foundation/components/tables",
+//   "foundation/components/tabs",
+//   "foundation/components/thumbs",
+//   "foundation/components/tooltips",
+//   "foundation/components/top-bar",
+//   "foundation/components/type",
+//   "foundation/components/offcanvas",
+//   "foundation/components/visibility";
+
+p {
+	letter-spacing: 0.2px;
+}
+
+.blue {
+	color: $primary-color;
+}
+
+.white {
+	color: $white;
+}
+
+.light {
+	color: $silver;
+}
+
+.secondary-bg {
+	padding: 16px;
+}
+
+::-webkit-input-placeholder {
+   color: $placeholder;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: $placeholder;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: $placeholder;  
+}
+
+:-ms-input-placeholder {  
+   color: $placeholder;  
+}
+
+.secondary-bg {
+	background-color: $secondary-color;
+}
+
+.switch label:after {
+	background: $primary-color;
+}
+
+.top-bar-section ul li {
+	background-color: $clear;
+}
+
+.logo {
+	margin-bottom: 4px;
+}
+
+.top-bar .name h1 a {
+	color: $white;
+}
+
+.top-bar-section ul li > a.button.secondary {
+	background-color: $clear;
+	border: 1px solid $ghost;
+	color: $ghost;
+	top: 0.74375rem;
+	height: 2rem;
+}
+
+.top-bar-section ul li > a.button.secondary:hover {
+	color: $white;
+	background-color: $clear;
+	border: 1px solid $white;
+}
+
+.index {
+	.first {
+		text-align: center;
+		background-color: $secondary-color;
+		img {
+			display: block;
+			margin: 64px auto 72px;
+		}
+		p {
+			color: $ghost;
+		}
+		.panel {
+			padding-top: 40px;
+			padding-bottom: 32px;
+			margin-top: 48px;
+			background-color: #475159;
+			margin-bottom: 64px;
+		}
+		h5 {
+			color: $white;
+			margin-bottom: 32px;
+		}
+		h6 {
+			position: relative;
+			color: $ghost;
+			display: inline-block;
+			bottom: 24px;
+			margin-left: 14px;
+			margin-right: 14px;
+		}
+		h6.white {
+			color: $white;
+		}
+		.button {
+			margin-top: 32px;
+			width: 240px;
+		}
+	}
+
+	.second {
+		padding-top: 64px;
+		background-color: $primary-color;
+		text-align: center;
+		p {
+			color: $ghost;
+		}
+		img {
+			margin-top: 64px;
+			margin-bottom: 128px;
+		}
+	}
+}
+
+.steps {
+	.first {
+		h2 {
+			text-align: center;
+			color: $primary-color;
+			line-height: 1em;
+			margin-top: 64px;
+			margin-bottom: 4px;
+		}
+		p {
+			color: $secondary-color;
+			text-align: center;
+			line-height: 1.6em;
+			margin-bottom: 64px;
+		}
+	}
+
+	.second {
+
+		.icon {
+			display: block;
+			margin: 0 auto;
+		}
+		label {
+			margin-top: 64px;
+		}
+		a {
+			width: 100%;
+			margin-top: 64px;
+			position: relative;
+			height: 54px;
+			img {
+				position: absolute;
+				right: 20px;
+				top: 13px;
+			}
+			span {
+				position: relative;
+				top: -11px;
+			}
+		}
+	}
+	.warning {
+		background-color: $warning-color;
+		margin-top: 32px;
+		padding: 24px 16px;
+		p {
+			color: $silver;
+			margin-bottom: 0px;
+		}
+		img {
+			margin-right: 16px;
+		}
+	}
+}
+
+.buyer {
+	h5 {
+		color: $smoke;
+		margin-bottom: 0px;
+	}
+	label {
+		color: $smoke;
+		line-height: 1.4em;
+	}
+	input {
+		border-color: rgba(0,0,0,0.17);
+		box-shadow: none;
+		color: $charcoal;
+	}
+	input:focus, input:hover {
+		border-color: rgba(0,0,0,0.17);
+	}
+	.first {
+		margin-top: 64px;
+		margin-bottom: 64px;
+		text-align: center;
+		h1 {
+			color: $charcoal;
+			font-size: 90px;
+			letter-spacing: -3px;
+			line-height: 1em;
+		}
+
+	}
+	.second {
+		.border {
+			border-right: 1px solid $iron;
+		}
+		img {
+			display: block;
+			margin-bottom: 16px;
+		}
+	}
+
+	.third {
+		text-align: center;
+		margin-top: 64px;
+		.secondary-bg {
+			padding-top: 24px;
+			margin-bottom: 400px;
+		}
+		p {
+			line-height: 1em;
+			color: $silver;
+		}
+		a {
+			margin-top: 32px;
+		}
+	}
+
+}
+
+
+
+
+
