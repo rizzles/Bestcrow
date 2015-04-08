@@ -5253,6 +5253,28 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/static\/images\/icons\/spinner.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 781,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/spinner.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/spinner.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/spinner@2x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1614,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/spinner@2x.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/spinner@2x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/static\/images\/icons\/step1.png": {
 		"fileType": 32768,
 		"ignore": 0,

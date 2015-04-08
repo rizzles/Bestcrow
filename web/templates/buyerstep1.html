@@ -64,7 +64,9 @@
 	<script src="/static/js/javascript-min.js"></script>
 	<script>
 		$(document).ready(function() {
-
+			$("a").on("click", function(e) {
+				$(this).html("<span>Creating escrow<div class='light'>Generating bitcoin address</div></span><img src='/static/images/icons/spinner@2x.png' class='spinner' width='30'>");
+			});
 		});
 	</script>
 </body>	

@@ -6079,6 +6079,28 @@ p {
 .light {
   color: rgba(255, 255, 255, 0.57); }
 
+@-webkit-keyframes rotating {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes rotating {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+.spinner {
+  -webkit-animation: rotating 2s linear infinite;
+          animation: rotating 2s linear infinite; }
+
 .secondary-bg {
   padding: 16px; }
 
