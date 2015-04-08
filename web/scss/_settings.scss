@@ -57,17 +57,6 @@
 // Allows the use of rem-calc() or lower-bound() in your settings
 @font-face {
     font-family: 'Nunito';
-    src: url('../fonts/Nunito-Regular-webfont.eot');
-    src: url('../fonts/Nunito-Regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/Nunito-Regular-webfont.woff2') format('woff2'),
-         url('../fonts/Nunito-Regular-webfont.woff') format('woff'),
-         url('../fonts/Nunito-Regular-webfont.ttf') format('truetype'),
-         url('../fonts/Nunito-Regular-webfont.svg#nunitoregular') format('svg');
-    font-weight: bold;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Nunito';
     src: url('../fonts/Nunito-Light-webfont.eot');
     src: url('../fonts/Nunito-Light-webfont.eot?#iefix') format('embedded-opentype'),
          url('../fonts/Nunito-Light-webfont.woff2') format('woff2'),
