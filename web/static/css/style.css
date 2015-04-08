@@ -6210,16 +6210,16 @@ p {
   margin: 0 auto; }
 .steps .second label {
   margin-top: 64px; }
-.steps .second button {
+.steps .second a, .steps .second button {
   width: 100%;
   margin-top: 64px;
   position: relative;
   height: 54px; }
-  .steps .second button img {
+  .steps .second a img, .steps .second button img {
     position: absolute;
     right: 20px;
     top: 13px; }
-  .steps .second button span {
+  .steps .second a span, .steps .second button span {
     line-height: 0.9em;
     position: relative;
     top: -11px; }
