@@ -39,7 +39,6 @@ class Application(tornado.web.Application):
             (r"/buyerstep1", BuyerStep1),
             (r"/buyerstep2", BuyerStep2),
             (r"/buyerstep3", BuyerStep3),   
-            (r"/buyerstep4", BuyerStep4), 
             (r"/buyer", Buyer),        
         ]
 
@@ -94,11 +93,6 @@ class BuyerStep2(BaseHandler):
 class BuyerStep3(BaseHandler):
     def get(self):
         self.render('buyerstep3.html')
-
-
-class BuyerStep4(BaseHandler):
-    def get(self):
-        self.render('buyerstep4.html')
 
 
 class Buyer(BaseHandler):

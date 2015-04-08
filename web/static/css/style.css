@@ -6183,7 +6183,8 @@ p {
   color: #4BA0C9;
   line-height: 1em;
   margin-top: 64px;
-  margin-bottom: 4px; }
+  margin-bottom: 4px;
+  letter-spacing: -0.4px; }
 .steps .first p {
   color: #7f858b;
   text-align: center;
@@ -6204,6 +6205,7 @@ p {
     right: 20px;
     top: 13px; }
   .steps .second a span {
+    line-height: 0.9em;
     position: relative;
     top: -11px; }
 

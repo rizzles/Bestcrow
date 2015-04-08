@@ -191,6 +191,7 @@ p {
 			line-height: 1em;
 			margin-top: 64px;
 			margin-bottom: 4px;
+			letter-spacing: -0.4px;
 		}
 		p {
 			color: mix($secondary-color, $white, 67%);
@@ -220,6 +221,7 @@ p {
 				top: 13px;
 			}
 			span {
+				line-height: 0.9em;
 				position: relative;
 				top: -11px;
 			}

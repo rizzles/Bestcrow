@@ -28,11 +28,20 @@
 		</nav>
 	</div>
 
+	<div class="row">
+		<div class="small-8 small-offset-2 warning">
+			<img src="/static/images/icons/warning.png">
+			<p>
+				<span class="white">Bookmark this URL</span><br>You must have it to complete this transaction
+			</p>
+		</div>
+	</div>
+
 	<div class="first">
 		<div class="row">
 			<div class="small-12 columns">
 				<h2>In case of a refund</h2>
-				<p>We need a bitcoin address we can send a refund back too</p>
+				<p>We need a bitcoin address we can send a potential refund back too</p>
 			</div>
 		</div>
 	</div>
@@ -40,12 +49,14 @@
 	<div class="second">
 		<div class="row">
 			<div class="small-12 medium-10 medium-offset-1 large-8 large-offset-2 secondary-bg">
-				<img src="/static/images/icons/step1@2x.png" width="66">
+				<img src="/static/images/icons/step1@2x.png" width="48">
 				<img src="/static/images/icons/refund@2x.png" width="100" class="icon">
 				<label><span class="white">TIP:</span> Be sure you control the private keys to this address
 					<input type="text" name="address" placeholder="Your BTC Address" class="radius" autocomplete="off">
 				</label>
-				<a href="/buyerstep2" type="submit" class="button radius"><span>Next<div class="light">Only 3 steps left</div></span><img src="/static/images/icons/nextarrow@2x.png" width="18"></a>
+				<a href="/buyerstep2" type="submit" class="button radius">
+					<span>Next<div class="light">Only 2 steps left</div></span><img src="/static/images/icons/nextarrow@2x.png" width="18">
+				</a>
 			</div>
 		</div>
 	</div>
