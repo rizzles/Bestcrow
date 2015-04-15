@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<title>escrow</title>
+</head>
+<body class="steps">
+
+    {% include 'modules/menu.html' %}
+
+	<div class="first">
+		<div class="row">
+			<div class="small-12 columns">
+				<h2>URL Recovery</h2>
+				<p>Lost the URL for your escrow transaction? We've got you covered.</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="second">
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 large-8 large-offset-2 secondary-bg">
+				<img src="/static/images/icons/step2@2x.png" width="48">
+				<img src="/static/images/icons/wallet@2x.png" width="100" class="icon">
+
+                {% if ripe %}
+
+                <label>Got it. Here's your link. Dont' lose it this time</label>
+                <a href="/buyer/{{ripe}}">http://52.1.141.196/buyer/{{ripe}}</a>
+                <p></p>
+
+                {% else %}
+                <form method="POST" action="/recovery" id="phraseform">
+				    <label>The word phrase we provided you with
+					    <textarea style="height:147px" name="phrase" class="radius" autocomplete="off"></textarea>
+				    </label>
+                    <button type="submit">
+				        Recover my URL
+                    </button>
+                </form>
+                {% end %}
+			</div>
+		</div>
+	</div>
+
+	<script src="/static/js/javascript-min.js"></script>
+	<script>
+		$(document).ready(function() {
+
+		});
+	</script>
+</body>	
+</html>
