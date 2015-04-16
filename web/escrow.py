@@ -29,7 +29,6 @@ MONGODB = MONGOCONNECTION.escrow.demo
 #import emailer
 #from variables import *
 
-#walletserver = "ec2-54-82-35-88.compute-1.amazonaws.com:8000"
 clients = {}
 
 
@@ -60,10 +59,8 @@ class Application(tornado.web.Application):
             (r"/recovery", Recovery),
         ]
 
-
         tornado.web.Application.__init__(self, handlers, **settings)
 
-        #self.mongodb = mongodb
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_buyer(self, base58):
@@ -116,35 +113,37 @@ class BaseHandler(tornado.web.RequestHandler):
             keys.append(key)
         return keys
 
-    # first step in starting escrow. Setup phrases, we don't complete this until we are given a btc refund address
-    def start_escrow(self, buyer=False, seller=False):
-        logging.info('generating mnemonic phrase for new escrow')
+    def make_hash(self):
         # mnemonic phrase for recovery
         m = mnemonic.Mnemonic('english')
         phrase = m.generate()
-        print phrase
-        
+
         # create short hash of phrase
         sha = hashlib.sha256(phrase)
         ripe = hashlib.new("ripemd160", sha.hexdigest())
         ripe = ripe.hexdigest()
 
-        joinhash = os.urandom(16).encode('hex')
+        return (ripe, phrase)
 
-        if buyer:
-            buyerhash=ripe
-            sellerhash=None
-        else:
-            buyerhash=None
-            sellerhash=ripe
+    # first step in starting escrow. Setup phrases, we don't complete this until we are given a btc refund address
+    def start_escrow(self, buyer=True):
+        logging.info('generating mnemonic phrase for new escrow')
+        
+        buyerhash, buyerphrase = self.make_hash()
+        sellerhash, sellerphrase = self.make_hash()
+        joinhash = os.urandom(16).encode('hex')
 
         escrow = {'buyerurlhash': buyerhash,
                   'sellerurlhash': sellerhash,
-                  'phrase': phrase,
+                  'buyerphrase': buyerphrase,
+                  'sellerphrase': sellerphrase,
                   'joinurlhash': joinhash}
 
         MONGODB.insert(escrow)
-        return ripe
+        if buyer:
+            return buyerhash
+        else:
+            return sellerhash
 
     # find the entry in the db that was already started
     def find_started_escrow(self, buyerurlhash=None, sellerurlhash=None):
@@ -162,7 +161,7 @@ class BaseHandler(tornado.web.RequestHandler):
         keys = self.get_three_keys()
         BITCOIN = AsyncAuthServiceProxy(BITCOIN_RPC_URL)
 
-        address1 = keys[0] 
+        address1 = keys[0]
         address2 = keys[1]
         address3 = keys[2]
 
@@ -176,6 +175,7 @@ class BaseHandler(tornado.web.RequestHandler):
         if sellerurlhash:
             escrow = self.find_started_escrow(sellerurlhash=sellerurlhash)
 
+        escrow['keys'] = [address1, address2, address3]
         escrow['sellerpayoutaddress'] = selleraddress
         escrow['buyerpayoutaddress'] = buyeraddress
         escrow['multisigaddress'] = multiaddress
@@ -230,7 +230,7 @@ class BuySell(BaseHandler):
     def post(self):
         seller = self.get_argument("buyerseller", None)
         if not seller:
-            ripe = self.start_escrow(buyer=True)
+            ripe = self.start_escrow(True)
             self.redirect('/buyer/%s'%ripe)
 
 
@@ -241,12 +241,17 @@ class BuyerSend(BaseHandler):
         amount = escrow['multisigbalance'] - 0.00005
         tx[0]['redeemScript'] = escrow['redeemscript']
         trans = bitcoin.createrawtransaction(tx, {escrow['sellerpayoutaddress']:amount})
+
+        body = {}
+        request = tornado.httpclient.HTTPRequest(url=url, method='POST', body=body)
+        
+        """
         signed1 = bitcoin.signrawtransaction(trans, tx, [escrow['address1privkey']])
         signed2 = bitcoin.signrawtransaction(signed1['hex'], tx, [escrow['address2privkey']])
         multitx = bitcoin.sendrawtransaction(signed2['hex'])
         print multitx
         mongodb.users.update({'buyerhash':base58},{'$set':{'multitx':multitx}})
-
+        """
 
 class Buyer(BaseHandler):
     def get(self, base58):
@@ -285,21 +290,21 @@ class Seller(BaseHandler):
     def get(self, base58):
         escrow = self.get_seller(base58)
         balance = self.get_balance(escrow['multisigaddress'])
-        if not trans:
+        if not escrow:
             self.write("Sorry, not found. You probably fucked up the URL")
             return
-        self.render("seller.html", base58=base58, trans=trans, balance=balance)
+        self.render("seller.html", base58=base58, escrow=escrow, balance=balance)
         
 
 class SellerJoin(BaseHandler):
     def get(self, joinhash):    
-        trans = self.get_seller_join(joinhash)
-        self.render("sellerjoin.html", trans=trans, joinhash=joinhash)
+        escrow = self.get_seller_join(joinhash)
+        self.render("sellerjoin.html", escrow=escrow, joinhash=joinhash)
 
     def post(self, joinhash):
         address = self.get_argument("selleraddress", None)
-        trans = self.set_seller_address(joinhash, address)
-        self.redirect("/seller/%s"%trans['sellerhash'])
+        escrow= self.set_seller_address(joinhash, address)
+        self.redirect("/seller/%s"%escrow['sellerurlhash'])
 
 
 def main():
