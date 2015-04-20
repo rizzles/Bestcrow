@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<title>escrow</title>
+</head>
+<body class="steps">
+
+    {% include 'modules/menu.html' %}
+
+	<div class="first">
+		<div class="row">
+			<div class="small-12 columns">
+				<h2>Welcome to Bestcrow</h2>
+				<p>Someone has started a bitcoin transaction with you using escrow</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="second">
+		<div class="row">
+			<div class="small-12 medium-10 medium-offset-1 large-8 large-offset-2 secondary-bg">
+				<img src="/static/images/icons/wallet@2x.png" width="100" class="icon">
+                <h5 style="text-align:center;margin-top: 64px;">We need an bitcoin address that we can send the funds to after the transaction has completed</h5>
+                <form method="POST" action="/seller/join/{{joinhash}}" id="addressform">
+				    <label><span class="white">TIP:</span> Be sure you control the private keys to this address
+					    <input type="text" name="selleraddress" placeholder="Your BTC Address" class="radius" autocomplete="off" value="" required autofocus>
+				    </label>
+				    <button type="submit" class="button radius">
+					    Get Started<img src="/static/images/icons/nextarrow@2x.png" width="18">
+                    </button>
+                </form>
+			</div>
+		</div>
+	</div>
+
+	<script src="/static/js/javascript-min.js"></script>
+	<script>
+		$(document).ready(function() {
+
+        });
+
+	</script>
+</body>	
+</html>

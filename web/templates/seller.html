@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<title>escrow</title>
+</head>
+<body class="buyer">
+  
+    {% include 'modules/menu.html' %}
+
+	<div class="row">
+		<div class="small-12 medium-8 medium-offset-2 warning">
+			<img src="/static/images/icons/warning.png">
+			<p>
+				<span class="white">{{escrow['sellerpayoutaddress']}}</span><br>If you do not control the private keys to this address. GTFO.
+			</p>
+		</div>
+	</div>
+
+	<div class="first">
+		<div class="row">
+			<div class="small-12 medium-8 medium-offset-2 columns">
+				<h5>Balance in escrow</h5>
+                {% if not balance %}
+				<h1>0.00 BTC</h1>
+                {% else %}
+                <h1>{{"%.5f"%balance}}</h1>
+                {% end %}
+			</div>
+		</div>
+	</div>
+
+	<div class="second">
+		<div class="row">
+			<div class="small-12 medium-8 medium-offset-2 columns">
+				<img src="/static/images/icons/small/wallet@2x.png" width="32">
+				<label>
+					Escrow address
+					<input type="text" name="address" class="radius" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">
+				</label>
+			</div>
+		</div>
+	</div>
+
+    {% if not balance %}
+	<div class="third">
+		<div class="row">
+			<div class="medium-8 medium-offset-2 secondary-bg">
+				<h4>No funds sent</h4>
+				<p>The buyer has not sent any funds to the escrow address yet</p>
+			</div>
+		</div>
+	</div>
+    {% end %}
+    
+	<script src="/static/js/javascript-min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$("input").on("click", function() {
+				console.log("Test");
+				this.select();
+			});
+		});
+	</script>
+</body>	
+</html>

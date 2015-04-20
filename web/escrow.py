@@ -85,7 +85,8 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def get_balance(self, address):
         http_client = tornado.httpclient.HTTPClient()
-        resp = http_client.fetch("http://127.0.0.1:3001/api/addr/%s"%address)
+        #resp = http_client.fetch("http://127.0.0.1:3001/api/addr/%s"%address)
+        resp = http_client.fetch("https://test-insight.bitpay.com/api/addr/%s"%address)
         resp = tornado.escape.json_decode(resp.body)
         print resp
         if resp['unconfirmedBalance'] > 0:
