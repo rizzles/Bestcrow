@@ -10,6 +10,8 @@
 
     {% include "modules/menu.html" %}
 
+    {% if escrow['buyerstartedescrow'] %}
+
 	<div class="first">
 		<div class="row">
 			<div class="small-12 columns">
@@ -42,23 +44,59 @@
 		</div>
 	</div>
 
-	<div class="third">
+
+	{% else %}
+
+	<div class="row">
+		<div class="small-12 medium-8 medium-offset-2 warning">
+			<img src="/static/images/icons/warning.png">
+			<p>
+				<span class="white">{{escrow['buyerpayoutaddress']}}</span><br>If you do not control the private keys to this address, do not continue with this transaction. This is the address the funds will be returned too if a dispute is resolved in your favor. Be sure it is yours.
+			</p>
+		</div>
+	</div>
+
+	<div class="first">
 		<div class="row">
-			<div class="small-12 secondary-bg">
-				<h4>Complete the transaction</h4>
-                {% if not escrow['sellerpayoutaddress'] %}
-				<p>We're still waiting on the seller to give us a payout address</p>
+			<div class="small-12 medium-8 medium-offset-2 columns">
+				<h5>Balance in escrow</h5>
+                {% if not balance %}
+				<h1>0.00 BTC</h1>
                 {% else %}
-                    {% if not balance %}
-				    <p>Fund the escrow account</p>
-                    {% else %}
-				    <p>When you’re happy with the transaction, release the funds to the seller</p>
-				    <a href="/buyer/send/{{base58}}" class="button radius">Release the funds</a>
-                    {% end %}
+                <h1>{{"%.5f"%balance}}</h1>
                 {% end %}
 			</div>
 		</div>
 	</div>
+
+	<div class="second">
+		<div class="row">
+			<div class="small-12 medium-8 medium-offset-2 columns">
+				<img src="/static/images/icons/small/wallet@2x.png" width="32">
+				<label>
+					Escrow address
+					<input type="text" name="address" class="radius" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">
+				</label>
+			</div>
+		</div>
+	</div>
+
+	{% end %}
+
+	<div class="third secondary-bg">
+		<div class="row">
+			<div class="small-12 secondary-bg">
+				<h4>Complete the transaction</h4>
+                {% if not balance %}
+				<p>Send the agreed upon funds with the seller to the escrow address</p>
+                {% else %}
+				<p>When you’re happy with the transaction, release the funds to the seller</p>
+				<a href="/buyer/send/{{base58}}" class="button radius">Release the funds</a>
+                {% end %}
+			</div>
+		</div>
+	</div>
+
 
 	<script src="/static/js/javascript-min.js"></script>
 	<script>

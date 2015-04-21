@@ -13,7 +13,7 @@
     <div class="first">
     	<div class="row">
     		<div class="small-12">
-				<img src="/static/images/icons/wallet@2x.png" width="100" class="icon">
+				<img src="/static/images/icons/refund@2x.png" width="100">
     		</div>
     	</div>
     </div>
@@ -23,20 +23,22 @@
 			<div class="small-12 medium-8 medium-offset-2 modal columns">
 				<div class="row modalheader">
 					<div class="small-12">
-						<h4 class="left">Welcome to Bestcrow</h4>
+						<h4 class="left">Welcome</h4>
+						<img src="/static/images/icons/sellerstep1@2x.png" width="30" class="right">						
 					</div>
 				</div>
 				<div class="row modalbody">
 					<div class="small-12 columns">
 						<div class="row collapse">
 							<div class="small-12 columns">
-								<p class="white">Someone has started a bitcoin transaction with you using escrow</p>
+								<p class="white">Address for your funds</p>
 								<p>We need a bitcoin address that you control. We will send the funds from this transaction to that address.</p>
 							</div>
 						</div>
 						<div class="row collapse">
+
 							<div class="small-10 columns">
-		                		<form method="POST" action="/seller/join/{{escrow['joinurlhash']}}" id="addressform">											
+		                		<form method="POST" action="/seller/{{base58}}" id="addressform">											
 							    <input type="text" name="selleraddress" placeholder="Your BTC Address" autocomplete="off" value="" required autofocus>
 							</div>
 							<div class="small-2 columns">
@@ -57,10 +59,24 @@
 		</div>
 	</div>
 
+	<div class="row">
+		<div class="small-8 small-offset-2 warning">
+			<img src="/static/images/icons/warning.png">
+			<h5>Bookmark this page</h5>
+			<p>The URL for this page is unique to your escrow transaction. You will need it to complete your transaction.</p>
+			<p>If you do happen to lose this link, the 12 word phrase below is going to let you recover this unique link. Copy this down and keep it in a safe place.</p>
+			<h5>{{escrow['sellerphrase']}}</h5>
+		</div>
+	</div>
+
 	<script src="/static/js/javascript-min.js"></script>
 	<script>
 		$(document).ready(function() {
-
+		    $("#addressform").on("submit", function(e) {
+                if( $("input").val() ) {
+				    $("button").html("<img src='/static/images/icons/spinner@2x.png' class='spinner' width='30'>");
+                }
+			});
         });
 
 	</script>

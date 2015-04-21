@@ -13,7 +13,7 @@
     <div class="first">
     	<div class="row">
     		<div class="small-12">
-				<img src="/static/images/icons/send@2x.png" width="100" class="icon">
+				<img src="/static/images/icons/wallet@2x.png" width="100" class="icon">
     		</div>
     	</div>
     </div>
@@ -23,33 +23,34 @@
 			<div class="small-12 medium-8 medium-offset-2 modal columns">
 				<div class="row modalheader">
 					<div class="small-12">
-						<h4 class="left">Signup the seller</h4>
-						<img src="/static/images/icons/step2@2x.png" width="48" class="right">						
+						<h4 class="left">Welcome to Bestcrow</h4>
 					</div>
 				</div>
 				<div class="row modalbody">
 					<div class="small-12 columns">
 						<div class="row collapse">
 							<div class="small-12 columns">
-								<p class="white">Send the link below to the seller</p>
-								<p>They need this link to complete the transaction and receive their payment. He will be able to see the funds in the multi-sig address.</p>
+								<p class="white">Someone has started a bitcoin transaction with you using escrow</p>
+								<p>We need a bitcoin address that you control. We will return the funds address in the event that a dispute is resolved in your favor.</p>
 							</div>
 						</div>
 						<div class="row collapse">
-							<input type="text" name="address" class="radius" autocomplete="off" readonly value="52.1.141.196/seller/join/{{escrow['joinurlhash']}}">
+							<div class="small-10 columns">
+		                		<form method="POST" action="/buyer/join/{{escrow['joinurlhash']}}" id="addressform">											
+							    <input type="text" name="buyeraddress" placeholder="Your BTC Address" autocomplete="off" value="" required autofocus>
+							</div>
+							<div class="small-2 columns">
+						    	<button type="submit" class="button postfix radius">
+									Next
+		                    	</button>
+		                    </form>
+		                    </div>
 		                </div>
-		                <div class="row collapse">
-							<a href="/buyer/{{base58}}" class="button radius right">
-								Next
-			                </a>
-		            	</div>
 		            </div>
-
 		        </div>
-
 		        <div clas="row">
 		        	<div class="small-12 modalfooter">
-		        		<span class="white">TIP:</span> Be sure he is the only one that receives this address
+		        		<span class="white">TIP:</span> Be sure you control the private keys to this address
 		        	</div>
 		        </div>
 			</div>
@@ -59,11 +60,9 @@
 	<script src="/static/js/javascript-min.js"></script>
 	<script>
 		$(document).ready(function() {
-			$("input").on("click", function() {
-				console.log("Test");
-				this.select();
-			});
-		});
+
+        });
+
 	</script>
 </body>	
 </html>

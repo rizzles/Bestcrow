@@ -10,34 +10,56 @@
 
     {% include 'modules/menu.html' %}
 
-	<div class="first">
-		<div class="row">
-			<div class="small-12 columns">
-				<h2>Send this URL to the seller</h2>
-				<p>They need this link to complete the transaction and receive their payment</p>
-			</div>
-		</div>
-	</div>
+    <div class="first">
+    	<div class="row">
+    		<div class="small-12">
+				<img src="/static/images/icons/wallet@2x.png" width="100" class="icon">
+    		</div>
+    	</div>
+    </div>
 
 	<div class="second">
-		<div class="row">
-			<div class="small-12 medium-10 medium-offset-1 large-8 large-offset-2 secondary-bg">
-				<img src="/static/images/icons/step3@2x.png" width="48">
-				<img src="/static/images/icons/send@2x.png" width="100" class="icon">
-				<label><span class="white">TIP:</span> The seller is the only one that receives this
-					<input type="text" name="address" class="radius" autocomplete="off" readonly value="http://52.1.141.196/seller/join/{{escrow['joinurlhash']}}">
-				</label>
-				<a href="/buyer/{{base58}}" type="submit" class="button radius"><div>That's it</div><img src="/static/images/icons/nextarrow@2x.png" width="18"></a>
+		<div class="row collapse">
+			<div class="small-12 medium-8 medium-offset-2 modal columns">
+				<div class="row modalheader">
+					<div class="small-12">
+						<h4 class="left">Fund the escrow</h4>
+						<img src="/static/images/icons/step3@2x.png" width="48" class="right">						
+					</div>
+				</div>
+				<div class="row modalbody">
+					<div class="small-12 columns">
+						<div class="row collapse">
+							<div class="small-12 columns">
+								<p class="white">A secure multi signature address</p>
+								<p>Send funds to the address below that will store your coins until you are happy with the transaction. You decide when to release the payment to the seller.</p>
+							</div>
+						</div>
+						<div class="row collapse">
+							<input type="text" name="address" class="radius" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">
+		                </div>
+		                <div class="row collapse">
+							<a href="/buyer/{{base58}}" class="button radius right">
+								Next
+			                </a>
+		            	</div>
+		            </div>
+
+		        </div>
+
+		        <div clas="row">
+		        	<div class="small-12 modalfooter">
+		        		<span class="white">TIP:</span> You can monitor the funds in this addres on the <a href="#">blockchain</a>
+		        	</div>
+		        </div>
 			</div>
 		</div>
 	</div>
-
 
 	<script src="/static/js/javascript-min.js"></script>
 	<script>
 		$(document).ready(function() {
 			$("input").on("click", function() {
-				console.log("Test");
 				this.select();
 			});
 		});

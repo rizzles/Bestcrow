@@ -21,8 +21,8 @@ from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 from bitcoinrpc_async.authproxy import AsyncAuthServiceProxy, JSONRPCException
 from pycoin.encoding import hash160
 
-BITCOIN_RPC_URL = "http://bitcoin:3jf8aAAFh7z7gk22AAd77vhaB788@127.0.0.1:8332"
-MONGOCONNECTION = pymongo.Connection('127.0.0.1', 27017)
+BITCOIN_RPC_URL = "http://bitcoin:3jf8aAAFh7z7gk22AAd77vhaB788@52.1.141.196:8332"
+MONGOCONNECTION = pymongo.Connection('52.1.141.196', 27017)
 MONGODB = MONGOCONNECTION.escrow.demo
 
 
@@ -50,6 +50,7 @@ class Application(tornado.web.Application):
             (r"/buysell", BuySell),
 
             (r"/buyer/send/(\w+)", BuyerSend),
+            (r"/buyer/join/(\w+)", BuyerJoin),
             (r"/buyer", Buyer),
             (r"/buyer/(\w+)", Buyer),
 
@@ -71,7 +72,7 @@ class BaseHandler(tornado.web.RequestHandler):
         escrow = MONGODB.find_one({'sellerurlhash': str(base58)})
         return escrow
 
-    def get_seller_join(self, joinhash):
+    def get_joinhash_url(self, joinhash):
         escrow = MONGODB.find_one({'joinurlhash': str(joinhash)})
         return escrow
 
@@ -80,8 +81,13 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def set_seller_address(self, joinhash, selleraddress):
         MONGODB.update({'joinurlhash':joinhash}, {'$set':{'sellerpayoutaddress':selleraddress}})
-        trans = MONGODB.find_one({'joinurlhash': str(joinhash)})
-        return trans
+        escrow = MONGODB.find_one({'joinurlhash': str(joinhash)})
+        return escrow
+
+    def set_buyer_address(self, joinhash, selleraddress):
+        MONGODB.update({'joinurlhash':joinhash}, {'$set':{'buyerpayoutaddress':selleraddress}})
+        escrow = MONGODB.find_one({'joinurlhash': str(joinhash)})
+        return escrow
 
     def get_balance(self, address):
         http_client = tornado.httpclient.HTTPClient()
@@ -173,8 +179,12 @@ class BaseHandler(tornado.web.RequestHandler):
 
         if buyerurlhash:
             escrow = self.find_started_escrow(buyerurlhash=buyerurlhash)
+            escrow['buyerstartedescrow'] = 1
+            escrow['sellerstartedescrow'] = 0
         if sellerurlhash:
             escrow = self.find_started_escrow(sellerurlhash=sellerurlhash)
+            escrow['buyerstartedescrow'] = 0
+            escrow['sellerstartedescrow'] = 1
 
         escrow['keys'] = [address1, address2, address3]
         escrow['sellerpayoutaddress'] = selleraddress
@@ -182,10 +192,7 @@ class BaseHandler(tornado.web.RequestHandler):
         escrow['multisigaddress'] = multiaddress
         escrow['multisigbalance'] = 0
         escrow['multitx'] = None
-        escrow['step2'] = False
         escrow['step3'] = False
-        escrow['buyerstatus'] = 0
-        escrow['sellerstatus'] = 1
         
         logging.info("updating new escrow in database with multi sig address = %s"%multiaddress)
         MONGODB.update({'_id':escrow['_id']},{'$set':escrow})
@@ -231,8 +238,11 @@ class BuySell(BaseHandler):
     def post(self):
         seller = self.get_argument("buyerseller", None)
         if not seller:
-            ripe = self.start_escrow(True)
+            ripe = self.start_escrow(buyer=True)
             self.redirect('/buyer/%s'%ripe)
+        else:
+            ripe = self.start_escrow(buyer=False)
+            self.redirect('/seller/%s'%ripe)
 
 
 class BuyerSend(BaseHandler):
@@ -287,24 +297,55 @@ class Buyer(BaseHandler):
         return
 
 
+class BuyerJoin(BaseHandler):
+    def get(self, joinhash):
+        escrow = self.get_joinhash_url(joinhash)
+        self.render("buyerjoin.html", escrow=escrow, joinhash=joinhash)
+
+    def post(self, joinhash):
+        address = self.get_argument("buyeraddress", None)
+        escrow = self.set_buyer_address(joinhash, address)
+        self.redirect("/buyer/%s"%escrow['buyerurlhash'])
+
+
 class Seller(BaseHandler):
     def get(self, base58):
         escrow = self.get_seller(base58)
-        balance = self.get_balance(escrow['multisigaddress'])
+        # unknown hash, redirect to the front page
         if not escrow:
-            self.write("Sorry, not found. You probably fucked up the URL")
+            self.redirect("/")
             return
+
+        # escrow was just started, display first step
+        if not escrow.has_key('multisigaddress'):
+            self.render('sellerstep1.html', base58=base58, escrow=escrow)
+            return
+
+        balance = self.get_balance(escrow['multisigaddress'])
+        print escrow
         self.render("seller.html", base58=base58, escrow=escrow, balance=balance)
         
+    @tornado.gen.coroutine
+    def post(self, base58):
+        selleraddress = self.get_argument("selleraddress", None)
+        escrow = self.get_seller(base58)
+        if not escrow.has_key('multisigaddress'):
+            # first time we're getting the seller payout address
+            logging.info("first time seller with public address of %s"%selleraddress)
+            escrow = yield self.create_escrow(sellerurlhash=base58, selleraddress=selleraddress)
+
+        self.render('sellerstep2.html', base58=base58, escrow=escrow)
+        return
+
 
 class SellerJoin(BaseHandler):
     def get(self, joinhash):    
-        escrow = self.get_seller_join(joinhash)
+        escrow = self.get_joinhash_url(joinhash)
         self.render("sellerjoin.html", escrow=escrow, joinhash=joinhash)
 
     def post(self, joinhash):
         address = self.get_argument("selleraddress", None)
-        escrow= self.set_seller_address(joinhash, address)
+        escrow = self.set_seller_address(joinhash, address)
         self.redirect("/seller/%s"%escrow['sellerurlhash'])
 
 

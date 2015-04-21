@@ -23,23 +23,23 @@
 			<div class="small-12 medium-8 medium-offset-2 modal columns">
 				<div class="row modalheader">
 					<div class="small-12">
-						<h4 class="left">Signup the seller</h4>
-						<img src="/static/images/icons/step2@2x.png" width="48" class="right">						
+						<h4 class="left">Signup the buyer</h4>
+						<img src="/static/images/icons/sellerstep2@2x.png" width="30" class="right">						
 					</div>
 				</div>
 				<div class="row modalbody">
 					<div class="small-12 columns">
 						<div class="row collapse">
 							<div class="small-12 columns">
-								<p class="white">Send the link below to the seller</p>
-								<p>They need this link to complete the transaction and receive their payment. He will be able to see the funds in the multi-sig address.</p>
+								<p class="white">Send the link below to the buyer</p>
+								<p>They need this link to fund the escrow and complete the transaction.</p>
 							</div>
 						</div>
 						<div class="row collapse">
-							<input type="text" name="address" class="radius" autocomplete="off" readonly value="52.1.141.196/seller/join/{{escrow['joinurlhash']}}">
+							<input type="text" name="joinaddress" class="radius" autocomplete="off" readonly value="52.1.141.196/buyer/join/{{escrow['joinurlhash']}}">
 		                </div>
 		                <div class="row collapse">
-							<a href="/buyer/{{base58}}" class="button radius right">
+							<a href="/seller/{{base58}}" class="button radius right">
 								Next
 			                </a>
 		            	</div>
@@ -60,7 +60,6 @@
 	<script>
 		$(document).ready(function() {
 			$("input").on("click", function() {
-				console.log("Test");
 				this.select();
 			});
 		});

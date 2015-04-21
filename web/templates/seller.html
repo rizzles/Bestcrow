@@ -10,11 +10,47 @@
   
     {% include 'modules/menu.html' %}
 
+    {% if escrow['sellerstartedescrow'] %}
+    <div class="first">
+		<div class="row">
+			<div class="small-12 columns">
+				<h5>Balance in escrow</h5>
+                {% if not balance %}
+				<h1>0.00 BTC</h1>
+                {% else %}
+                <h1>{{"%.5f"%balance}}</h1>
+                {% end %}
+			</div>
+		</div>
+	</div>
+
+	<div class="second">
+		<div class="row">
+			<div class="small-12 medium-6 columns border">
+				<img src="/static/images/icons/small/send@2x.png" width="32">
+				<label>
+					Link to give to buyer
+					<input type="text" name="address" class="radius" autocomplete="off" readonly value="52.1.141.196/buyer/join/{{escrow['joinurlhash']}}">
+				</label>
+			</div>
+			<div class="small-12 medium-6 columns">
+				<img src="/static/images/icons/small/wallet@2x.png" width="32">
+				<label>
+					Escrow address
+					<input type="text" name="address" class="radius" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">
+				</label>
+			</div>
+		</div>
+	</div>
+
+	
+
+    {% else %}
 	<div class="row">
 		<div class="small-12 medium-8 medium-offset-2 warning">
 			<img src="/static/images/icons/warning.png">
 			<p>
-				<span class="white">{{escrow['sellerpayoutaddress']}}</span><br>If you do not control the private keys to this address. GTFO.
+				<span class="white">{{escrow['sellerpayoutaddress']}}</span><br>If you do not control the private keys to this address, do not continue with this transaction. This is the address the funds will be released too. Be sure it is yours.
 			</p>
 		</div>
 	</div>
@@ -45,7 +81,7 @@
 	</div>
 
     {% if not balance %}
-	<div class="third">
+	<div class="third secondary-bg">
 		<div class="row">
 			<div class="medium-8 medium-offset-2 secondary-bg">
 				<h4>No funds sent</h4>
@@ -53,6 +89,7 @@
 			</div>
 		</div>
 	</div>
+    {% end %}
     {% end %}
     
 	<script src="/static/js/javascript-min.js"></script>

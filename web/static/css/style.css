@@ -55,7 +55,7 @@ html, body {
   box-sizing: border-box; }
 
 html, body {
-  font-size: 17px; }
+  font-size: 16px; }
 
 body {
   background: #FCFDFD;
@@ -6140,19 +6140,18 @@ p {
 
 .warning {
   background-color: #E86254;
-  margin-top: 32px;
-  padding: 24px 16px;
-  border: 1px solid #b94e43;
-  box-shadow: inset 0 0 2px #c55347; }
+  margin-top: 64px;
+  padding: 24px 16px; }
   .warning p {
-    color: #f6c6c1;
-    margin-bottom: 0px;
-    display: inline-block;
-    line-height: 1.3em; }
+    color: rgba(255, 255, 255, 0.67);
+    margin-bottom: 8px; }
+  .warning h5 {
+    color: #FFFFFF;
+    margin-bottom: 8px;
+    margin-top: 32px; }
   .warning img {
-    display: inline-block;
-    margin-right: 12px;
-    vertical-align: sub; }
+    display: block;
+    margin: 8px auto 20px auto; }
 
 .index .first {
   text-align: center;
@@ -6193,36 +6192,32 @@ p {
     margin-top: 64px;
     margin-bottom: 128px; }
 
-.steps .first h2 {
-  text-align: center;
-  color: #4BA0C9;
-  line-height: 1em;
-  margin-top: 64px;
-  margin-bottom: 4px;
-  letter-spacing: -0.4px; }
-.steps .first p {
-  color: #7f858b;
-  text-align: center;
-  line-height: 1.6em;
-  margin-bottom: 64px; }
-.steps .second .icon {
-  display: block;
-  margin: 0 auto; }
-.steps .second label {
-  margin-top: 64px; }
-.steps .second a, .steps .second button {
-  width: 100%;
-  margin-top: 64px;
-  position: relative;
-  height: 54px; }
-  .steps .second a img, .steps .second button img {
-    position: absolute;
-    right: 20px;
-    top: 13px; }
-  .steps .second a span, .steps .second button span {
-    line-height: 0.9em;
-    position: relative;
-    top: -11px; }
+.steps {
+  background-color: #353d44;
+  margin-bottom: 400px; }
+  .steps .first img {
+    display: block;
+    margin: 64px auto; }
+  .steps .modal {
+    background-color: #404A53;
+    border-radius: 4px; }
+    .steps .modal .modalheader {
+      padding: 12px 16px 8px 16px;
+      background-color: #475159; }
+    .steps .modal .modalbody input {
+      border-radius: 4px 0 0 4px; }
+    .steps .modal .modalbody p {
+      color: rgba(255, 255, 255, 0.47);
+      margin-bottom: 32px; }
+    .steps .modal .modalbody p.white {
+      color: #FFFFFF;
+      margin-bottom: 8px;
+      margin-top: 32px; }
+    .steps .modal .modalfooter {
+      margin-top: 24px;
+      padding: 16px 16px;
+      background-color: #323a41;
+      color: rgba(255, 255, 255, 0.47); }
 
 .buyer h5 {
   color: rgba(0, 0, 0, 0.47);
