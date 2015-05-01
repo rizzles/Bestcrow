@@ -7,6 +7,7 @@ import datetime
 import pymongo
 import mnemonic
 import hashlib
+import urllib
 
 import tornado.ioloop
 import tornado.web
@@ -21,10 +22,12 @@ from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 from bitcoinrpc_async.authproxy import AsyncAuthServiceProxy, JSONRPCException
 from pycoin.encoding import hash160
 
-BITCOIN_RPC_URL = "http://bitcoin:3jf8aAAFh7z7gk22AAd77vhaB788@52.1.141.196:8332"
+
+
+BITCOIN_RPC_URL = "http://bitcoin:3jf8aAAFh7z7gk22AAd77vhaB788@127.0.0.1:8332"
+
 MONGOCONNECTION = pymongo.Connection('52.1.141.196', 27017)
 MONGODB = MONGOCONNECTION.escrow.demo
-
 
 #import emailer
 #from variables import *
@@ -91,24 +94,26 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def get_balance(self, address):
         http_client = tornado.httpclient.HTTPClient()
-        #resp = http_client.fetch("http://127.0.0.1:3001/api/addr/%s"%address)
+        #resp = http_client.fetch("https://127.0.0.1:3001/api/addr/%s"%address)
         resp = http_client.fetch("https://test-insight.bitpay.com/api/addr/%s"%address)
         resp = tornado.escape.json_decode(resp.body)
-        print resp
         if resp['unconfirmedBalance'] > 0:
             bal = resp['unconfirmedBalance']
         else:
             bal = resp['balance']
+
+        # update balance in db for this address
+        MONGODB.update({'multisigaddress':address}, {'$set':{'multisigbalance':bal}})
         return bal
 
-    def get_utxo(self, address, sellerhash):
+    def get_utxo(self, escrow, sellerhash):
         http_client = tornado.httpclient.HTTPClient()
-        resp = http_client.fetch("http://127.0.0.1:3001/api/addr/%s/utxo"%address)
+        #resp = http_client.fetch("https://127.0.0.1:3001/api/addr/%s/utxo"%escrow['multisigaddress'])
+        resp = http_client.fetch("https://test-insight.bitpay.com/api/addr/%s/utxo"%escrow['multisigaddress'])
         resp = tornado.escape.json_decode(resp.body)
-        info = mongodb.users.find_one({'sellerhash': sellerhash})
         tx = []
         for t in resp:
-            tx.append({'txid':t['txid'], 'vout':t['vout'], 'scriptPubKey':t['scriptPubKey']})
+            tx.append({'txid':t['txid'], 'vout':t['vout'], 'scriptPubKey':t['scriptPubKey'], 'amount':t['amount']})
         return tx
 
     # get three pre made mongo keys from the db
@@ -172,10 +177,9 @@ class BaseHandler(tornado.web.RequestHandler):
         address2 = keys[1]
         address3 = keys[2]
 
-        adds = [address1['publickey'], address2['publickey'], address3['publickey']]
-        multiaddress = yield BITCOIN.addmultisigaddress(2, adds)
-        redeemscript = yield BITCOIN.createmultisig(2, adds)
-        redeemscript = redeemscript['redeemScript']
+        publickeys = [address1['publickey'], address2['publickey'], address3['publickey']]
+        print publickeys
+        redeemscript = yield BITCOIN.createmultisig(2, publickeys)
 
         if buyerurlhash:
             escrow = self.find_started_escrow(buyerurlhash=buyerurlhash)
@@ -186,18 +190,32 @@ class BaseHandler(tornado.web.RequestHandler):
             escrow['buyerstartedescrow'] = 0
             escrow['sellerstartedescrow'] = 1
 
+        escrow['redeemscript'] = redeemscript['redeemScript']
+        escrow['multisigaddress'] = redeemscript['address']
         escrow['keys'] = [address1, address2, address3]
         escrow['sellerpayoutaddress'] = selleraddress
         escrow['buyerpayoutaddress'] = buyeraddress
-        escrow['multisigaddress'] = multiaddress
         escrow['multisigbalance'] = 0
         escrow['multitx'] = None
         escrow['step3'] = False
         
-        logging.info("updating new escrow in database with multi sig address = %s"%multiaddress)
+        logging.info("updating new escrow in database with multi sig address = %s"%escrow['multisigaddress'])
         MONGODB.update({'_id':escrow['_id']},{'$set':escrow})
         raise tornado.gen.Return(escrow)
 
+    @tornado.gen.coroutine
+    def create_raw_transaction(self, escrow, tx):
+        logging.info("Generating raw transaction to send to private key server")
+        BITCOIN = AsyncAuthServiceProxy(BITCOIN_RPC_URL)
+
+        amount = escrow['multisigbalance'] - 0.00005
+        tx[0]['redeemScript'] = escrow['redeemscript']
+
+        try:
+            trans = yield BITCOIN.createrawtransaction(tx, {escrow['sellerpayoutaddress']:amount})
+        except Exception, e:
+            logging.error("Error from wallet %s"%e)
+        raise tornado.gen.Return(trans)
 
     def get_current_user(self):
         return None
@@ -210,6 +228,7 @@ class BaseHandler(tornado.web.RequestHandler):
         user = self.mongodb.users.find_one({'username':user})
         return user
         """
+
 
 class MainHandler(BaseHandler):
     def get(self):
@@ -229,8 +248,6 @@ class Recovery(BaseHandler):
             ripe = ripe.hexdigest()
         else:
             ripe = None
-        print ripe
-        
         self.render('recovery.html', ripe=ripe)
 
 
@@ -246,16 +263,24 @@ class BuySell(BaseHandler):
 
 
 class BuyerSend(BaseHandler):
+    @tornado.gen.coroutine
     def get(self, base58):
-        escrow = self.get_buyer(base58)        
-        tx = self.get_utxo(escrow['multisigaddress'], base58)
-        amount = escrow['multisigbalance'] - 0.00005
-        tx[0]['redeemScript'] = escrow['redeemscript']
-        trans = bitcoin.createrawtransaction(tx, {escrow['sellerpayoutaddress']:amount})
-
-        body = {}
-        request = tornado.httpclient.HTTPRequest(url=url, method='POST', body=body)
+        escrow = self.get_buyer(base58)      
+        tx = self.get_utxo(escrow, base58)
+        print "TX", tx
         
+        trans = yield self.create_raw_transaction(escrow, tx)
+
+        body = urllib.urlencode({'trans':trans, 'keys':'keys'})
+        http_client = tornado.httpclient.HTTPClient()
+
+        try:
+            request = http_client.fetch("http://127.0.0.1:8000", method="POST", body=body)
+        except Exception, e:
+            logging.error("Communication with private key server error: %s"%e)
+
+
+            
         """
         signed1 = bitcoin.signrawtransaction(trans, tx, [escrow['address1privkey']])
         signed2 = bitcoin.signrawtransaction(signed1['hex'], tx, [escrow['address2privkey']])
@@ -322,7 +347,6 @@ class Seller(BaseHandler):
             return
 
         balance = self.get_balance(escrow['multisigaddress'])
-        print escrow
         self.render("seller.html", base58=base58, escrow=escrow, balance=balance)
         
     @tornado.gen.coroutine
