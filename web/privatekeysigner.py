@@ -54,20 +54,21 @@ class MainHandler(BaseHandler):
         trans = self.get_argument('trans', None)
         keys = self.get_argument('keys', None)
 
-        if not tree or not trans:
+        if not trans or not trans:
             logging.error("Did not receive trans or tree argument")
             return
 
         
+        
 def main():
     http_server = tornado.httpserver.HTTPServer(Application(), xheaders=True)
-    http_server.bind(80)
+    http_server.bind(8000)
     http_server.start(1)
     tornado.ioloop.IOLoop.current().start()
 
 if __name__ == "__main__":
     tornado.options.parse_command_line()
-    logging.info("Starting web server on port 80")
+    logging.info("Starting web server on port 8000")
 
     main()
 
