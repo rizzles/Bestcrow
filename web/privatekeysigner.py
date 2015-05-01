@@ -47,6 +47,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         return None
 
+
 class MainHandler(BaseHandler):
     def post(self):
         logging.info("transaction coming in")
