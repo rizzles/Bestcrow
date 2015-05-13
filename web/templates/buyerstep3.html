@@ -10,47 +10,37 @@
 
     {% include 'modules/menu.html' %}
 
-    <div class="first">
-    	<div class="row">
-    		<div class="small-12">
-				<img src="/static/images/icons/wallet@2x.png" width="100" class="icon">
-    		</div>
-    	</div>
-    </div>
 
-	<div class="second">
-		<div class="row collapse">
-			<div class="small-12 medium-8 medium-offset-2 modal columns">
+	<div class="first">
+		<div class="row">
+			<div class="small-12 medium-12 medium-offse-1 large-8 large-offset-2 modal columns">
 				<div class="row modalheader">
-					<div class="small-12">
-						<h4 class="left">Fund the escrow</h4>
-						<img src="/static/images/icons/step3@2x.png" width="48" class="right">						
+					<div class="small-12 columns">
+						<h5>Sign up the seller</h5>
 					</div>
 				</div>
 				<div class="row modalbody">
 					<div class="small-12 columns">
-						<div class="row collapse">
-							<div class="small-12 columns">
-								<p class="white">A secure multi signature address</p>
-								<p>Send funds to the address below that will store your coins until you are happy with the transaction. You decide when to release the payment to the seller.</p>
+						<div class="row">
+							<div class="small-4 small-centered medium-uncentered medium-3 medium-push-9 columns">
+								<img src="/static/images/illustration/medium-send-link@2x.png">
+							</div>		
+							<div class="small-12 medium-9 medium-pull-3 columns">
+								<p class="secondary">Send the link below to the seller</p>
+								<p>The seller needs this link to complete the transaction and receive their payment. They will be able to see the funds in the multi-sig address.</p>
 							</div>
 						</div>
-						<div class="row collapse">
-							<input type="text" name="address" class="radius" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">
+						<div class="row margin-top">
+							<div class="small-12 medium-9 columns">
+								<input type="text" name="address" class="radius" autocomplete="off" readonly value="52.1.141.196/seller/join/{{escrow['joinurlhash']}}">
+							</div>
+							<div class="small-12 medium-3 columns">
+								<a href="/buyer/{{base58}}" class="button expand radius">
+									Next
+								</a>
+		                    </div>
 		                </div>
-		                <div class="row collapse">
-							<a href="/buyer/{{base58}}" class="button radius right">
-								Next
-			                </a>
-		            	</div>
 		            </div>
-
-		        </div>
-
-		        <div clas="row">
-		        	<div class="small-12 modalfooter">
-		        		<span class="white">TIP:</span> You can monitor the funds in this addres on the <a href="#">blockchain</a>
-		        	</div>
 		        </div>
 			</div>
 		</div>

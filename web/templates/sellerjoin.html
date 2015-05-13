@@ -10,37 +10,32 @@
 
     {% include 'modules/menu.html' %}
 
-    <div class="first">
-    	<div class="row">
-    		<div class="small-12">
-				<img src="/static/images/icons/wallet@2x.png" width="100" class="icon">
-    		</div>
-    	</div>
-    </div>
-
-	<div class="second">
-		<div class="row collapse">
-			<div class="small-12 medium-8 medium-offset-2 modal columns">
+	<div class="first">
+		<div class="row">
+			<div class="small-12 medium-12 medium-offse-1 large-8 large-offset-2 modal columns">
 				<div class="row modalheader">
-					<div class="small-12">
-						<h4 class="left">Welcome to Bestcrow</h4>
+					<div class="small-12 columns">
+						<h5>Welcome to bestcrow</h5>
 					</div>
 				</div>
 				<div class="row modalbody">
 					<div class="small-12 columns">
-						<div class="row collapse">
-							<div class="small-12 columns">
-								<p class="white">Someone has started a bitcoin transaction with you using escrow</p>
+						<div class="row">
+							<div class="small-4 small-centered medium-uncentered medium-3 medium-push-9 columns">
+								<img src="/static/images/illustration/medium-refund@2x.png" class="ill">
+							</div>		
+							<div class="small-12 medium-9 medium-pull-3 columns">
+								<p class="secondary">Someone has started a escrow bitcoin transaction with you</p>
 								<p>We need a bitcoin address that you control. We will send the funds from this transaction to that address.</p>
 							</div>
 						</div>
-						<div class="row collapse">
-							<div class="small-10 columns">
+						<div class="row margin-top">
+							<div class="small-12 medium-9 columns">
 		                		<form method="POST" action="/seller/join/{{escrow['joinurlhash']}}" id="addressform">											
-							    <input type="text" name="selleraddress" placeholder="Your BTC Address" autocomplete="off" value="" required autofocus>
+							    <input type="text" name="selleraddress" placeholder="Your BTC Address" autocomplete="off" value="" class="radius" required autofocus>
 							</div>
-							<div class="small-2 columns">
-						    	<button type="submit" class="button postfix radius">
+							<div class="small-12 medium-3 columns">
+						    	<button type="submit" class="button expand radius">
 									Next
 		                    	</button>
 		                    </form>
@@ -48,8 +43,8 @@
 		                </div>
 		            </div>
 		        </div>
-		        <div clas="row">
-		        	<div class="small-12 modalfooter">
+		        <div class="row modalfooter margin-top">
+		        	<div class="small-12">
 		        		<span class="white">TIP:</span> Be sure you control the private keys to this address
 		        	</div>
 		        </div>

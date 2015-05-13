@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="20px" height="32px" viewBox="0 0 20 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-15" fill="#F7F7F7" x="-594" y="-403" width="1529" height="833"></rect>
+        <g id="shield-copy-2" stroke="#404A53" stroke-width="2" stroke-linecap="round" opacity="0.469999999" stroke-linejoin="round">
+            <path d="M9.5,1 C7.80796875,2.31528571 4.733625,4.14285714 1,4.14285714 L1,11.4761905 C1,18.338619 5.91034375,21.7271429 9.5,23 C13.0896563,21.7281905 18,18.3391429 18,11.4761905 L18,4.14285714 C14.2658438,4.14285714 11.1915,2.31580952 9.5,1 L9.5,1 Z" id="Path"></path>
+        </g>
+    </g>
+</svg>

@@ -15,7 +15,7 @@
 			<div class="small-12 columns">
 				<img src="/static/images/monitor@2x.png" width="284">
 				<h2>A Bitcoin Escrow Service. <span class="blue">No Account Needed.</span></h2>
-				<p>Bitcoin offers for the first time in the history of the world the ability to secure funds in a safe escrow account for any size transaction. In the global economy of the internet, purchase anything with confidence. </p>
+				<p>Bitcoin offers for the first time in the history of the world the ability to secure funds in a safe escrow account for any size transaction. In the global economy of the internet, purchase from anyone with confidence.</p>
 			</div>
 		</div>
 		<div class="row">
@@ -35,20 +35,93 @@
 	</div>
 
 	<div class="second">
-		<div class="row">
-			<h3>Your coins are held safely on the bitcoin blockchain</h3>
-			<p>Funds are not released to the seller until both parties are happy with the transaction. We offer dispute resolution for any problems that may arise.</p>
-		</div>
-		<div class="row">
-			<img src="/static/images/safe@2x.png" width="673">
+		<div class="row vcenter">
+			<div class="small-8 small-offset-2 medium-4 medium-offset-0 columns">
+				<img src="/static/images/safe@2x.png" class="vimg">	
+			</div>
+			<div class="medium-8 large-7 large-offset-1 columns">
+				<h3>Escrow funds are stored on the blockchain</h3>
+				<h5>Your funds are stored in a multi signature bitcoin address while they are in escrow.</h5>
+				<div class="row">
+					<div class="large-6 small-12 columns feature">
+						<h5><img src="/static/images/icons/padlock@2x.png" width="22"> Enterprise level security</h5>
+						<p>We utilize hierachal deterministic bitcoin wallets. The private keys to your escrow address don’t exist until we need them to move the funds out of escrow.</p>
+					</div>
+					<div class="large-6 small-12 columns feature">
+						<h5><img src="/static/images/icons/location@2x.png" width="24"> Monitor your funds</h5>
+						<p>The bitcoin address is public on the blockchain. You can utilize public websites such as blockchain.info to monitor your funds while in escrow.</p>
+					</div>
+					<div class="large-6 large-pull-6 small-12 columns feature">
+						<h5><img src="/static/images/icons/user2@2x.png" width="24"> No account neccessary</h5>
+						<p>When a escrow account is started, you are assigned a unique web page address for that transaction. Keep the address URL to be able to complete the transaction.</p>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
+
+	<div class="third">
+		<div class="row vcenter">
+			<div class="small-8 small-offset-2 medium-4 medium-offset-0 columns">
+				<img src="/static/images/heisenberg@2x.png" class="vimg">	
+			</div>
+			
+			<div class="medium-8 large-7 large-offset-1 columns">
+				<h3>Dispute resolution</h3>
+				<h5>We offer dispute resolution if any stage of the transaction is not to your liking</h5>
+				<div class="row">
+					<div class="large-6 small-12 columns feature">
+						<h5><img src="/static/images/icons/shield2@2x.png" width="20"> Buyer protection</h5>
+						<p>The funds are always sent to the seller in a standard transaction. But if you have a major problem as a buyer, open a dispute with us and we will gather as much information as possible and potentially return funds to the buyer.</p>
+					</div>
+					<div class="large-6 small-12 columns feature">
+						<h5><img src="/static/images/icons/shield2@2x.png" width="20"> Seller protection</h5>
+						<p>As a seller, you can monitor the funds in the public bitcoin address used for escrow. You don’t need to ship/sell the item until you know the escrow account has been funded.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="fourth">
+		<div class="row">
+
+			<div class="small-12 columns">
+				<h3>Need more security?</h3>
+				<h5 class="hcenter">Use our native OSX and Windows apps to store the private key for your multi-sig bitcoin escrow address.</h5>
+				<div class="row">
+					<div class="large-4 small-12 columns feature">
+						<h5><img src="/static/images/icons/key2@2x.png" width="24"> Local backups</h5>
+						<p>A hierarchal deterministic wallet is used in the creation of the private keys in the native app. Copy 12 word phrase down when the app is launched to be able to recover your escrow transactions from a local disaster.</p>
+					</div>
+					<div class="large-4 small-12 columns feature">
+						<h5><img src="/static/images/icons/prison-door@2x.png" width="24"> Need a feature here</h5>
+						<p>The bitcoin address is public on the blockchain. You can utilize public websites such as blockchain.info to monitor your funds while in escrow. Monitor your funds while in escrow.</p>
+					</div>
+					<div class="large-4 small-12 columns feature">
+						<h5><img src="/static/images/icons/prison-door@2x.png" width="24"> Need a feature here</h5>
+						<p>The bitcoin address is public on the blockchain. You can utilize public websites such as blockchain.info to monitor your funds while in escrow.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="small-12 columns">
+				<div class="app-large">
+					<img src="/static/images/large-app@2x.png">				
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	{% include 'modules/footer.html' %}
 
 	<script src="/static/js/javascript-min.js"></script>
 	<script>
 		$(document).ready(function() {
 			$("#buysell").change(function() {
-				console.log("change");
 				$('.buyer').toggleClass('white');
 				$('.seller').toggleClass('white');
 			});

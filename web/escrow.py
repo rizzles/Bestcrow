@@ -24,11 +24,12 @@ from pycoin.encoding import hash160
 
 
 
-BITCOIN_RPC_URL = "http://bitcoin:3jf8aAAFh7z7gk22AAd77vhaB788@127.0.0.1:8332"
+BITCOIN_RPC_URL = "http://bitcoin:i8abal8ghuhauqo58hjjkjahsdy@54.224.222.213:8332"
 
-MONGOCONNECTION = pymongo.Connection('52.1.141.196', 27017)
+MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
 MONGODB = MONGOCONNECTION.escrow.demo
 
+INSIGHT = "http://54.224.222.213:3000"
 #import emailer
 #from variables import *
 
@@ -95,7 +96,9 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_balance(self, address):
         http_client = tornado.httpclient.HTTPClient()
         #resp = http_client.fetch("https://127.0.0.1:3001/api/addr/%s"%address)
-        resp = http_client.fetch("https://test-insight.bitpay.com/api/addr/%s"%address)
+        #resp = http_client.fetch("https://test-insight.bitpay.com/api/addr/%s"%address)
+        resp = http_client.fetch("%s/api/addr/%s"%(INSIGHT, address))  
+        print resp     
         resp = tornado.escape.json_decode(resp.body)
         if resp['unconfirmedBalance'] > 0:
             bal = resp['unconfirmedBalance']
@@ -109,7 +112,8 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_utxo(self, escrow, sellerhash):
         http_client = tornado.httpclient.HTTPClient()
         #resp = http_client.fetch("https://127.0.0.1:3001/api/addr/%s/utxo"%escrow['multisigaddress'])
-        resp = http_client.fetch("https://test-insight.bitpay.com/api/addr/%s/utxo"%escrow['multisigaddress'])
+        #resp = http_client.fetch("https://test-insight.bitpay.com/api/addr/%s/utxo"%escrow['multisigaddress'])
+        resp = http_client.fetch("%s/api/addr/%s/utxo"%(INSIGHT, escrow['multisigaddress']))      
         resp = tornado.escape.json_decode(resp.body)
         tx = []
         for t in resp:
@@ -179,7 +183,12 @@ class BaseHandler(tornado.web.RequestHandler):
 
         publickeys = [address1['publickey'], address2['publickey'], address3['publickey']]
         print publickeys
-        redeemscript = yield BITCOIN.createmultisig(2, publickeys)
+
+        ## TODO: Change this before we go live
+        #redeemscript = yield BITCOIN.createmultisig(2, publickeys)
+        ## TODO: get rid of bthis
+        redeemscript = {'redeemScript':"1gYMgZ82Jwj4jNS2sHaJkmYgbLp2pLxTg", 'address':'1gYMgZ82Jwj4jNS2sHaJkmYgbLp2pLxTg'}
+
 
         if buyerurlhash:
             escrow = self.find_started_escrow(buyerurlhash=buyerurlhash)

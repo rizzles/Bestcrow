@@ -6,103 +6,221 @@
 	<link rel="stylesheet" href="/static/css/style.css">
 	<title>escrow</title>
 </head>
-<body class="buyer">
+<body class="dash">
 
     {% include "modules/menu.html" %}
 
-    {% if escrow['buyerstartedescrow'] %}
+    <div class="first">
+    	<div class="row">
+    		<div class="small-12 large-10 large-offset-1 columns modal">
+    			<div class="btcbg">
+	    			<div class="row modalheader">
+	    				<div class="small-12 columns">
+		    				<h5>This escrow isn't complete</h5>
+		    			</div>
+	    			</div>
+	    			<div class="row modalbody">
+	    				<div class="small-12 columns">
+	    					<p class="secondary">A few steps remaining for completion</p>
 
-	<div class="first">
+	    					{% if escrow['buyerstartedescrow'] and not escrow['sellerpayoutaddress'] %}
+	    					<p class="i"><span class="black">Send signup link to the seller</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High Life Brooklyn twee craft beer tousled chillwave.</p>
+	    					{% end %}
+
+	    					{% if balance == 0 %}
+	    					<p class="i"><span class="black">Fund the escrow account</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
+	    					{% end %}
+
+	    					<p class="i"><span class="black">Release the funds to the seller</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
+
+	    					{% if balance > 0 %}	
+	    					<div class="top24">
+	    						<a href="#" class="button primary small radius releasefunds">Release Funds</a>
+	    						<a href="#" class="button warning small radius">Open Dispute</a>
+	    					</div>
+	    					{% end %}
+	    				</div>
+	    			</div>
+	    		</div>
+    		</div>
+    	</div>
+    	<div class="row">
+    		<div class="small-12 large-10 large-offset-1 columns areyousure">
+    			<h5>Are you sure?</h5>
+    			<p>Release funds in the escrow account to the seller?</p>
+    			<div class="row">
+    				<div class="small-12 medium-6 medium-offset-3">
+    					<ul class="no-bullet">
+    						<li><img src="/static/images/icons/check@2x.png" width="15"> You’re happy with the transaction</li>
+    						<li><img src="/static/images/icons/check@2x.png" width="15"> You want the seller to get paid</li>
+    					</ul>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="small-12">
+    					<a href="#" class="button small radius">Release funds</a>
+    					<a href="#" class="button secondary small radius areyousurecancel">Cancel</a>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+
+    {% if not escrow['buyerstartedescrow'] %}
+    <div class="second">
+    	<div class="row">
+    		<div class="small-12 large-10 large-offset-1 columns modal">
+    			<div class="warnbg">
+	    			<div class="row modalheader">
+	    				<div class="small-12 columns">
+		    				<h5>Warning</h5>
+		    			</div>
+	    			</div>
+	    			<div class="row modalbody">
+	    				<div class="small-12 columns">
+	    					<p class="warnp">You must control the private keys to this bitcoin address</p>
+	    					<p>This is the bitcoin address that the funds are going to be sent too when the transaction is complete. If you do not control this address, start a new escrow transaction.</p>
+	    					<div class="top24">
+	    						<input type="text" class="radius" name="buyeraddress" placeholder="Your BTC Address" autocomplete="off" value="{{escrow['buyerpayoutaddress']}}" required readonly>
+	    					</div>
+	    				</div>
+	    			</div>
+	    		</div>
+    		</div>
+    	</div>
+    </div>
+    {% end %}
+
+    <div class="third">
+    	<div class="row collapsed">
+    		{% if not escrow['sellerpayoutaddress'] %}
+    		<div class="small-12 large-5 large-offset-1 columns modal bgblue">
+    		{% else %}
+    		<div class="small-12 large-10 large-offset-1 columns modal bgblue">
+    		{% end %}    		
+    			<div class="row modalheader">
+    				<div class="small-12 columns">
+    					<h5>Funds in escrow</h5>
+    				</div>
+    			</div>
+    			<div class="row modalbody">
+    				<div class="small-12 columns">
+    					<div class="left">
+	    					{% if not balance %}
+							<h1 class="balance">0.00 BTC</h1>
+	                		{% else %}
+	                		<h1 class="balance">{{"%.5f"%balance}}</h1>
+	                		{% end %}
+	                		<small>Pending confirmation: <span class="confirmation">0.00</span></small>
+	                		<p class="title">Escrow Address</p>	                		
+                		</div>
+                		<div class="refresh right">
+                		</div>
+	                	<input type="text" name="address" class="radius expand" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">                		
+	                	<p class="title">Steps</p>
+	                	<p>Send the funds you want the seller to receive to this address</p>
+    				</div>
+    			</div>
+    		</div>
+
+    		{% if not escrow['sellerpayoutaddress'] %}
+			<div class="small-12 large-5 columns end modal">
+    			<div class="row modalheader">
+    				<div class="small-12 columns">
+    					<h5>Sign up the seller</h5>
+    				</div>
+    			</div>
+    			<div class="row modalbody">
+    				<div class="small-12 columns">
+    					<p class="secondary">Steps</p>
+    					<p>Give this link to the seller in your escrow transaction. We need a bitcoin address from them that we can send the escrow funds too at the end of the transaction.</p>
+    					<p class="secondary">URL for the seller</p>
+    					<input type="text" name="address" class="radius expand" autocomplete="off" readonly value="52.1.141.196/seller/join/{{escrow['joinurlhash']}}">
+    				</div>
+    			</div>
+    		</div>
+    		{% end %}
+    	</div>
+    </div>
+
+    <div class="fourth">
+    	<div class="row">
+    		<div class="small-12 large-10 large-offset-1 columns modal">
+    			<div class="row modalheader">
+    				<div class="small-12 columns">
+    					<h5>Comments left by the seller</h5>
+    				</div>
+    			</div>
+    			<div class="row modalbody">
+    				<div class="small-5 buyercomment">
+    					<small>4 days ago</small>
+    					<p class="buyertext">Yo dawg, how's shit going?</p>
+    				</div>
+    				<div class="small-5 small-offset-7 sellercomment">
+    					<small>32 mins ago</small>
+    					<p class="sellertext">Package is on it's way</p>
+    				</div>
+    				<div class="small-5 buyercomment">
+    					<small>10 mins ago</small>
+    					<p class="buyertext">Tight</p>
+    				</div>
+    			</div>
+    			<div class="row commentfooter">
+    				<div class="small-12 medium-9 columns">
+    					<input type="text" class="radius" name="comment" placeholder="Comment for seller" autocomplete="off" required>
+    				</div>
+					<div class="small-12 medium-3 columns">
+						<a href="#" class="button expand radius">
+							Leave Comment
+						</a>
+		            </div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+
+	<div class="bottom">
 		<div class="row">
-			<div class="small-12 columns">
-				<h5>Balance in escrow</h5>
-                {% if not balance %}
-				<h1>0.00 BTC</h1>
-                {% else %}
-                <h1>{{"%.5f"%balance}}</h1>
-                {% end %}
+			<div class="small-12">
+				<p>Have a question? Email our support team at <a href="mailto:">support@bestcrow.io</a></p>
 			</div>
 		</div>
 	</div>
-
-	<div class="second">
-		<div class="row">
-			<div class="small-12 medium-6 columns border">
-				<img src="/static/images/icons/small/send@2x.png" width="32">
-				<label>
-					Link to give to seller
-					<input type="text" name="address" class="radius" autocomplete="off" readonly value="52.1.141.196/seller/join/{{escrow['joinurlhash']}}">
-				</label>
-			</div>
-			<div class="small-12 medium-6 columns">
-				<img src="/static/images/icons/small/wallet@2x.png" width="32">
-				<label>
-					Escrow address
-					<input type="text" name="address" class="radius" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">
-				</label>
-			</div>
-		</div>
-	</div>
-
-
-	{% else %}
-
-	<div class="row">
-		<div class="small-12 medium-8 medium-offset-2 warning">
-			<img src="/static/images/icons/warning.png">
-			<p>
-				<span class="white">{{escrow['buyerpayoutaddress']}}</span><br>If you do not control the private keys to this address, do not continue with this transaction. This is the address the funds will be returned too if a dispute is resolved in your favor. Be sure it is yours.
-			</p>
-		</div>
-	</div>
-
-	<div class="first">
-		<div class="row">
-			<div class="small-12 medium-8 medium-offset-2 columns">
-				<h5>Balance in escrow</h5>
-                {% if not balance %}
-				<h1>0.00 BTC</h1>
-                {% else %}
-                <h1>{{"%.5f"%balance}}</h1>
-                {% end %}
-			</div>
-		</div>
-	</div>
-
-	<div class="second">
-		<div class="row">
-			<div class="small-12 medium-8 medium-offset-2 columns">
-				<img src="/static/images/icons/small/wallet@2x.png" width="32">
-				<label>
-					Escrow address
-					<input type="text" name="address" class="radius" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">
-				</label>
-			</div>
-		</div>
-	</div>
-
-	{% end %}
-
-	<div class="third secondary-bg">
-		<div class="row">
-			<div class="small-12 secondary-bg">
-				<h4>Complete the transaction</h4>
-                {% if not balance %}
-				<p>Send the agreed upon funds with the seller to the escrow address</p>
-                {% else %}
-				<p>When you’re happy with the transaction, release the funds to the seller</p>
-				<a href="/buyer/send/{{base58}}" class="button radius">Release the funds</a>
-                {% end %}
-			</div>
-		</div>
-	</div>
-
 
 	<script src="/static/js/javascript-min.js"></script>
 	<script>
 		$(document).ready(function() {
 			$("input").on("click", function() {
 				this.select();
+			});
+
+			$(".refresh").on("click", function() {
+				$(".refresh").velocity({
+					rotateZ: "360deg",
+				}, {
+					begin: function() {$(".balance").html("--- BTC")},
+					complete: function() {$(".refresh").velocity('stop').velocity({rotateZ:'0deg'});$(".balance").html("0.00 BTC")}
+				})
+			})
+
+			$(".releasefunds").on("click", function(e) {
+				e.preventDefault();
+				$(".areyousure").velocity({
+					opacity: 1,
+					top: "0px"
+				}, {
+					display: "block"
+				});
+			});
+
+			$(".areyousurecancel").on("click", function(e) {
+				e.preventDefault();
+				$(".areyousure").velocity({
+					opacity: 0,
+					top: "-280px"
+				}, {
+					display: "none"
+				})
 			});
 		});
 	</script>

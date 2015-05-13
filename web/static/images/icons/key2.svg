@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="34px" viewBox="0 0 24 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-16" fill="#404A53" x="-502" y="-331" width="1529" height="723"></rect>
+        <g id="key" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11,11 L1,20 L1,23 L4,23 L5,22 L6,22 L6,21 L8,21 L8,19 L11,19 L11,17 L13,17 L15,15" id="Path"></path>
+            <path d="M21,13 C18.5579254,15.6346979 14.4417361,15.6346979 12,13 C9.3646151,10.5587396 9.36569845,6.4409896 12,4 C14.4411944,1.36611461 18.5579254,1.36503127 21,4 C23.6350464,6.44207293 23.6345047,10.5587396 21,13 L21,13 Z" id="Path"></path>
+        </g>
+        <g id="Group-Copy" transform="translate(20.000000, -148.000000)"></g>
+    </g>
+</svg>

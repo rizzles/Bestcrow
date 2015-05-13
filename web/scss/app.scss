@@ -56,6 +56,40 @@ p {
 	color: $silver;
 }
 
+.secondary {
+	color: $secondary-color;
+}
+
+.top24 {
+	margin-top: 24px;
+}
+
+
+
+button .button {
+	padding-top: 0.9rem;
+	padding-bottom: 0.9rem;
+}
+
+button.expand, .button.expand {
+	padding-bottom: 0.9em;
+}
+
+button.warning, .button.warning {
+	box-shadow:inset 0px 0px 0px 2px mix($white, $warning-color, 37%);
+	background-color: $clear;
+	color: $warning-color;
+}
+
+button.warning:hover, .button.warning:hover {
+	box-shadow:inset 0px 0px 0px 2px $warning-color;
+	color: $warning-color;
+}
+
+button.warning:focus, .button.warning:focus {
+	color: $warning-color;
+}
+
 @keyframes rotating {
   from {
     transform: rotate(0deg);
@@ -89,6 +123,17 @@ p {
    color: $placeholder;  
 }
 
+input[type="text"][readonly]
+{
+    background-color: $secondary-color;
+    color: $primary-color;
+}
+
+input[type="text"][readonly]:focus
+{
+    color: $white;
+}
+
 .secondary-bg {
 	background-color: $secondary-color;
 }
@@ -114,7 +159,7 @@ p {
 	border: 1px solid $ghost;
 	color: $ghost;
 	top: 0.74375rem;
-	height: 2rem;
+	height: 2.1rem;
 }
 
 .top-bar-section ul li > a.button.secondary:hover {
@@ -123,8 +168,8 @@ p {
 	border: 1px solid $white;
 }
 
-.warning {
-	background-color: $warning-color;
+.warn {
+	//background-color: $warning-color;
 	margin-top: 64px;
 	padding: 24px 16px;
 	//border: 1px solid shade($warning-color, 20%);
@@ -143,9 +188,34 @@ p {
 		display: block;
 		margin: 8px auto 20px auto;
 	}
+	input[type="text"][readonly] {
+		margin-top: 32px;
+		background-color: #2e363c;
+	}
+}
+
+.more-security {
+	color: rgba($white, 0.57);
+	h4 {
+		margin-top: 120px;
+		margin-bottom: 32px;
+		text-align: center;
+	}
+	a {
+		display: block;
+		margin-bottom: 16px;
+	}
 }
 
 .index {
+	.feature {
+		margin-top: 24px;
+	}
+	.vcenter {
+		.vimg {
+			margin-bottom: 64px;
+		}
+	}
 	.first {
 		text-align: center;
 		background-color: $secondary-color;
@@ -158,7 +228,7 @@ p {
 		}
 		.panel {
 			padding-top: 40px;
-			padding-bottom: 32px;
+			padding-bottom: 20px;
 			margin-top: 48px;
 			background-color: #475159;
 			margin-bottom: 64px;
@@ -179,70 +249,298 @@ p {
 			color: $white;
 		}
 		.button {
-			margin-top: 32px;
+			margin-top: 20px;
 			width: 240px;
 		}
 	}
 
 	.second {
-		
 		padding-top: 64px;
+		padding-bottom: 64px;
 		background-color: $primary-color;
-		text-align: center;
 		p {
-			color: $ghost;
+			color: rgba($white, 0.67);
 		}
-		img {
-			margin-top: 64px;
-			margin-bottom: 128px;
+
+
+	}
+	.third {
+		padding-top: 64px;
+		padding-bottom: 64px;
+		background-color: #F7F7F7;
+		color: rgba($secondary-color, 0.57);
+		h3, h5 {
+			color: rgba($secondary-color, 0.77);
+		}
+	}
+	.fourth {
+		padding-top: 64px;
+		padding-bottom: 0px;
+		background-color: $secondary-color;
+		color: rgba($white, 0.67);
+		h3, h5 {
+			color: $white;
+		}
+		h3 {
+			text-align: center;
+		}
+		.hcenter {
+			text-align: center;
+		}
+	}
+}
+
+.app-large {
+	margin-top: 64px;
+	img {
+		display: block;
+		margin: 0 auto;
+	}
+}
+
+.modal {
+	background-color: $white;
+	border-radius: 4px;
+
+	.btcbg {
+		padding-left: 64px;
+		background: url(../images/icons/bitcoin@2x.png) 0px 22px no-repeat;
+		background-size: 48px 48px;
+		padding-bottom: 24px;
+	}
+	.warnbg {
+		padding-left: 64px;
+		background: url(../images/icons/warning@2x.png) 0px 22px no-repeat;
+		background-size: 48px 48px;		
+	}
+
+	.modalheader {
+		background: url(../images/line.png) bottom right no-repeat;
+		background-size: 97% 1px;
+		margin-bottom: 24px;
+		h5 {
+			padding-top: 16px;
+			padding-bottom: 10px;
+			color: $secondary-color;
+			font-weight: bold;
+		}
+	}
+	.modalbody {
+		.refresh {
+			margin-top: 10px;
+			background: url(../images/icons/refresh@2x.png) top left no-repeat;
+			width: 35px;
+			height: 35px;
+			background-size: 35px 35px;			
+		}
+		.refresh:hover {
+			cursor: pointer;
+			background: url(../images/icons/refreshdark@2x.png) top left no-repeat;
+			background-size: 35px 35px;						
+		}
+		.ill {
+			margin-bottom: 32px;
+		}
+		h5 {
+			color: $secondary-color;
+			font-weight: bold;	
+		}
+		p {
+			color: rgba($secondary-color, 0.67);
+
+		}
+		p.secondary {
+			color: $secondary-color;
+			font-weight: bold;
+			margin-bottom: 8px;
+		}
+		.i {
+			padding-left: 20px;
+			margin-bottom: 8px;
+			background: url(../images/icons/plus@2x.png) 0px 4px no-repeat;
+			background-size: 15px 15px;
+		}
+		.black {
+			color: $secondary-color;
+		}
+		.buyercomment {
+			margin-bottom: 32px;
+			margin-left: 12px;
+			background: url(../images/icons/buyer-comment@2x.png) 0px 20px no-repeat;
+			background-size: 55px 55px;
+		}
+		.buyercomment .buyertext {
+			padding: 14px;
+			background-color: #EDF4F9;
+			margin-bottom: 3px;
+			border-radius: 3px;
+			border: 1px solid #A6CAE3;
+			color: $secondary-color;
+			margin-left: 80px;			
+		}
+		.buyercomment small {
+			text-align: right;
+		}
+		.sellercomment {
+			margin-bottom: 32px;
+			background: url(../images/icons/seller-comment@2x.png) right 24px no-repeat;
+			background-size: 55px 55px;
+		}
+		.sellercomment .sellertext {
+			padding: 14px;
+			background-color: #F3F4F4;
+			margin-bottom: 3px;
+			border-radius: 3px;
+			border: 1px solid #CFD2D3;
+			color: $secondary-color;
+			margin-right: 80px;	
+		}
+		.sellercomment small {
+			text-align: right;
+			margin-right: 85px;
+		}
+
+	}
+	.modalfooter {
+		margin-top: 24px;
+		padding: 16px 16px;
+		background-color: mix($black, $secondary-color, 27%);
+		color: rgba($white, 0.47);
+		border-radius: 0 0 4px 4px;
+	}
+	.commentfooter {
+		border-top: 1px solid #D3D6D9;
+		padding-top: 18px;
+		background-color: #F1F4F8;
+		color: rgba($white, 0.47);
+		border-radius: 0 0 4px 4px;
+	}
+	h1 {
+		color: $secondary-color;
+		font-weight: lighter;
+		line-height: 1em;
+	}
+	small {
+		display: block;
+		font-size: rem(13);
+		color: mix($white, $secondary-color, 47%);
+	}
+}
+
+.bgblue {
+	background-color: $primary-color;
+	h1 {
+		color: $white;
+		margin-bottom: 0px;
+	}
+	.modalheader {
+		h5 {
+			color: $white;
+		}
+	}
+	.modalbody {
+		small {
+			color: rgba($white, 0.67);
+			margin-top: 0px;
+			font-size: rem(13);
+		}
+		small .confirmation {
+			color: $white;
+		}
+		p.title {
+			margin-top: 32px;
+			margin-bottom: 8px;
+			color: $white;
+		}
+		p {
+			color: rgba($white, 0.67);
 		}
 	}
 }
 
 .steps {
-	background-color: mix($black, $secondary-color, 17%);
-	margin-bottom: 400px;
-	.first {
-		img {
-			display: block;	
-			margin: 64px auto;
-		}
+	background-color: $secondary-color;
+	margin-bottom: 256px;
+	.margin-top {
+		margin-top: 32px;
 	}
-	.modal {
-		background-color: $secondary-color;
-		border-radius: 4px;	
-		.modalheader {
-			padding: 12px 16px 8px 16px;
-			background-color: mix($white, $secondary-color, 4%);
-		}
-		.modalbody {
-			input {
-				border-radius: 4px 0 0 4px;
-			}
-			p {
-				color: rgba($white, 0.47);
-				margin-bottom: 32px;
-			}
-			p.white {
-				color: $white;
-				margin-bottom: 8px;
-				margin-top: 32px;
-			}
-		}
-		.modalfooter {
-			margin-top: 24px;
-			padding: 16px 16px;
-			background-color: mix($black, $secondary-color, 21%);
-			color: rgba($white, 0.47);			
-		}
+	.first {
+		margin-top: 64px;
+		margin-right: 10px;
+		margin-left: 10px;
+	}
+	.app {
+		position: relative;
+		left: 725px;
+		top: -300px;
 	}
 }
 
-.buyer {
-	h5 {
-		color: $smoke;
-		margin-bottom: 0px;
+.dash {
+	background-color: $secondary-color;
+	.end {
+		margin-top: 48px;
+	}	
+	.bottom {
+		margin-top: 128px;
+		height: 64px;
+		background-color: $white;
+		text-align: center;
+		color: $secondary-color;
+		padding-top: 18px;
 	}
+	.areyousure {
+		position: relative;
+		display: none;
+		opacity: 0;
+		z-index: 1;
+		top: -280px;
+		background: #F1F4F8;
+		box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.50);
+		text-align: center;
+		color: mix($white, $secondary-color, 37%);
+		h5 {
+			padding-top: 32px;
+			padding-bottom: 0px;
+			color: $secondary-color;
+			font-weight: bold;
+			margin-bottom: 2px;
+		}
+		ul {
+			text-align: left;
+			color: $secondary-color;
+			padding-bottom: 18px;
+			li {
+				margin-top: 10px;
+			}
+		}
+		.secondary {
+			width: 140px;
+			background-color: $clear;
+			color: $secondary-color;
+			box-shadow:inset 0px 0px 0px 2px mix($white, $secondary-color, 67%);
+		}
+		.secondary:hover {
+			box-shadow:inset 0px 0px 0px 2px mix($white, $secondary-color, 37%);			
+		}
+	}
+	.opendispute {
+
+	}
+	.modal {
+		z-index: 100;
+		.modalheader {
+			background: url(../images/line.png) bottom right no-repeat;
+			background-size: 98% 1px;
+		}		
+	}
+
+	p.warnp {
+		color: $warning-color;
+		font-weight: bold;
+		margin-bottom: 8px;
+	}
+
 	label {
 		color: $smoke;
 		line-height: 1.4em;
@@ -255,47 +553,110 @@ p {
 	input:focus, input:hover {
 		border-color: rgba(0,0,0,0.17);
 	}
-	.first {
-		margin-top: 64px;
-		margin-bottom: 64px;
-		text-align: center;
-		h1 {
-			color: $charcoal;
-			font-size: 90px;
-			letter-spacing: -3px;
-			line-height: 1em;
-		}
 
+	.first {
+		margin-top: 48px;
 	}
+
 	.second {
-		.border {
-			border-right: 1px solid $iron;
-		}
-		img {
-			display: block;
-			margin-bottom: 16px;
-		}
+		margin-top: 48px;
 	}
 
 	.third {
+		margin-top: 48px;
+	}
+	.fourth {
+		margin-top: 48px;
+	}
+}
+
+.footer {
+	padding-top: 80px;
+	padding-bottom: 80px;
+	background-color: #35404A;
+	a {
+		color: rgba($white, 0.37);
+	}
+	a:hover {
+		color: rgba($white, 0.57);
+	}
+	h5 {
+		font-size: rem(16);
+	}
+	li {
+		margin-top: 10px;
+	}
+	.footerbottom {
+		margin-top: 32px;
+		padding-top: 16px;
 		text-align: center;
-		margin-top: 64px;
-		.secondary-bg {
-			padding-top: 24px;
-			margin-bottom: 400px;
-		}
-		p {
-			line-height: 1em;
-			color: $silver;
-		}
+		border-top: 1px solid rgba($white, 0.12);
 		a {
+			display: inline-block;
+			text-align: center;
+			margin-left: 20px;
+		}
+	}
+}
+
+// Medium screens
+@media only screen and (min-width: 40.063em) { 
+	.index {
+		.vcenter {
+  			display: flex;
+  			align-items: center;
+  			justify-content: center;
+  			.vimg {
+				margin-bottom: 0px;
+			}
+		}
+		.feature {
 			margin-top: 32px;
 		}
 	}
+	.steps {
+		.modal {
+			.modalheader {
+				background-size: 98% 1px;
+			}
+			.modalbody {
+				img {
+					margin-bottom: 0px;
+				}
+			}
+		}
+	}
+} 
 
+
+// Large screens
+@media only screen and (min-width: 64.063em) { 
+	.dash {
+		.end {
+			margin-top: 0px;
+		}
+	}
+	.large-5 {
+		width: 408px;
+		margin-right: 16px;
+		height: 410px;
+	}
+	.index {
+		.feature {
+			margin-top: 32px;
+		}
+	}
+	.steps {
+		.modal {
+			.modalheader {
+				background-size: 98% 1px;
+			}
+		}
+	}
+	input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
+		font-size: 1.04rem;
+	}
 }
-
-
 
 
 

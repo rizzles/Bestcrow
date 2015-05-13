@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="shield-cross" transform="translate(0.000000, -0.636364)" stroke="#FFFFFF">
+            <path d="M32,14 L32,53.2727273 L32,14 Z" id="Path" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M16,32.9090909 L47.2727273,32.9090909 L16,32.9090909 Z" id="Path" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M32,14 C29.0218182,16.3469091 22.5723636,19.8181818 16,19.8181818 L16,32.1818182 C16,44.432 25.6814545,51.0007273 32,53.2727273 C38.3178182,51.0021818 48,44.4334545 48,32.1818182 L48,19.8181818 C41.4269091,19.8181818 34.9774545,16.3476364 32,14 L32,14 Z" id="Path" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle id="Oval-23" opacity="0.399603545" cx="32" cy="32.6363636" r="32"></circle>
+        </g>
+    </g>
+</svg>

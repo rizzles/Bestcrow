@@ -56,17 +56,42 @@
 
 // Allows the use of rem-calc() or lower-bound() in your settings
 @font-face {
-    font-family: 'Nunito';
-    src: url('../fonts/Nunito-Light-webfont.eot');
-    src: url('../fonts/Nunito-Light-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/Nunito-Light-webfont.woff2') format('woff2'),
-         url('../fonts/Nunito-Light-webfont.woff') format('woff'),
-         url('../fonts/Nunito-Light-webfont.ttf') format('truetype'),
-         url('../fonts/Nunito-Light-webfont.svg#nunitolight') format('svg');
+    font-family: 'opensans';
+    src: url('/static/fonts/opensans-light-webfont.eot');
+    src: url('/static/fonts/opensans-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/static/fonts/opensans-light-webfont.woff2') format('woff2'),
+         url('/static/fonts/opensans-light-webfont.woff') format('woff'),
+         url('/static/fonts/opensans-light-webfont.ttf') format('truetype'),
+         url('/static/fonts/opensans-light-webfont.svg#open_sanslight') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'opensans';
+    src: url('/static/fonts/opensans-regular-webfont.eot');
+    src: url('/static/fonts/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/static/fonts/opensans-regular-webfont.woff2') format('woff2'),
+         url('/static/fonts/opensans-regular-webfont.woff') format('woff'),
+         url('/static/fonts/opensans-regular-webfont.ttf') format('truetype'),
+         url('/static/fonts/opensans-regular-webfont.svg#open_sansregular') format('svg');
     font-weight: normal;
     font-style: normal;
 
 }
+
+@font-face {
+    font-family: 'opensans';
+    src: url('/static/fonts/opensans-semibold-webfont.eot');
+    src: url('/static/fonts/opensans-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/static/fonts/opensans-semibold-webfont.woff2') format('woff2'),
+         url('/static/fonts/opensans-semibold-webfont.woff') format('woff'),
+         url('/static/fonts/opensans-semibold-webfont.ttf') format('truetype'),
+         url('/static/fonts/opensans-semibold-webfont.svg#open_sanssemibold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+}
+
 @import "foundation/functions";
 
 // The default font-size is set to 100% of the browser style sheet (usually 16px)
@@ -101,13 +126,14 @@ $include-html-global-classes: $include-html-classes;
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // We use these to define default font stacks
-$font-family-sans-serif: 'Nunito', sans-serif;
+$font-family-sans-serif: 'opensans', sans-serif;
 // $font-family-serif: Georgia, Cambria, "Times New Roman", Times, serif;
 // $font-family-monospace: Consolas, "Liberation Mono", Courier, monospace;
 
 // We use these to define default font weights
-$font-weight-normal: 300;
-$font-weight-bold: 400;
+$font-weight-light: lighter;
+$font-weight-normal: normal;
+$font-weight-bold: bold;
 
 $white       : #FFFFFF;
 $ghost       : rgba(255,255,255,0.47);
@@ -129,7 +155,7 @@ $charcoal    : rgba(0,0,0,0.57);
 // $jet         : #222222;
 // $black       : #000000;
 $clear: rgba(0,0,0,0);
-$placeholder: rgba(255,255,255,0.27);
+
 
 
 // We use these as default colors throughout
@@ -140,6 +166,12 @@ $third-color: #FCFDFD;
 // $success-color: #43AC6A;
 $warning-color: #E86254;
 $info-color: $clear;
+
+$green: #56B082;
+$orange: #F08B26;
+$red: #E05555;
+$gray: #f5f5f5;
+$placeholder: rgba($secondary-color,0.27);
 
 // We use these to control various global styles
 $body-bg: $third-color;
@@ -158,7 +190,7 @@ $body-font-color: $white;
 // $last-child-float: $opposite-direction;
 
 // We use these to make sure border radius matches unless we want it different.
-// $global-radius: 3px;
+$global-radius: 4px;
 // $global-rounded: 1000px;
 
 // We use these to control inset shadow shiny edges and depressions.
@@ -463,11 +495,11 @@ $header-font-color: $white;
 // $button-font-align: center;
 
 // We use these to control various hover effects.
-// $button-function-factor: -20%;
+$button-function-factor: -15%;
 
 // We use these to control button border styles.
-// $button-border-width: 0;
-// $button-border-style: solid;
+$button-border-width: 0;
+$button-border-style: solid;
 // $button-bg-color: $primary-color;
 // $button-bg-hover: scale-color($button-bg-color, $lightness: $button-function-factor);
 // $button-border-color: $button-bg-hover;
@@ -477,8 +509,9 @@ $header-font-color: $white;
 // $success-button-border-color: $success-button-bg-hover;
 // $alert-button-bg-hover: scale-color($alert-color, $lightness: $button-function-factor);
 // $alert-button-border-color: $alert-button-bg-hover;
-// $warning-button-bg-hover: scale-color($warning-color, $lightness: $button-function-factor);
-// $warning-button-border-color: $warning-button-bg-hover;
+$warning-button-bg-hover: $clear;
+$warning-button-border-color: $warning-color;
+
 $info-button-bg-hover: $clear;
 $info-button-border-color: none;
 
@@ -638,7 +671,7 @@ $info-button-border-color: none;
 // $include-html-form-classes: $include-html-classes;
 
 // We use this to set the base for lots of form spacing and positioning styles
-$form-spacing: rem-calc(23);
+$form-spacing: rem-calc(25);
 
 // We use these to style the labels in different ways
 // $form-label-pointer: pointer;
@@ -649,19 +682,19 @@ $form-label-font-color: $silver;
 // $form-label-small-transform: capitalize;
 // $form-label-bottom-margin: 0;
 // $input-font-family: inherit;
-$input-font-color: $white;
+$input-font-color: $secondary-color;
 $input-font-size: rem-calc(17);
-$input-bg-color: $clear;
-$input-focus-bg-color: $clear;
-$input-border-color: rgba(255,255,255,0.57);
-$input-focus-border-color: $white;
+$input-bg-color: rgba($white, 0.67);
+$input-focus-bg-color: $white;
+$input-border-color: rgba($secondary-color,0.27);
+$input-focus-border-color: rgba($secondary-color,0.37);
 // $input-border-style: solid;
-$input-border-width: 1px;
-// $input-border-radius: $global-radius;
+$input-border-width: 2px;
+$input-border-radius: $global-radius;
 $input-disabled-bg: $clear;
 // $input-disabled-cursor: $cursor-default-value;
-// $input-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-// $input-include-glowing-effect: true;
+$input-box-shadow: inset 0 0 0 rgba(0,0,0,0.1);
+$input-include-glowing-effect: false;
 
 // We use these to style the fieldset border and spacing.
 // $fieldset-border-style: solid;
@@ -732,13 +765,13 @@ $input-disabled-bg: $clear;
 // $include-html-inline-list-classes: $include-html-classes;
 
 // We use this to control the margins and padding of the inline list.
-// $inline-list-top-margin: 0;
+//$inline-list-top-margin: 10px;
 // $inline-list-opposite-margin: 0;
 // $inline-list-bottom-margin: rem-calc(17);
 // $inline-list-default-float-margin: rem-calc(-22);
 // $inline-list-default-float-list-margin: rem-calc(22);
 
-// $inline-list-padding: 0;
+// $inline-list-padding: 10px;
 
 // We use this to control the overflow of the inline list.
 // $inline-list-overflow: hidden;
