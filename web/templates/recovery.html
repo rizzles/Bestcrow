@@ -12,35 +12,43 @@
 
 	<div class="first">
 		<div class="row">
-			<div class="small-12 columns">
-				<h2>URL Recovery</h2>
-				<p>Lost the URL for your escrow transaction? We've got you covered.</p>
-			</div>
-		</div>
-	</div>
+			<div class="small-12 medium-12 medium-offse-1 large-8 large-offset-2 columns modal">
+				<div class="row modalheader">
+					<div class="small-12 columns">
+						<h5>Recovery</h5>
+					</div>
+				</div>
+				<div class="row modalbody">
+					<div class="small-12 columns">
+						<div class="row">
+							<div class="small-4 small-centered medium-uncentered medium-3 medium-push-9 columns">
+								<img src="/static/images/illustration/medium-refund@2x.png" class="ill">
+							</div>		
+							<div class="small-12 medium-9 medium-pull-3 columns">
+								<p class="secondary">Lost the URL to your transaction?</p>
+								<p>We've got you covered. Enter in the 12 word phrase we gave you on signup and we'll retrieve your URL.</p>
+							</div>
+						</div>
+						<div class="row margin-top">
+							<div class="small-12 columns">
+		                		{% if ripe %}
 
-	<div class="second">
-		<div class="row">
-			<div class="small-12 medium-10 medium-offset-1 large-8 large-offset-2 secondary-bg">
-				<img src="/static/images/icons/step2@2x.png" width="48">
-				<img src="/static/images/icons/wallet@2x.png" width="100" class="icon">
+		                		<p>Got it. Here's your link. Dont' lose it this time</p>
+		                		<a href="/buyer/{{ripe}}">www.bestcrow.io/buyer/{{ripe}}</a>
+		                		<p></p>
 
-                {% if ripe %}
-
-                <label>Got it. Here's your link. Dont' lose it this time</label>
-                <a href="/buyer/{{ripe}}">http://52.1.141.196/buyer/{{ripe}}</a>
-                <p></p>
-
-                {% else %}
-                <form method="POST" action="/recovery" id="phraseform">
-				    <label>The word phrase we provided you with
-					    <textarea style="height:147px" name="phrase" class="radius" autocomplete="off"></textarea>
-				    </label>
-                    <button type="submit">
-				        Recover my URL
-                    </button>
-                </form>
-                {% end %}
+		                		{% else %}
+		                		<form method="POST" action="/recovery" id="phraseform">
+							    <textarea style="height:147px" name="phrase" class="radius" autocomplete="off" required></textarea>
+		                    	<button type="submit" class="button radius">
+						        	Recover my URL
+		                    	</button>
+		                		</form>
+		                		{% end %}
+		                	</div>
+		                </div>
+                	</div>
+                </div>
 			</div>
 		</div>
 	</div>

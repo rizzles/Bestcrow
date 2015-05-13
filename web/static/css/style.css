@@ -6374,6 +6374,8 @@ input[type="text"][readonly]:focus {
     color: #404A53;
     font-weight: bold;
     margin-bottom: 8px; }
+  .modal .modalbody p.secondary .red {
+    color: #E86254; }
   .modal .modalbody .i {
     padding-left: 20px;
     margin-bottom: 8px;
