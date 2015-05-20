@@ -109,7 +109,7 @@
 	    					{% if not balance %}
 							<h1 class="balance">0.00 BTC</h1>
 	                		{% else %}
-	                		<h1 class="balance">{{"%.5f"%balance}}</h1>
+	                		<h1 class="balance">{{balance}} BTC</h1>
 	                		{% end %}
 	                		<small>Pending confirmation: <span class="confirmation">0.00</span></small>
 	                		<p class="title">Escrow Address</p>	                		
@@ -156,29 +156,36 @@
     				</div>
     			</div>
     			<div class="row modalbody">
-    				<div class="small-5 buyercomment">
-    					<small>4 days ago</small>
-    					<p class="buyertext">Yo dawg, how's shit going?</p>
-    				</div>
-    				<div class="small-5 small-offset-7 sellercomment">
-    					<small>32 mins ago</small>
-    					<p class="sellertext">Package is on it's way</p>
-    				</div>
-    				<div class="small-5 buyercomment">
-    					<small>10 mins ago</small>
-    					<p class="buyertext">Tight</p>
-    				</div>
+                    {% if not comments %}
+                        <div class="small-12 columns">
+                            <p>No comments yet</p>
+                        </div>
+                    {% else %}
+                        {% for comment in comments %}
+                            {% if comment['author'] == 'seller' %}
+                                <div class="small-5 buyercomment columns">
+                                    <small>{{ comment['posted'] }}</small>
+                                    <p class="text">{{ comment['text'] }}</p>
+                                </div>   
+                            {% else %}
+                                <div class="small-5 small-offset-7 youcomment columns">
+                                    <small>{{ comment['posted'] }}</small>
+                                    <p class="text">{{ comment['text'] }}</p>
+                                </div> 
+                            {% end %} 
+                        {% end %}                    
+                    {% end %}
     			</div>
-    			<div class="row commentfooter">
-    				<div class="small-12 medium-9 columns">
-    					<input type="text" class="radius" name="comment" placeholder="Comment for seller" autocomplete="off" required>
-    				</div>
-					<div class="small-12 medium-3 columns">
-						<a href="#" class="button expand radius">
-							Leave Comment
-						</a>
-		            </div>
-    			</div>
+                <div class="row commentfooter">
+                    <div class="small-12 medium-9 columns">
+                        <input type="text" class="radius" name="comment" placeholder="Comment for buyer" autocomplete="off" maxlength="255">
+                    </div>
+                    <div class="small-12 medium-3 columns">
+                        <a href="#" class="button expand radius leavecomment">
+                            Leave Comment
+                        </a>
+                    </div>
+                </div>
     		</div>
     	</div>
     </div>
@@ -193,7 +200,49 @@
 
 	<script src="/static/js/javascript-min.js"></script>
 	<script>
+        var entityMap = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': '&quot;',
+            "'": '&#39;',
+            "/": '&#x2F;'
+        };
+
+        function escapeHtml(string) {
+            return String(string).replace(/[&<>"'\/]/g, function (s) {
+                return entityMap[s];
+            });
+        }
+
+        function balance(address) {
+            $.get("/balance/"+address, function(data) {
+                $(".balance").html(data+" BTC")
+            })
+        }
+
+        function buyercomment() {
+            var c = $("input[name='comment']").val();
+            if (!c) {
+                $(".leavecomment").blur();
+                return
+            }
+
+            c = escapeHtml(c);
+            $.post("/comment/{{escrow['sellerurlhash']}}", {"comment":c, "author":"buyer"}, function(data) {
+                $(".commentsbody").append('<div class="small-5 small-offset-7 youcomment columns"><small>just now</small><p class="text">'+c+'</p></div>'); 
+            }).fail(function(){
+                console.log("Failed");
+            });
+        }
+
 		$(document).ready(function() {
+
+            $(".leavecomment").on("click", function(e) {
+                e.preventDefault();
+                buyercomment();
+            });
+
 			$("input").on("click", function() {
 				this.select();
 			});
@@ -202,10 +251,15 @@
 				$(".refresh").velocity({
 					rotateZ: "360deg",
 				}, {
-					begin: function() {$(".balance").html("--- BTC")},
-					complete: function() {$(".refresh").velocity('stop').velocity({rotateZ:'0deg'});$(".balance").html("0.00 BTC")}
+                    begin: function() {
+                        $(".balance").html("--- BTC");
+                        balance("{{escrow['multisigaddress']}}");
+                    },
+                    complete: function() {
+                        $(".refresh").velocity('stop').velocity({rotateZ:'0deg'});
+                    }
 				})
-			})
+			});
 
 			$(".releasefunds").on("click", function(e) {
 				e.preventDefault();

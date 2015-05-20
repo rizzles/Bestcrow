@@ -5231,6 +5231,39 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/static\/images\/icons\/you-comment.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 2116,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/you-comment.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/you-comment.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/you-comment@2x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 4908,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/you-comment@2x.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/you-comment@2x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/you-comment@3x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 7939,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/you-comment@3x.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/you-comment@3x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/static\/images\/illustration\/medium-refund.png": {
 		"fileType": 32768,
 		"ignore": 0,

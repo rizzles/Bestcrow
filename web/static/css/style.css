@@ -6383,36 +6383,39 @@ input[type="text"][readonly]:focus {
     background-size: 15px 15px; }
   .modal .modalbody .black {
     color: #404A53; }
-  .modal .modalbody .buyercomment {
+  .modal .modalbody .buyercomment, .modal .modalbody .sellercomment {
     margin-bottom: 32px;
     margin-left: 12px;
-    background: url(../images/icons/buyer-comment@2x.png) 0px 20px no-repeat;
+    background: url(../images/icons/buyer-comment@2x.png) 0px 24px no-repeat;
     background-size: 55px 55px; }
-  .modal .modalbody .buyercomment .buyertext {
-    padding: 14px;
-    background-color: #EDF4F9;
-    margin-bottom: 3px;
-    border-radius: 3px;
-    border: 1px solid #A6CAE3;
-    color: #404A53;
-    margin-left: 80px; }
-  .modal .modalbody .buyercomment small {
-    text-align: right; }
+    .modal .modalbody .buyercomment .text, .modal .modalbody .sellercomment .text {
+      padding: 14px;
+      background-color: #EDF4F9;
+      margin-bottom: 3px;
+      border-radius: 3px;
+      border: 1px solid #A6CAE3;
+      color: #404A53;
+      margin-left: 60px; }
+    .modal .modalbody .buyercomment small, .modal .modalbody .sellercomment small {
+      text-align: right; }
   .modal .modalbody .sellercomment {
-    margin-bottom: 32px;
-    background: url(../images/icons/seller-comment@2x.png) right 24px no-repeat;
+    background: url(../images/icons/seller-comment@2x.png) 0px 20px no-repeat;
     background-size: 55px 55px; }
-  .modal .modalbody .sellercomment .sellertext {
-    padding: 14px;
-    background-color: #F3F4F4;
-    margin-bottom: 3px;
-    border-radius: 3px;
-    border: 1px solid #CFD2D3;
-    color: #404A53;
-    margin-right: 80px; }
-  .modal .modalbody .sellercomment small {
-    text-align: right;
-    margin-right: 85px; }
+  .modal .modalbody .youcomment {
+    margin-bottom: 32px;
+    background: url(../images/icons/you-comment@2x.png) 95% 25px no-repeat;
+    background-size: 55px 54px; }
+    .modal .modalbody .youcomment .text {
+      padding: 14px;
+      background-color: #F3F4F4;
+      margin-bottom: 3px;
+      border-radius: 3px;
+      border: 1px solid #CFD2D3;
+      color: #404A53;
+      margin-right: 80px; }
+    .modal .modalbody .youcomment small {
+      text-align: right;
+      margin-right: 85px; }
   .modal .modalfooter {
     margin-top: 24px;
     padding: 16px 16px;
@@ -6425,6 +6428,10 @@ input[type="text"][readonly]:focus {
     background-color: #F1F4F8;
     color: rgba(255, 255, 255, 0.47);
     border-radius: 0 0 4px 4px; }
+    .modal .commentfooter input:hover {
+      background-color: white; }
+    .modal .commentfooter input:focus {
+      border-color: #acb1b5; }
   .modal h1 {
     color: #404A53;
     font-weight: lighter;

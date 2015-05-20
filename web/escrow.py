@@ -25,15 +25,16 @@ from pycoin.encoding import hash160
 import bitcoinaddress
 
 
-#BITCOIN_RPC_URL = "http://bitcoin:i8abal8ghuh38ajkIlajyQE482jhhad8NZ@54.224.222.213:8332"
-BITCOIN_RPC_URL = "http://bitcoin:i8abal8ghuh38ajkIlajyQE482jhhad8NZ@127.0.0.1:8332"
+BITCOIN_RPC_URL = "http://bitcoin:i8abal8ghuh38ajkIlajyQE482jhhad8NZ@54.224.222.213:8332"
+#BITCOIN_RPC_URL = "http://bitcoin:i8abal8ghuh38ajkIlajyQE482jhhad8NZ@127.0.0.1:8332"
 
-#MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
-MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
+MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
+#MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
 MONGODB = MONGOCONNECTION.escrow.demo
+MONGOCOMMENTS = MONGOCONNECTION.escrow.democomments
 
-#INSIGHT = "http://54.224.222.213:3000"
-INSIGHT = "http://localhost:3000"
+INSIGHT = "http://54.224.222.213:3000"
+#INSIGHT = "http://localhost:3000"
 #import emailer
 #from variables import *
 
@@ -66,12 +67,56 @@ class Application(tornado.web.Application):
             (r"/seller/(\w+)", Seller),
 
             (r"/recovery", Recovery),
+            (r"/balance/(\w+)", BalanceHandler),
+            (r"/comment/(\w+)", CommentHandler),
         ]
 
         tornado.web.Application.__init__(self, handlers, **settings)
 
 
 class BaseHandler(tornado.web.RequestHandler):
+    def pretty_date(self, time=False):
+        """
+        Get a datetime object or a int() Epoch timestamp and return a
+        pretty string like 'an hour ago', 'Yesterday', '3 months ago',
+        'just now', etc
+        """
+        now = datetime.datetime.utcnow()
+        if type(time) is int:
+            diff = now - datetime.datetime.fromtimestamp(time)
+        elif isinstance(time, datetime.datetime):
+            diff = now - time
+        elif not time:
+            diff = now - now
+        second_diff = diff.seconds
+        day_diff = diff.days
+
+        if day_diff < 0:
+            return ''
+
+        if day_diff == 0:
+            if second_diff < 10:
+                return "just now"
+            if second_diff < 60:
+                return str(second_diff) + " seconds ago"
+            if second_diff < 120:
+                return "a minute ago"
+            if second_diff < 3600:
+                return str(second_diff / 60) + " minutes ago"
+            if second_diff < 7200:
+                return "an hour ago"
+            if second_diff < 86400:
+                return str(second_diff / 3600) + " hours ago"
+        if day_diff == 1:
+            return "Yesterday"
+        if day_diff < 7:
+            return str(day_diff) + " days ago"
+        if day_diff < 31:
+            return str(day_diff / 7) + " weeks ago"
+        if day_diff < 365:
+            return str(day_diff / 30) + " months ago"
+        return str(day_diff / 365) + " years ago"            
+
     def get_buyer(self, base58):
         escrow = MONGODB.find_one({'buyerurlhash': str(base58)})
         return escrow
@@ -99,11 +144,10 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def get_balance(self, address):
         http_client = tornado.httpclient.HTTPClient()
-        #resp = http_client.fetch("https://127.0.0.1:3001/api/addr/%s"%address)
         #resp = http_client.fetch("https://test-insight.bitpay.com/api/addr/%s"%address)
         resp = http_client.fetch("%s/api/addr/%s"%(INSIGHT, address))  
-        print resp     
         resp = tornado.escape.json_decode(resp.body)
+        print resp
         if resp['unconfirmedBalance'] > 0:
             bal = resp['unconfirmedBalance']
         else:
@@ -111,7 +155,16 @@ class BaseHandler(tornado.web.RequestHandler):
 
         # update balance in db for this address
         MONGODB.update({'multisigaddress':address}, {'$set':{'multisigbalance':bal}})
-        return bal
+        return str(bal)
+
+    def get_comments(self, commentid):
+        comments = MONGOCOMMENTS.find({'discussion_id': commentid}).sort('posted')
+        comms = []
+        for comment in comments:
+            comment['posted'] = self.pretty_date(comment['posted'])
+            print comment
+            comms.append(comment)
+        return comms
 
     def get_utxo(self, escrow, sellerhash):
         http_client = tornado.httpclient.HTTPClient()
@@ -157,7 +210,8 @@ class BaseHandler(tornado.web.RequestHandler):
                   'sellerurlhash': sellerhash,
                   'buyerphrase': buyerphrase,
                   'sellerphrase': sellerphrase,
-                  'joinurlhash': joinhash}
+                  'joinurlhash': joinhash,
+                  'commentid': os.urandom(16).encode('hex')}
 
         MONGODB.insert(escrow)
         if buyer:
@@ -247,6 +301,55 @@ class MainHandler(BaseHandler):
         self.render("index.html")
 
 
+class BalanceHandler(BaseHandler):
+    def get(self, address):
+        bal = self.get_balance(address)
+        self.write(bal)
+
+
+class CommentHandler(BaseHandler):
+    def post(self, base58):
+        author = self.get_argument("author", None)
+        if not author:
+            logging.error("no author submitted with comment")
+            self.set_status(400)
+            return
+
+        if author == 'seller':
+            escrow = get_seller(base58)
+        elif author == 'buyer':
+            escrow = get_buyer(base58)
+        else:
+            logging.error("no author submitted with comment")
+            self.set_status(400)
+            return
+
+        comment = self.get_argument("comment", None)
+
+        if not comment:
+            logging.error("no comment submitted with comment")
+            self.set_status(400)
+            return
+
+        escrow = self.get_seller(base58)
+        if not escrow:
+            logging.error("no escrow found for %s when leaving comment"%base58)
+            self.set_status(400)
+            return
+
+        MONGOCOMMENTS.insert({
+            'discussion_id': escrow['commentid'],
+            'posted': datetime.datetime.utcnow(),
+            'author': author,
+            'text': comment
+            })
+
+        logging.info("comment: %s : left by %s"%(comment, author))
+
+        self.set_status(200)
+        self.write("from server")
+
+
 class Recovery(BaseHandler):
     def get(self):
         self.render('recovery.html', ripe=None)
@@ -318,8 +421,10 @@ class Buyer(BaseHandler):
             self.update_step3_buyer(base58)
             self.render('buyerstep3.html', base58=base58, escrow=escrow)
             return
+
+        comments = self.get_comments(escrow['commentid'])
         balance = self.get_balance(escrow['multisigaddress'])
-        self.render('buyer.html', base58=base58, escrow=escrow, balance=balance)
+        self.render('buyer.html', base58=base58, escrow=escrow, balance=balance, comments=comments)
 
     @tornado.gen.coroutine
     def post(self, base58):
@@ -372,8 +477,10 @@ class Seller(BaseHandler):
             self.render('sellerstep1.html', base58=base58, escrow=escrow, errors=None)
             return
 
+        comments = self.get_comments(escrow['commentid'])
+
         balance = self.get_balance(escrow['multisigaddress'])
-        self.render("seller.html", base58=base58, escrow=escrow, balance=balance)
+        self.render("seller.html", base58=base58, escrow=escrow, balance=balance, comments=comments)
         
     @tornado.gen.coroutine
     def post(self, base58):

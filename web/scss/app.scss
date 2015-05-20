@@ -366,42 +366,50 @@ input[type="text"][readonly]:focus
 		.black {
 			color: $secondary-color;
 		}
-		.buyercomment {
+		.buyercomment, .sellercomment {
 			margin-bottom: 32px;
 			margin-left: 12px;
-			background: url(../images/icons/buyer-comment@2x.png) 0px 20px no-repeat;
+			background: url(../images/icons/buyer-comment@2x.png) 0px 24px no-repeat;
 			background-size: 55px 55px;
+			.text {
+				padding: 14px;
+				background-color: #EDF4F9;
+				margin-bottom: 3px;
+				border-radius: 3px;
+				border: 1px solid #A6CAE3;
+				color: $secondary-color;
+				margin-left: 60px;			
+			}
+			small {
+				text-align: right;
+			}
 		}
-		.buyercomment .buyertext {
-			padding: 14px;
-			background-color: #EDF4F9;
-			margin-bottom: 3px;
-			border-radius: 3px;
-			border: 1px solid #A6CAE3;
-			color: $secondary-color;
-			margin-left: 80px;			
-		}
-		.buyercomment small {
-			text-align: right;
-		}
+
 		.sellercomment {
+			background: url(../images/icons/seller-comment@2x.png) 0px 20px no-repeat;
+			background-size: 55px 55px;			
+		}
+
+		.youcomment {
 			margin-bottom: 32px;
-			background: url(../images/icons/seller-comment@2x.png) right 24px no-repeat;
-			background-size: 55px 55px;
+			background: url(../images/icons/you-comment@2x.png) 95% 25px no-repeat;
+			background-size: 55px 54px;
+			.text {
+				padding: 14px;
+				background-color: #F3F4F4;
+				margin-bottom: 3px;
+				border-radius: 3px;
+				border: 1px solid #CFD2D3;
+				color: $secondary-color;
+				margin-right: 80px;	
+			}
+			small {
+				text-align: right;
+				margin-right: 85px;
+			}
 		}
-		.sellercomment .sellertext {
-			padding: 14px;
-			background-color: #F3F4F4;
-			margin-bottom: 3px;
-			border-radius: 3px;
-			border: 1px solid #CFD2D3;
-			color: $secondary-color;
-			margin-right: 80px;	
-		}
-		.sellercomment small {
-			text-align: right;
-			margin-right: 85px;
-		}
+
+
 
 	}
 	.modalfooter {
@@ -417,6 +425,12 @@ input[type="text"][readonly]:focus
 		background-color: #F1F4F8;
 		color: rgba($white, 0.47);
 		border-radius: 0 0 4px 4px;
+		input:hover {
+			background-color: white;
+		}
+		input:focus {
+			border-color: mix($white, $secondary-color, 57%);
+		}
 	}
 	h1 {
 		color: $secondary-color;
