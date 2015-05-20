@@ -6,7 +6,7 @@ import pymongo
 from pycoin.encoding import is_hashed_base58_valid
 import sys
 
-MONGOCONNECTION = pymongo.Connection('127.0.0.1', 27017)
+MONGOCONNECTION = pymongo.MongoClient('127.0.0.1', 27017)
 MONGODB = MONGOCONNECTION.escrow.keys
 
 phrase = "sample core fitness wrong unusual inch hurry chaos myself credit welcome margin"
@@ -23,7 +23,7 @@ print key.sec_as_hex()
 print key.wif()
 print key.sec()
 
-sys.exit()
+
 
 count = 0
 while count < 400:
@@ -41,7 +41,7 @@ while count < 400:
         print "Nope"
         sys.exit()
     """
-    #MONGODB.insert(k)
+    MONGODB.insert(k)
 
     count += 1
 

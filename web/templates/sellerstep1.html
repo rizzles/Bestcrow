@@ -25,14 +25,18 @@
 								<img src="/static/images/illustration/medium-refund@2x.png" class="ill">
 							</div>		
 							<div class="small-12 medium-9 medium-pull-3 columns">
+							        {% if errors == "invalid" %}
+								<p class="secondary re">That is an invalid bitcoin address</p>
+								{% else %}
 								<p class="secondary">An address for a refund</p>
-								<p>We need a bitcoin address that you control. We will send a refund to this address if a dispute resolution is resolved in your favor.</p>
+								{% end %}
+								<p>We need a bitcoin address that you control. This will be the address the funds are send too after the escrow transaction is complete.</p>
 							</div>
 						</div>
 						<div class="row margin-top">
 							<div class="small-12 medium-9 columns">
 		                		<form method="POST" action="/seller/{{base58}}" id="addressform">
-		                		<input type="text" name="selleraddress" placeholder="Your BTC Address" autocomplete="off" value="" required autofocus>
+		                		<input type="text" class="radius" name="selleraddress" placeholder="Your BTC Address" autocomplete="off" value="" required autofocus>
 							</div>
 							<div class="small-12 medium-3 columns">
 						    	<button type="submit" class="button radius expand">
@@ -69,7 +73,7 @@
 		$(document).ready(function() {
 		    $("#addressform").on("submit", function(e) {
                 if( $("input").val() ) {
-				    $("button").html("<img src='/static/images/icons/spinner@2x.png' class='spinner' width='30'>");
+				    $("button").html("<img src='/static/images/icons/spinner@2x.png' class='spinner' width='24'>");
                 }
 			});
         });

@@ -27,7 +27,9 @@
 	    					<p class="i"><span class="black">Send signup link to the buyer</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High Life Brooklyn twee craft beer tousled chillwave.</p>
 	    					{% end %}
 
+						{% if not balance > 0 %}
 	    					<p class="i"><span class="black">Buyer funds the escrow account</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
+						{% end %}
 	    					<p class="i"><span class="black">You ship the product to the buyer</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>	    					
 	    					<div class="top24">
 	    						<a href="#" class="button warning small radius">Open Dispute</a>
@@ -111,9 +113,13 @@
                 		</div>
                 		<div class="refresh right">
                 		</div>
-	                	<input type="text" name="address" class="radius expand" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">                		
+	                	<input type="text" name="address" class="radius expand" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">       
 	                	<p class="title">Steps</p>
+         			{% if balance > 0 %}
+				<p>Escrow is funded. Send the product.</p>
+				{% else %}
 	                	<p>Waiting for the buyer to send funds to the escrow</p>
+				{% end %}
     				</div>
     			</div>
     		</div>

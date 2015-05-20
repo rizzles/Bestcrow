@@ -22,14 +22,18 @@ from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 from bitcoinrpc_async.authproxy import AsyncAuthServiceProxy, JSONRPCException
 from pycoin.encoding import hash160
 
+import bitcoinaddress
 
 
-BITCOIN_RPC_URL = "http://bitcoin:i8abal8ghuhauqo58hjjkjahsdy@54.224.222.213:8332"
+#BITCOIN_RPC_URL = "http://bitcoin:i8abal8ghuh38ajkIlajyQE482jhhad8NZ@54.224.222.213:8332"
+BITCOIN_RPC_URL = "http://bitcoin:i8abal8ghuh38ajkIlajyQE482jhhad8NZ@127.0.0.1:8332"
 
-MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
+#MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
+MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
 MONGODB = MONGOCONNECTION.escrow.demo
 
-INSIGHT = "http://54.224.222.213:3000"
+#INSIGHT = "http://54.224.222.213:3000"
+INSIGHT = "http://localhost:3000"
 #import emailer
 #from variables import *
 
@@ -185,10 +189,9 @@ class BaseHandler(tornado.web.RequestHandler):
         print publickeys
 
         ## TODO: Change this before we go live
-        #redeemscript = yield BITCOIN.createmultisig(2, publickeys)
+        redeemscript = yield BITCOIN.createmultisig(2, publickeys)
         ## TODO: get rid of bthis
-        redeemscript = {'redeemScript':"1gYMgZ82Jwj4jNS2sHaJkmYgbLp2pLxTg", 'address':'1gYMgZ82Jwj4jNS2sHaJkmYgbLp2pLxTg'}
-
+        #redeemscript = {'redeemScript':"1gYMgZ82Jwj4jNS2sHaJkmYgbLp2pLxTg", 'address':'1gYMgZ82Jwj4jNS2sHaJkmYgbLp2pLxTg'}
 
         if buyerurlhash:
             escrow = self.find_started_escrow(buyerurlhash=buyerurlhash)
@@ -250,7 +253,7 @@ class Recovery(BaseHandler):
 
     def post(self):
         phrase = self.get_argument('phrase', None)
-
+        print phrase
         if phrase:
             sha = hashlib.sha256(phrase)
             ripe = hashlib.new("ripemd160", sha.hexdigest())
@@ -308,7 +311,7 @@ class Buyer(BaseHandler):
         
         # escrow was started in BuySell class, display first step
         if not escrow.has_key('multisigaddress'):
-            self.render('buyerstep1.html', base58=base58, escrow=escrow)
+            self.render('buyerstep1.html', base58=base58, escrow=escrow, errors=None)
             return
 
         if not escrow['step3']:
@@ -322,6 +325,12 @@ class Buyer(BaseHandler):
     def post(self, base58):
         buyeraddress = self.get_argument("buyeraddress", None)
         escrow = self.get_buyer(base58)
+
+        if not bitcoinaddress.validate(buyeraddress):
+            logging.error("an invalid bitcoin address was submitted by the buyer on signup. Address: %s"%buyeraddress)
+            self.render('buyerstep1.html', base58=base58, escrow=escrow, errors="invalid")
+            return
+
         if not escrow.has_key('multisigaddress'):
             # first time we're getting the payout address
             logging.info("first time buyer with public address of %s"%buyeraddress)
@@ -334,11 +343,19 @@ class Buyer(BaseHandler):
 class BuyerJoin(BaseHandler):
     def get(self, joinhash):
         escrow = self.get_joinhash_url(joinhash)
-        self.render("buyerjoin.html", escrow=escrow, joinhash=joinhash)
+        self.render("buyerjoin.html", escrow=escrow, joinhash=joinhash, errors="invalid")
 
     def post(self, joinhash):
         address = self.get_argument("buyeraddress", None)
+        escrow = self.get_joinhash_url(joinhash)
+
+        if not bitcoinaddress.validate(address):
+            logging.error("an invalid bitcoin address was submitted by the buyer on joining. Address: %s"%address)
+            self.render('buyerjoin.html', joinhash=joinhash, escrow=escrow, errors="invalid")
+            return
+
         escrow = self.set_buyer_address(joinhash, address)
+
         self.redirect("/buyer/%s"%escrow['buyerurlhash'])
 
 
@@ -352,7 +369,7 @@ class Seller(BaseHandler):
 
         # escrow was just started, display first step
         if not escrow.has_key('multisigaddress'):
-            self.render('sellerstep1.html', base58=base58, escrow=escrow)
+            self.render('sellerstep1.html', base58=base58, escrow=escrow, errors=None)
             return
 
         balance = self.get_balance(escrow['multisigaddress'])
@@ -362,6 +379,12 @@ class Seller(BaseHandler):
     def post(self, base58):
         selleraddress = self.get_argument("selleraddress", None)
         escrow = self.get_seller(base58)
+
+        if not bitcoinaddress.validate(selleraddress):
+            logging.error("an invalid bitcoin address was submitted by the seller on signup. Address: %s"%selleraddress)
+            self.render('sellerstep1.html', base58=base58, escrow=escrow, errors="invalid")
+            return
+
         if not escrow.has_key('multisigaddress'):
             # first time we're getting the seller payout address
             logging.info("first time seller with public address of %s"%selleraddress)
@@ -372,12 +395,19 @@ class Seller(BaseHandler):
 
 
 class SellerJoin(BaseHandler):
-    def get(self, joinhash):    
+    def get(self, joinhash):
         escrow = self.get_joinhash_url(joinhash)
-        self.render("sellerjoin.html", escrow=escrow, joinhash=joinhash)
+        self.render("sellerjoin.html", escrow=escrow, joinhash=joinhash, errors=None)
 
     def post(self, joinhash):
         address = self.get_argument("selleraddress", None)
+        escrow = self.get_joinhash_url(joinhash)
+
+        if not bitcoinaddress.validate(address):
+            logging.error("an invalid bitcoin address was submitted by the seller on signup. Address: %s"%address)
+            self.render('sellerjoin.html', joinhash=joinhash, escrow=escrow, errors="invalid")
+            return
+
         escrow = self.set_seller_address(joinhash, address)
         self.redirect("/seller/%s"%escrow['sellerurlhash'])
 

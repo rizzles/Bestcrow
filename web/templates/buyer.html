@@ -118,7 +118,11 @@
                 		</div>
 	                	<input type="text" name="address" class="radius expand" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">                		
 	                	<p class="title">Steps</p>
+         			{% if balance > 0 %}
+				<p>Release the funds to the seller when you are happy with the transaction..</p>
+				{% else %}
 	                	<p>Send the funds you want the seller to receive to this address</p>
+				{% end %}
     				</div>
     			</div>
     		</div>
@@ -135,7 +139,7 @@
     					<p class="secondary">Steps</p>
     					<p>Give this link to the seller in your escrow transaction. We need a bitcoin address from them that we can send the escrow funds too at the end of the transaction.</p>
     					<p class="secondary">URL for the seller</p>
-    					<input type="text" name="address" class="radius expand" autocomplete="off" readonly value="52.1.141.196/seller/join/{{escrow['joinurlhash']}}">
+    					<input type="text" name="address" class="radius expand" autocomplete="off" readonly value="www.bestcrow.io/seller/join/{{escrow['joinurlhash']}}">
     				</div>
     			</div>
     		</div>
