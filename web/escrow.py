@@ -316,9 +316,9 @@ class CommentHandler(BaseHandler):
             return
 
         if author == 'seller':
-            escrow = get_seller(base58)
+            escrow = self.get_seller(base58)
         elif author == 'buyer':
-            escrow = get_buyer(base58)
+            escrow = self.get_buyer(base58)
         else:
             logging.error("no author submitted with comment")
             self.set_status(400)
@@ -395,7 +395,6 @@ class BuyerSend(BaseHandler):
             logging.error("Communication with private key server error: %s"%e)
 
 
-            
         """
         signed1 = bitcoin.signrawtransaction(trans, tx, [escrow['address1privkey']])
         signed2 = bitcoin.signrawtransaction(signed1['hex'], tx, [escrow['address2privkey']])
