@@ -12,7 +12,7 @@
 
     <div class="first">
     	<div class="row">
-    		<div class="small-12 large-10 large-offset-1 columns modal">
+    		<div class="small-12 large-10 large-offset-1 columns modal completed">
     			<div class="btcbg">
 	    			<div class="row modalheader">
 	    				<div class="small-12 columns">
@@ -23,46 +23,76 @@
 	    				<div class="small-12 columns">
 	    					<p class="secondary">A few steps remaining for completion</p>
 
-	    					{% if escrow['buyerstartedescrow'] and not escrow['sellerpayoutaddress'] %}
-	    					<p class="i"><span class="black">Send signup link to the seller</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High Life Brooklyn twee craft beer tousled chillwave.</p>
-	    					{% end %}
+                            {% if escrow['buyerstartedescrow'] %}
+                                {% if not escrow['sellerpayoutaddress'] %}
+                                <p class="ui">
+                                {% else %}
+                                <p class="i">
+                                {% end %}
+                                    <span class="black">Send signup link to the seller</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High Life Brooklyn twee craft beer tousled chillwave.
+                                </p>
+                            {% end %}
 
-	    					{% if balance == 0 %}
-	    					<p class="i"><span class="black">Fund the escrow account</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
-	    					{% end %}
+	    					{% if balance == "0" %}
+                            <p class="ui">
+                            {% else %}
+                            <p class="i">
+                            {% end %}
+                                <span class="black">Fund the escrow account</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.
+                            </p>
 
-	    					<p class="i"><span class="black">Release the funds to the seller</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
+	    					<p class="ui"><span class="black">Release the funds to the seller</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
 
-	    					{% if balance > 0 %}	
+	    					{% if balance != "0" %}
 	    					<div class="top24">
-	    						<a href="#" class="button primary small radius releasefunds">Release Funds</a>
-	    						<a href="#" class="button warning small radius">Open Dispute</a>
+	    						<a href="/buyer/send/{{escrow['buyerurlhash']}}" class="button primary small radius releasefunds">Release funds</a>
+                                <a href="#" class="button warning small radius opendispute">Open dispute</a>
 	    					</div>
+                            {% else %}
+                            <div class="top24">
+                                <a href="#" class="button warning small radius opendispute">Open dispute</a>
+                            </div>
 	    					{% end %}
 	    				</div>
 	    			</div>
 	    		</div>
-    		</div>
-    	</div>
-    	<div class="row">
-    		<div class="small-12 large-10 large-offset-1 columns areyousure">
-    			<h5>Are you sure?</h5>
-    			<p>Release funds in the escrow account to the seller?</p>
-    			<div class="row">
-    				<div class="small-12 medium-6 medium-offset-3">
-    					<ul class="no-bullet">
-    						<li><img src="/static/images/icons/check@2x.png" width="15"> You’re happy with the transaction</li>
-    						<li><img src="/static/images/icons/check@2x.png" width="15"> You want the seller to get paid</li>
-    					</ul>
-    				</div>
-    			</div>
-    			<div class="row">
-    				<div class="small-12">
-    					<a href="#" class="button small radius">Release funds</a>
-    					<a href="#" class="button secondary small radius areyousurecancel">Cancel</a>
-    				</div>
-    			</div>
-    		</div>
+
+                <div class="areyousure">
+        			<h5>Are you sure?</h5>
+        			<p>Release funds in the escrow account to the seller?</p>
+        			<div class="row">
+        				<div class="small-10 small-offset-2 medium-6 medium-offset-3 columns">
+        					<ul class="no-bullet">
+                                <li><img src="/static/images/icons/check2@2x.png" width="16"> You’ve received the package</li>
+        						<li><img src="/static/images/icons/check2@2x.png" width="16"> You’re happy with the transaction</li>
+        						<li><img src="/static/images/icons/check2@2x.png" width="16"> You want the seller to get paid</li>
+        					</ul>
+        				</div>
+        			</div>
+        			<div class="row">
+        				<div class="small-12">
+        					<a href="/buyer/send/{{escrow['buyerurlhash']}}" class="button small radius">Release funds</a>
+        					<a href="#" class="button secondary small radius areyousurecancel">Cancel</a>
+        				</div>
+        			</div>
+        		</div>
+
+                <div class="dispute">
+                    <h5>Open a dispute?</h5>
+                    <p>A problem with the transaction? We offer dispute resolution.</p>
+                    <div class="row">
+                        <div class="small-10 small-offset-1 columns">
+                            <textarea></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-12">
+                            <a href="#" class="button small radius">Submit dispute</a>
+                            <a href="#" class="button secondary small radius disputecancel">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
     	</div>
     </div>
 
@@ -152,10 +182,10 @@
     		<div class="small-12 large-10 large-offset-1 columns modal">
     			<div class="row modalheader">
     				<div class="small-12 columns">
-    					<h5>Comments left by the seller</h5>
+    					<h5>Comments</h5>
     				</div>
     			</div>
-    			<div class="row modalbody">
+    			<div class="row modalbody commentsbody">
                     {% if not comments %}
                         <div class="small-12 columns">
                             <p>No comments yet</p>
@@ -163,12 +193,14 @@
                     {% else %}
                         {% for comment in comments %}
                             {% if comment['author'] == 'seller' %}
-                                <div class="small-5 buyercomment columns">
+                                <div class="ssmall-10 medium-8 buyercomment columns">
                                     <small>{{ comment['posted'] }}</small>
                                     <p class="text">{{ comment['text'] }}</p>
                                 </div>   
+                                <div class="small-2 medium-offset-4 columns">
+                                </div>
                             {% else %}
-                                <div class="small-5 small-offset-7 youcomment columns">
+                                <div class="small-10 small-offset-2 medium-8 medium-offset-4 youcomment columns">
                                     <small>{{ comment['posted'] }}</small>
                                     <p class="text">{{ comment['text'] }}</p>
                                 </div> 
@@ -230,9 +262,11 @@
 
             c = escapeHtml(c);
             $.post("/comment/{{escrow['sellerurlhash']}}", {"comment":c, "author":"buyer"}, function(data) {
-                $(".commentsbody").append('<div class="small-5 small-offset-7 youcomment columns"><small>just now</small><p class="text">'+c+'</p></div>'); 
+                $(".commentsbody").append('<div class="small-10 small-offset-2 medium-8 medium-offset-4 youcomment columns"><small>just now</small><p class="text">'+c+'</p></div>'); 
             }).fail(function(){
                 console.log("Failed");
+            }).done(function() {
+                $("input[name='comment']").val('');
             });
         }
 
@@ -261,25 +295,59 @@
 				})
 			});
 
-			$(".releasefunds").on("click", function(e) {
-				e.preventDefault();
-				$(".areyousure").velocity({
-					opacity: 1,
-					top: "0px"
-				}, {
-					display: "block"
-				});
-			});
+            $(".releasefunds").on("click", function(e) {
+                e.preventDefault();
+                $(".completed").addClass("flip10");
+                setTimeout(function() {
+                    $(".completed").removeClass("flip10").addClass("flip90");
+                }, 50);
+                setTimeout(function() {
+                    $(".completed").removeClass("flip90"); 
+                    $(".completed .btcbg").hide();
+                    $(".areyousure").show();                    
+                }, 150);
+            });            
 
-			$(".areyousurecancel").on("click", function(e) {
-				e.preventDefault();
-				$(".areyousure").velocity({
-					opacity: 0,
-					top: "-280px"
-				}, {
-					display: "none"
-				})
-			});
+            $(".areyousurecancel").on("click", function(e) { 
+                e.preventDefault();
+                $(".completed").addClass("flip10");
+                setTimeout(function() {
+                    $(".completed").removeClass("flip10").addClass("flip90");
+                }, 50);
+                setTimeout(function() {
+                    $(".completed").removeClass("flip90"); 
+                    $(".completed .btcbg").show();
+                    $(".areyousure").hide();                    
+                }, 150);
+            });
+
+            $(".opendispute").on("click", function(e) {
+                e.preventDefault();
+                $(".completed").addClass("flip10");
+                setTimeout(function() {
+                    $(".completed").removeClass("flip10").addClass("flip90");
+                }, 50);
+                setTimeout(function() {
+                    $(".completed .btcbg").hide();                    
+                    $(".completed").removeClass("flip90"); 
+                    $(".dispute").show();                    
+                }, 150);
+            });   
+
+            $(".disputecancel").on("click", function(e) { 
+                e.preventDefault();
+                $(".completed").addClass("flip10");
+                setTimeout(function() {
+                    $(".completed").removeClass("flip10").addClass("flip90");
+                }, 50);
+                setTimeout(function() {
+                    $(".dispute").hide();                                        
+                    $(".completed .btcbg").show();                    
+                    $(".completed").removeClass("flip90"); 
+                }, 150);
+            });
+
+
 		});
 	</script>
 </body>	

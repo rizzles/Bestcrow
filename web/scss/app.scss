@@ -40,6 +40,7 @@
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
 
+
 p {
 	letter-spacing: 0.2px;
 }
@@ -357,11 +358,17 @@ input[type="text"][readonly]:focus
 		p.secondary .red {
 			color: $warning-color;
 		}
-		.i {
-			padding-left: 20px;
+		.ui {
+			padding-left: 22px;
 			margin-bottom: 8px;
-			background: url(../images/icons/plus@2x.png) 0px 4px no-repeat;
-			background-size: 15px 15px;
+			background: url(../images/icons/unchecked@2x.png) 0px 4px no-repeat;
+			background-size: 14px 14px;
+		}
+		.i {
+			padding-left: 22px;
+			margin-bottom: 8px;
+			background: url(../images/icons/check@2x.png) 0px 4px no-repeat;
+			background-size: 14px 14px;
 		}
 		.black {
 			color: $secondary-color;
@@ -506,14 +513,57 @@ input[type="text"][readonly]:focus
 		color: $secondary-color;
 		padding-top: 18px;
 	}
-	.areyousure {
+	.completed {
 		position: relative;
+		height: 600px;
+	}
+	.completed .btcbg {
+		perspective: 400px;
+		transform-style: preserve-3d;		
+	}
+	.dispute {
+		padding-top: 20px;
+		position: absolute;
+		transition: all 100ms ease-out;
 		display: none;
-		opacity: 0;
-		z-index: 1;
-		top: -280px;
-		background: #F1F4F8;
-		box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.50);
+		z-index: 1000;
+		top: 0;
+		left: 0;
+		width: 100%;
+		border-radius: 4px;
+		text-align: center;
+		color: mix($white, $secondary-color, 37%);
+		h5 {
+			padding-top: 32px;
+			padding-bottom: 0px;
+			color: $secondary-color;
+			font-weight: bold;
+			margin-bottom: 2px;
+		}
+
+		.secondary {
+			width: 140px;
+			background-color: $clear;
+			color: $secondary-color;
+			box-shadow:inset 0px 0px 0px 2px mix($white, $secondary-color, 67%);
+		}
+		.secondary:hover {
+			box-shadow:inset 0px 0px 0px 2px mix($white, $secondary-color, 37%);			
+		}
+		textarea {
+			height: 200px;
+		}
+	}
+	.areyousure {
+		padding-top: 50px;
+		position: absolute;
+		transition: all 100ms ease-out;
+		display: none;
+		z-index: 1000;
+		top: 0;
+		left: 0;
+		width: 100%;
+		border-radius: 4px;
 		text-align: center;
 		color: mix($white, $secondary-color, 37%);
 		h5 {
@@ -540,9 +590,6 @@ input[type="text"][readonly]:focus
 		.secondary:hover {
 			box-shadow:inset 0px 0px 0px 2px mix($white, $secondary-color, 37%);			
 		}
-	}
-	.opendispute {
-
 	}
 	.modal {
 		z-index: 100;
@@ -616,6 +663,31 @@ input[type="text"][readonly]:focus
 	}
 }
 
+.areyousure {
+    //transform: rotateY( 180deg );
+}
+
+.flip10{
+    transform: rotateY( -10deg );
+	transition:  50ms ease-out; 			
+}
+
+.flip90{
+    transform: rotateY( 90deg );
+	transition:  100ms ease-in; 			
+}
+
+.flip190{
+    transform: rotateY( 190deg );
+	transition:  100ms ease-out; 			
+}
+
+.flip180 {
+    transform: rotateY( 180deg );
+	transition:  150ms ease-out; 			
+}
+
+
 // Medium screens
 @media only screen and (min-width: 40.063em) { 
 	.index {
@@ -642,6 +714,9 @@ input[type="text"][readonly]:focus
 				}
 			}
 		}
+	}
+	.dash .completed {
+		height: 455px;
 	}
 } 
 

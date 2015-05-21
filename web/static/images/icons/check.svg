@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="15px" height="17px" viewBox="0 0 15 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
-            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
-            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
-            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
-            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
-            <feMerge>
-                <feMergeNode in="SourceGraphic"></feMergeNode>
-                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
-            </feMerge>
-        </filter>
-    </defs>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Artboard-9" transform="translate(-432.000000, -547.000000)">
-            <rect id="Rectangle-108" fill="#F1F4F8" filter="url(#filter-1)" x="167" y="431" width="864" height="293"></rect>
-            <g id="icons/check" transform="translate(432.000000, 547.000000)">
-                <circle id="Oval-27" fill="#53AA7E" cx="7.5" cy="7.5" r="7.5"></circle>
-                <path d="M4,9 L7,11 L11,4" id="Path-376" stroke="#FFFFFF"></path>
+        <g id="Artboard-9" transform="translate(-262.000000, -290.000000)">
+            <g id="icons/check" transform="translate(262.000000, 290.000000)">
+                <circle id="Oval-26" fill="#53AA7E" cx="8" cy="8" r="8"></circle>
+                <path d="M12,5 L6,12 L12,5 L12,5 Z" id="Path" stroke="#FFFFFF" stroke-width="2"></path>
+                <path d="M7,11 L3,8 L7,11 L7,11 Z" id="Path" stroke="#FFFFFF" stroke-width="2"></path>
             </g>
         </g>
     </g>
