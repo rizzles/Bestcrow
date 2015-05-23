@@ -35,5 +35,3 @@ wifs = [u'cNL8fYAZGpWxkvis5qWkgQNyN2pFPbLzoV5aLZWFF2ReowTGvajo', u'cQXwcaACwufru
 #print sign_tx(tx, wifs)
 create_signed_tx(spendables, payables, wifs)
 
-
-

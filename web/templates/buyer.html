@@ -193,7 +193,7 @@
                     {% else %}
                         {% for comment in comments %}
                             {% if comment['author'] == 'seller' %}
-                                <div class="ssmall-10 medium-8 buyercomment columns">
+                                <div class="ssmall-10 medium-8 sellercomment columns">
                                     <small>{{ comment['posted'] }}</small>
                                     <p class="text">{{ comment['text'] }}</p>
                                 </div>   
@@ -210,7 +210,7 @@
     			</div>
                 <div class="row commentfooter">
                     <div class="small-12 medium-9 columns">
-                        <input type="text" class="radius" name="comment" placeholder="Comment for buyer" autocomplete="off" maxlength="255">
+                        <input type="text" class="radius" name="comment" placeholder="Comment for seller" autocomplete="off" maxlength="255">
                     </div>
                     <div class="small-12 medium-3 columns">
                         <a href="#" class="button expand radius leavecomment">
