@@ -33,7 +33,7 @@
                                 </p>
                             {% end %}
 
-                            {% if not balance == "0" %}
+                            {% if balance or unconfirmed %}
                                 <p class="i">
                             {% else %}
                                 <p class="ui">

@@ -165,8 +165,11 @@ class BaseHandler(tornado.web.RequestHandler):
         balance = resp['balance']
 
         if unconfirmed < 0:
+            print "UN", unconfirmed, type(unconfirmed)
+            print "BAL", balance, type(balance)
             unconfirmed = 0
-            balance -= unconfirmed
+            balance = balance - unconfirmed
+            print balance
 
         # update balance in db for this address
         #MONGODB.update({'multisigaddress':address}, {'$set':{'multisigbalance':balance}})
@@ -193,9 +196,8 @@ class BaseHandler(tornado.web.RequestHandler):
         #resp = tornado.httpclient.HTTPRequest("https://test-insight.bitpay.com/api/addr/%s"%address)
         resp = http_client.fetch("%s/api/tx/send"%INSIGHT, method="POST", body=body)
         resp = tornado.escape.json_decode(resp.body)
-        resp = resp.body
-        print "TRANSACTION", resp
-        print resp['txid']
+        logging.info("Send out of escrow account was a success. Txid %s"%resp['txid'])
+        return resp['txid']
 
     def get_comments(self, commentid):
         comments = MONGOCOMMENTS.find({'discussion_id': commentid}).sort('posted')
@@ -422,9 +424,8 @@ class BuyerSend(BaseHandler):
             logging.error("Communication with private key server error: %s"%e)
             return
 
-        print result.body
-        self.broadcast_transaction(result.body)
-        MONGODB.update({'buyerurlhash': str(base58)}, {"$set", {"transactionid":result.body, "transactiontime":datetime.datetime.utcnow()}})
+        txid = self.broadcast_transaction(result.body)
+        MONGODB.update({'buyerurlhash': str(base58)}, {"$set": {"transactionid":txid, "transactiontime":datetime.datetime.utcnow(), "escrowcomplete": True}})
         self.redirect("/buyer/receipt/%s"%base58)
 
 

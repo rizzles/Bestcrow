@@ -33,7 +33,7 @@
                                 </p>
                             {% end %}
 
-	    					{% if balance or unconfirmed %}
+	    			{% if balance or unconfirmed %}
                             <p class="i">
                             {% else %}
                             <p class="ui">
@@ -43,14 +43,14 @@
 
 	    					<p class="ui"><span class="black">Release the funds to the seller</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
 
-	    					{% if balance != "0" %}
+	    					{% if balance > 0 %}
 	    					<div class="top24">
-	    						<a href="/buyer/send/{{escrow['buyerurlhash']}}" class="button primary small radius releasefunds">Release funds</a>
-                                <a href="#" class="button warning small radius opendispute">Open dispute</a>
+	    						<a href="/buyer/send/{{escrow['buyerurlhash']}}" class="button primary small radius releasefunds">Release Funds</a>
+                                <a href="#" class="button warning small radius opendispute">Open Dispute</a>
 	    					</div>
                             {% else %}
                             <div class="top24">
-                                <a href="#" class="button warning small radius opendispute">Open dispute</a>
+                                <a href="#" class="button warning small radius opendispute">Open Dispute</a>
                             </div>
 	    					{% end %}
 	    				</div>
@@ -87,7 +87,7 @@
                     </div>
                     <div class="row">
                         <div class="small-12">
-                            <a href="#" class="button small radius">Submit dispute</a>
+                            <a href="#" class="button small radius">Submit Dispute</a>
                             <a href="#" class="button secondary small radius disputecancel">Cancel</a>
                         </div>
                     </div>
