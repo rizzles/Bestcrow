@@ -39,13 +39,13 @@ from pycoin.tx.pay_to import script_obj_from_address, script_obj_from_script
 import pymongo
 
 
-MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
-#MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
+#MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
+MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
 MONGODB = MONGOCONNECTION.escrow.demo
 MONGOCOMMENTS = MONGOCONNECTION.escrow.democomments
 
-INSIGHT = "http://54.224.222.213:3000"
-#INSIGHT = "http://localhost:3000"
+#INSIGHT = "http://54.224.222.213:3000"
+INSIGHT = "http://localhost:3000"
 #import emailer
 #from variables import *
 
@@ -188,8 +188,9 @@ class BaseHandler(tornado.web.RequestHandler):
         body = urllib.urlencode(body)
         #resp = tornado.httpclient.HTTPRequest("https://test-insight.bitpay.com/api/addr/%s"%address)
         resp = http_client.fetch("%s/api/tx/send"%INSIGHT, method="POST", body=body)
+        resp = tornado.escape.json_decode(resp.body)
         resp = resp.body
-
+        print "TRANSACTION", resp
         print resp['txid']
 
     def get_comments(self, commentid):
