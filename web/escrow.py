@@ -39,17 +39,13 @@ from pycoin.tx.pay_to import script_obj_from_address, script_obj_from_script
 import pymongo
 
 
-
-#BITCOIN_RPC_URL = "http://bitcoin:i8abal8ghuh38ajkIlajyQE482jhhad8NZ@54.224.222.213:8332"
-BITCOIN_RPC_URL = "http://bitcoin:i8abal8ghuh38ajkIlajyQE482jhhad8NZ@127.0.0.1:8332"
-
-#MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
-MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
+MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
+#MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
 MONGODB = MONGOCONNECTION.escrow.demo
 MONGOCOMMENTS = MONGOCONNECTION.escrow.democomments
 
-#INSIGHT = "http://54.224.222.213:3000"
-INSIGHT = "http://localhost:3000"
+INSIGHT = "http://54.224.222.213:3000"
+#INSIGHT = "http://localhost:3000"
 #import emailer
 #from variables import *
 
@@ -75,8 +71,10 @@ class Application(tornado.web.Application):
 
             (r"/buyer/send/(\w+)", BuyerSend),
             (r"/buyer/join/(\w+)", BuyerJoin),
+            (r"/buyer/receipt/(\w+)", BuyerReceipt),            
             (r"/buyer", Buyer),
             (r"/buyer/(\w+)", Buyer),
+
 
             (r"/seller/join/(\w+)", SellerJoin),
             (r"/seller/(\w+)", Seller),
@@ -163,14 +161,12 @@ class BaseHandler(tornado.web.RequestHandler):
         resp = http_client.fetch("%s/api/addr/%s"%(INSIGHT, address))  
         resp = tornado.escape.json_decode(resp.body)
         print resp
-        if resp['unconfirmedBalance'] > 0:
-            bal = resp['balance']
-        else:
-            bal = resp['balance']
+        unconfirmed = resp['unconfirmedBalance']
+        balance = resp['balance']
 
         # update balance in db for this address
-        MONGODB.update({'multisigaddress':address}, {'$set':{'multisigbalance':bal}})
-        return str(bal)
+        #MONGODB.update({'multisigaddress':address}, {'$set':{'multisigbalance':balance}})
+        return (balance, unconfirmed)
 
     def get_balance_satoshis(self, address):
         http_client = tornado.httpclient.HTTPClient()
@@ -193,14 +189,14 @@ class BaseHandler(tornado.web.RequestHandler):
         #resp = tornado.httpclient.HTTPRequest("https://test-insight.bitpay.com/api/addr/%s"%address)
         resp = http_client.fetch("%s/api/tx/send"%INSIGHT, method="POST", body=body)
         resp = resp.body
-        print resp
+
+        print resp['txid']
 
     def get_comments(self, commentid):
         comments = MONGOCOMMENTS.find({'discussion_id': commentid}).sort('posted')
         comms = []
         for comment in comments:
             comment['posted'] = self.pretty_date(comment['posted'])
-            print comment
             comms.append(comment)
         return comms
 
@@ -236,7 +232,8 @@ class BaseHandler(tornado.web.RequestHandler):
                   'buyerphrase': buyerphrase,
                   'sellerphrase': sellerphrase,
                   'joinurlhash': joinhash,
-                  'commentid': os.urandom(16).encode('hex')}
+                  'commentid': os.urandom(16).encode('hex'),
+                  'escrowcomplete': False}
 
         MONGODB.insert(escrow)
         if buyer:
@@ -273,7 +270,6 @@ class BaseHandler(tornado.web.RequestHandler):
         escrow['subkeys'] = key['subkeys']
         escrow['sellerpayoutaddress'] = selleraddress
         escrow['buyerpayoutaddress'] = buyeraddress
-        escrow['multisigbalance'] = 0
         escrow['step3'] = False
         
         logging.info("updating new escrow in database with multi sig address = %s"%escrow['multisigaddress'])
@@ -331,8 +327,10 @@ class MainHandler(BaseHandler):
 
 class BalanceHandler(BaseHandler):
     def get(self, address):
-        bal = self.get_balance(address)
-        self.write(bal)
+        balance, unconfirmed = self.get_balance(address)
+        data = {'balance': balance, 'unconfirmed': unconfirmed}
+        data = tornado.escape.json_encode(data)
+        self.write(data)
 
 
 class CommentHandler(BaseHandler):
@@ -384,7 +382,6 @@ class Recovery(BaseHandler):
 
     def post(self):
         phrase = self.get_argument('phrase', None)
-        print phrase
         if phrase:
             sha = hashlib.sha256(phrase)
             ripe = hashlib.new("ripemd160", sha.hexdigest())
@@ -407,7 +404,7 @@ class BuySell(BaseHandler):
 
 class BuyerSend(BaseHandler):
     def get(self, base58):
-        escrow = self.get_buyer(base58)      
+        escrow = self.get_buyer(base58)
         satoshis = self.get_balance_satoshis(escrow['multisigaddress'])
         hextx  = self.create_raw_transaction(escrow, satoshis)
 
@@ -422,6 +419,14 @@ class BuyerSend(BaseHandler):
 
         print result.body
         self.broadcast_transaction(result.body)
+        MONGODB.update({'buyerurlhash': str(base58)}, {"$set", {"transactionid":result.body, "transactiontime":datetime.datetime.utcnow()}})
+        self.redirect("/buyer/receipt/%s"%base58)
+
+
+class BuyerReceipt(BaseHandler):
+    def get(self, base58):
+        escrow = self.get_buyer(base58)
+        self.render("receipt.html", escrow=escrow)
 
 
 class Buyer(BaseHandler):
@@ -443,9 +448,8 @@ class Buyer(BaseHandler):
             return
 
         comments = self.get_comments(escrow['commentid'])
-        balance = self.get_balance(escrow['multisigaddress'])
-        print escrow
-        self.render('buyer.html', base58=base58, escrow=escrow, balance=balance, comments=comments)
+        balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
+        self.render('buyer.html', base58=base58, escrow=escrow, balance=balance, unconfirmed=unconfirmed, comments=comments)
 
     def post(self, base58):
         buyeraddress = self.get_argument("buyeraddress", None)
@@ -484,6 +488,7 @@ class BuyerJoin(BaseHandler):
         self.redirect("/buyer/%s"%escrow['buyerurlhash'])
 
 
+
 class Seller(BaseHandler):
     def get(self, base58):
         escrow = self.get_seller(base58)
@@ -499,8 +504,8 @@ class Seller(BaseHandler):
 
         comments = self.get_comments(escrow['commentid'])
 
-        balance = self.get_balance(escrow['multisigaddress'])
-        self.render("seller.html", base58=base58, escrow=escrow, balance=balance, comments=comments)
+        balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
+        self.render("seller.html", base58=base58, escrow=escrow, balance=balance, unconfirmed=unconfirmed, comments=comments)
         
     def post(self, base58):
         selleraddress = self.get_argument("selleraddress", None)

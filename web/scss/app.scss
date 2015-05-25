@@ -415,9 +415,6 @@ input[type="text"][readonly]:focus
 				margin-right: 85px;
 			}
 		}
-
-
-
 	}
 	.modalfooter {
 		margin-top: 24px;
@@ -439,6 +436,7 @@ input[type="text"][readonly]:focus
 			border-color: mix($white, $secondary-color, 57%);
 		}
 	}
+
 	h1 {
 		color: $secondary-color;
 		font-weight: lighter;
@@ -468,7 +466,7 @@ input[type="text"][readonly]:focus
 			margin-top: 0px;
 			font-size: rem(13);
 		}
-		small .confirmation {
+		small .unconfirmed {
 			color: $white;
 		}
 		p.title {
@@ -632,6 +630,63 @@ input[type="text"][readonly]:focus
 	.fourth {
 		margin-top: 48px;
 	}
+	.receipt {
+		margin-top: 48px;
+		color: rgba(64, 74, 83, 0.67);
+		p {
+			margin-bottom: 0.3rem;
+		}
+		.black {
+			color: #333;
+		}
+	}
+	.receiptheader {
+		h5 {
+			padding-top: 16px;
+			padding-bottom: 10px;
+			color: $secondary-color;
+			font-weight: bold;
+		}
+	}
+	.recieptdate {
+		padding-top: 0.8rem;
+		background-color: #F1F4F8;
+		border-top: 1px solid #D3D6D9;
+		border-bottom: 1px solid #D3D6D9;	
+		color: rgba(64, 74, 83, 0.67);
+		.black {
+			color: #333;
+		}
+		p {
+			margin-bottom: 0.8rem;
+		}
+	}
+	.receiptbody {
+		padding-top: 32px;
+		margin-bottom: 16px;
+		.black {
+			color: #333;
+		}
+	}
+	.total {
+		background: url(../images/line.png) top right no-repeat, url(../images/line.png) bottom right no-repeat;
+		margin-top: 10px;
+		background-size: 98% 1px;
+		padding: 16px 0;
+		p {
+			position: relative;
+			left: -46px;
+		}
+	}
+	.line {
+		background: url(../images/line.png) bottom right no-repeat;
+		background-size: 98% 1px;
+	}
+	.contact {
+		text-align: center;
+		padding: 24px 0;
+	}
+
 }
 
 .footer {

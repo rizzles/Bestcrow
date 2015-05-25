@@ -33,10 +33,10 @@
                                 </p>
                             {% end %}
 
-	    					{% if balance == "0" %}
-                            <p class="ui">
-                            {% else %}
+	    					{% if balance or unconfirmed %}
                             <p class="i">
+                            {% else %}
+                            <p class="ui">
                             {% end %}
                                 <span class="black">Fund the escrow account</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.
                             </p>
@@ -136,12 +136,8 @@
     			<div class="row modalbody">
     				<div class="small-12 columns">
     					<div class="left">
-	    					{% if not balance %}
-							<h1 class="balance">0.00 BTC</h1>
-	                		{% else %}
-	                		<h1 class="balance">{{balance}} BTC</h1>
-	                		{% end %}
-	                		<small>Pending confirmation: <span class="confirmation">0.00</span></small>
+                            <h1 class="balance">{{balance}} BTC</h1>
+	                		<small>Pending confirmation: <span class="unconfirmed">{{unconfirmed}} BTC</span></small>
 	                		<p class="title">Escrow Address</p>	                		
                 		</div>
                 		<div class="refresh right">
@@ -222,6 +218,66 @@
     	</div>
     </div>
 
+    <div class="receipt">
+        <div class="row">
+            <div class="small-12 large-10 large-offset-1 columns modal">
+                <div class="row receiptheader">
+                    <div class="small-12 columns">
+                        <h5>Recipt</h5>
+                    </div>
+                </div>
+                <div class="row recieptdate">
+                    <div class="small-12 columns">
+                        <p>Transaction ID:</span> <span class="black">19dajnau83kadjfhu3iiasdjjh</span></p>
+                        <p>Transaction Date: <span class="black">January 18th, 2015</span></p>
+                    </div>
+                </div>
+                <div class="row modalbody receiptbody line">
+                    <div class="small-8 columns">
+                        <h5>Charge</h5>
+                    </div>
+                    <div class="small-4 columns">
+                        <h5>Cost</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-8 columns">
+                        <p>Payment to seller</p>
+                    </div>
+                    <div class="small-4 columns">
+                        <span class="black">0.24 BTC</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-8 columns">
+                        <p>Bestcrow fee</p>
+                    </div>
+                    <div class="small-4 columns">
+                        <span class="black">0.01 BTC</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-8 columns">
+                        <p>Bitcoin miner fee</p>
+                    </div>
+                    <div class="small-4 columns">
+                        <span class="black">0.002 BTC</span>
+                    </div>
+                </div>
+                <div class="row total">
+                    <div class="small-4 small-offset-8 columns">
+                        <p>Total: <b class="black">0.24 BTC</b></p>
+                    </div>
+                </div>
+                <div class="row contact">
+                    <div class="small-12 columns">
+                        If you have any problems, please contact us <a href="mailto:support@bestcrow.io">support@bestcrow.io</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 	<div class="bottom">
 		<div class="row">
 			<div class="small-12">
@@ -249,7 +305,9 @@
 
         function balance(address) {
             $.get("/balance/"+address, function(data) {
-                $(".balance").html(data+" BTC")
+                data = JSON.parse(data);
+                $(".balance").html(data['balance']+" BTC")
+                $(".unconfirmed").html(data['unconfirmed']+" BTC")
             })
         }
 
