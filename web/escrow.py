@@ -164,6 +164,10 @@ class BaseHandler(tornado.web.RequestHandler):
         unconfirmed = resp['unconfirmedBalance']
         balance = resp['balance']
 
+        if unconfirmed < 0:
+            unconfirmed = 0
+            balance -= unconfirmed
+
         # update balance in db for this address
         #MONGODB.update({'multisigaddress':address}, {'$set':{'multisigbalance':balance}})
         return (balance, unconfirmed)
