@@ -21,13 +21,17 @@
 
                             <p class="i"><em>Bookmark this page</em><br>The URL to this page is unique to this escrow. You'll need it to complete this transaction.</p>
 
+                            {% if not escrow['buyerstartedescrow'] %}
+                            <p class="i"><em>Verify you own the return address</em><br>Incase of a refund, escrow funds will be sent to <em>{{escrow['buyerpayoutaddress']}}</em>. Make sure you control the private key to that address.</p>
+                            {% end %}
+
                             {% if escrow['buyerstartedescrow'] %}
                                 {% if not escrow['sellerpayoutaddress'] %}
                                 <p class="ui">
                                 {% else %}
                                 <p class="i">
                                 {% end %}
-                                    <em>Send signup link to the seller</em><br>Send the link below to the seller in this transaction. We need to get a payout address to be able to send the escrow funds too.
+                                    <em>Send signup link to the seller</em><br>Send the link below to the seller in this transaction. We need to get a payout address to be able to send the escrow funds to.
                                 </p>
                             {% end %}
 

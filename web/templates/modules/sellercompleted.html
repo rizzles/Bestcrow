@@ -1,0 +1,90 @@
+    <div class="first">
+    	<div class="row">
+    		<div class="small-12 large-10 large-offset-1 columns modal">
+    			<div class="btcbg">
+	    			<div class="row modalheader">
+	    				<div class="small-12">
+                            {% if escrow['escrowcomplete'] %}
+                            <h4>This escrow is complete</h4>
+                            {% else %}
+                            <h4>This escrow isn't complete</h4>
+                            {% end %}
+		    			</div>
+	    			</div>
+	    			<div class="row modalbody">
+	    				<div class="small-12">
+                            {% if escrow['escrowcomplete'] %}
+                            <p><b>The escrow funds were sent to the seller</b></p>
+                            {% else %}
+                            <p><b>A few steps remaining for completion</b></p>
+                            {% end %}
+
+                            <p class="i"><em>Bookmark this page</em><br>The URL to this page is unique to this escrow. You'll need it to complete this transaction.</p>
+
+                            {% if escrow['sellerstartedescrow'] %}
+                                {% if not escrow['buyerpayoutaddress'] %}
+                                <p class="ui">
+                                {% else %}
+                                <p class="i">
+                                {% end %}
+                                    <span><em>Send signup link to the buyer</em></span><br>Send the link below to the buyer in this transaction. We need to get a payout address to be able to send the escrow funds to.
+                                </p>
+                            {% end %}
+
+                            {% if escrow['escrowcomplete'] %}
+                                <p class="i">
+                            {% elif balance or unconfirmed %}
+                                <p class="i">
+                            {% else %}
+                                <p class="ui">
+                            {% end %}
+                                    <span><em>Buyer funds the escrow account</em></span><br>Buyer sends the agreed upon amount of bitcoin to the multi-sig address.
+                                </p>
+
+                            {% if escrow['escrowcomplete'] %}
+                                <p class="i">                            
+                            {% elif balance or unconfirmed %}
+                                <p class="i">
+                            {% else %}
+                                <p class="ui">
+                            {% end %}
+                                <span><em>The product is ready to be shipped</em></span><br>Once the funds are safely held in escrow, you can ship the product with confidence.</p>
+
+                            {% if escrow['escrowcomplete'] %}
+                            <p class="i">
+                            {% else %}
+                            <p class="ui">
+                            {% end %}
+                                <span><em>The funds are released from escrow to you</em></span><br>When the buyer is happy with the transaction, the funds will be released from escrow you.</p>
+
+                            {% if not escrow['escrowcomplete'] %}
+	    					<div class="top24">
+	    						<a href="#" class="button warning small radius">Open Dispute</a>
+	    					</div>
+                            {% end %}
+	    				</div>
+	    			</div>
+	    		</div>
+    		</div>
+    	</div>
+    	<div class="row">
+    		<div class="small-12 large-10 large-offset-1 columns areyousure">
+    			<h5>Are you sure?</h5>
+    			<p>Release funds in the escrow account to the seller?</p>
+    			<div class="row">
+    				<div class="small-12 medium-6 medium-offset-3">
+    					<ul class="no-bullet">
+    						<li><img src="/static/images/icons/check@2x.png" width="15"> You’re happy with the transaction</li>
+    						<li><img src="/static/images/icons/check@2x.png" width="15"> You want the seller to get paid</li>
+    					</ul>
+    				</div>
+    			</div>
+    			<div class="row">
+    				<div class="small-12">
+    					<a href="#" class="button small radius">Release funds</a>
+    					<a href="#" class="button secondary small radius areyousurecancel">Cancel</a>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>

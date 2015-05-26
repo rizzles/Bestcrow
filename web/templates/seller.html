@@ -10,74 +10,13 @@
   
     {% include 'modules/menu.html' %}
 
-    <div class="first">
-    	<div class="row">
-    		<div class="small-12 large-10 large-offset-1 columns modal">
-    			<div class="btcbg">
-	    			<div class="row modalheader">
-	    				<div class="small-12">
-		    				<h4>This escrow isn't complete</h4>
-		    			</div>
-	    			</div>
-	    			<div class="row modalbody">
-	    				<div class="small-12">
-	    					<p><b>A few steps remaining for completion</b></p>
+    {% include 'modules/sellercompleted.html' %}
 
-                            <p class="i"><em>Bookmark this page</em><br>The URL to this page is unique to this escrow. You'll need it to complete this transaction.</p>
+    {% if escrow['escrowcomplete'] %}
+        {% include "modules/receipt.html" %}
+    {% end %}
 
-                            {% if escrow['sellerstartedescrow'] %}
-                                {% if not escrow['buyerpayoutaddress'] %}
-                                <p class="ui">
-                                {% else %}
-                                <p class="i">
-                                {% end %}
-                                    <span><em>Send signup link to the buyer</em></span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High Life Brooklyn twee craft beer tousled chillwave.
-                                </p>
-                            {% end %}
-
-                            {% if balance or unconfirmed %}
-                                <p class="i">
-                            {% else %}
-                                <p class="ui">
-                            {% end %}
-                                    <span><em>Buyer funds the escrow account</em></span><br>Buyer send the agreed upon amount of bitcoin to the multi-sig address.
-                                </p>
-
-	    					<p class="ui"><span><em>The product is ready to be shipped</em></span><br>Once the funds are safely held in escrow, you can ship the product with confidence.</p>
-
-                            <p class="ui"><span><em>The funds are released from escrow to you</em></span><br>When the buyer is happy with the transaction, the funds will be released from escrow you.</p>
-
-	    					<div class="top24">
-	    						<a href="#" class="button warning small radius">Open Dispute</a>
-	    					</div>
-	    				</div>
-	    			</div>
-	    		</div>
-    		</div>
-    	</div>
-    	<div class="row">
-    		<div class="small-12 large-10 large-offset-1 columns areyousure">
-    			<h5>Are you sure?</h5>
-    			<p>Release funds in the escrow account to the seller?</p>
-    			<div class="row">
-    				<div class="small-12 medium-6 medium-offset-3">
-    					<ul class="no-bullet">
-    						<li><img src="/static/images/icons/check@2x.png" width="15"> You’re happy with the transaction</li>
-    						<li><img src="/static/images/icons/check@2x.png" width="15"> You want the seller to get paid</li>
-    					</ul>
-    				</div>
-    			</div>
-    			<div class="row">
-    				<div class="small-12">
-    					<a href="#" class="button small radius">Release funds</a>
-    					<a href="#" class="button secondary small radius areyousurecancel">Cancel</a>
-    				</div>
-    			</div>
-    		</div>
-    	</div>
-    </div>
-
-    {% if not escrow['sellerstartedescrow'] %}
+    {% if not escrow['sellerstartedescrow'] and not escrow['escrowcomplete'] %}
 
     <div class="second">
     	<div class="row">

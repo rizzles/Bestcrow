@@ -6391,7 +6391,7 @@ input[type="text"][readonly]:focus {
     background-size: 35px 35px; }
   .modal .modalbody .ill {
     margin-bottom: 32px; }
-  .modal .modalbody p.secondary .red {
+  .modal .modalbody .red {
     color: #E86254; }
   .modal .modalbody .ui {
     padding-left: 22px;
