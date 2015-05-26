@@ -6539,12 +6539,11 @@ input[type="text"][readonly]:focus {
     width: 100%;
     border-radius: 4px;
     text-align: center; }
-    .dash .areyousure h5 {
-      padding-top: 32px;
-      padding-bottom: 0px;
-      color: #404A53;
-      font-weight: bold;
-      margin-bottom: 2px; }
+    .dash .areyousure .small-12 {
+      padding-top: 30px;
+      padding-bottom: 30px; }
+    .dash .areyousure .modalbody {
+      padding-top: 30px; }
     .dash .areyousure ul {
       text-align: left;
       color: #404A53;

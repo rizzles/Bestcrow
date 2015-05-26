@@ -567,6 +567,13 @@ input[type="text"][readonly]:focus
 	}
 
 	.areyousure {
+		.small-12 {
+			padding-top: 30px;
+			padding-bottom: 30px;
+		}
+		.modalbody {
+			padding-top: 30px;
+		}
 		position: absolute;
 		transition: all 100ms ease-out;
 		display: none;
@@ -576,13 +583,6 @@ input[type="text"][readonly]:focus
 		width: 100%;
 		border-radius: 4px;
 		text-align: center;
-		h5 {
-			padding-top: 32px;
-			padding-bottom: 0px;
-			color: $secondary-color;
-			font-weight: bold;
-			margin-bottom: 2px;
-		}
 		ul {
 			text-align: left;
 			color: $secondary-color;
