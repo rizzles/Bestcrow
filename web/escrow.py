@@ -41,13 +41,13 @@ import pycoin.convention
 import pymongo
 
 
-#MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
-MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
+MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
+#MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
 MONGODB = MONGOCONNECTION.escrow.demo
 MONGOCOMMENTS = MONGOCONNECTION.escrow.democomments
 
-#INSIGHT = "http://54.224.222.213:3000"
-INSIGHT = "http://localhost:3000"
+INSIGHT = "http://54.224.222.213:3000"
+#INSIGHT = "http://localhost:3000"
 #import emailer
 #from variables import *
 
@@ -453,14 +453,8 @@ class BuyerSend(BaseHandler):
 class BuyerReceipt(BaseHandler):
     def get(self, base58):
         escrow = self.get_buyer(base58)
-
-        ## TEMPORARY TESTING
-        #escrow['transactionid'] = "ad94kjadfi"
-        #escrow['transactiontime'] = datetime.datetime.utcnow()
-
-        print pycoin.convention.satoshi_to_btc(decimal.Decimal(escrow['fees']['seller']))
-    
-        self.render("receipt.html", escrow=escrow, balance=0, unconfirmed=0, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal)
+        balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
+        self.render("receipt.html", escrow=escrow, balance=balance, unconfirmed=unconfirmed, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal)
 
 
 class Buyer(BaseHandler):
@@ -483,7 +477,7 @@ class Buyer(BaseHandler):
 
         comments = self.get_comments(escrow['commentid'])
         balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
-        self.render('buyer.html', base58=base58, escrow=escrow, balance=balance, unconfirmed=unconfirmed, comments=comments)
+        self.render('buyer.html', base58=base58, escrow=escrow, balance=balance, unconfirmed=unconfirmed, comments=comments, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal)
 
     def post(self, base58):
         buyeraddress = self.get_argument("buyeraddress", None)

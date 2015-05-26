@@ -400,7 +400,6 @@ input[type="text"][readonly]:focus
 		}
 		.buyercomment, .sellercomment {
 			margin-bottom: 32px;
-			margin-left: 12px;
 			background: url(../images/icons/buyer-comment@2x.png) 0px 24px no-repeat;
 			background-size: 55px 55px;
 			.text {
@@ -410,7 +409,7 @@ input[type="text"][readonly]:focus
 				border-radius: 3px;
 				border: 1px solid #A6CAE3;
 				color: $secondary-color;
-				margin-left: 60px;			
+				margin-left: 70px;			
 			}
 			small {
 				text-align: right;
@@ -418,13 +417,13 @@ input[type="text"][readonly]:focus
 		}
 
 		.sellercomment {
-			background: url(../images/icons/seller-comment@2x.png) 0px 20px no-repeat;
+			background: url(../images/icons/seller-comment@2x.png) 0px 22px no-repeat;
 			background-size: 55px 55px;			
 		}
 
 		.youcomment {
 			margin-bottom: 32px;
-			background: url(../images/icons/you-comment@2x.png) 95% 25px no-repeat;
+			background: url(../images/icons/you-comment@2x.png) 100% 25px no-repeat;
 			background-size: 55px 54px;
 			.text {
 				padding: 14px;
@@ -433,7 +432,7 @@ input[type="text"][readonly]:focus
 				border-radius: 3px;
 				border: 1px solid #CFD2D3;
 				color: $secondary-color;
-				margin-right: 80px;	
+				margin-right: 70px;	
 			}
 			small {
 				text-align: right;
@@ -744,7 +743,7 @@ input[type="text"][readonly]:focus
 		}
 	}
 	.dash .completed {
-		height: 455px;
+		height: 510px;
 	}
 } 
 

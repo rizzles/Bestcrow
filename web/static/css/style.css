@@ -6407,7 +6407,6 @@ input[type="text"][readonly]:focus {
     color: #404A53; }
   .modal .modalbody .buyercomment, .modal .modalbody .sellercomment {
     margin-bottom: 32px;
-    margin-left: 12px;
     background: url(../images/icons/buyer-comment@2x.png) 0px 24px no-repeat;
     background-size: 55px 55px; }
     .modal .modalbody .buyercomment .text, .modal .modalbody .sellercomment .text {
@@ -6417,15 +6416,15 @@ input[type="text"][readonly]:focus {
       border-radius: 3px;
       border: 1px solid #A6CAE3;
       color: #404A53;
-      margin-left: 60px; }
+      margin-left: 70px; }
     .modal .modalbody .buyercomment small, .modal .modalbody .sellercomment small {
       text-align: right; }
   .modal .modalbody .sellercomment {
-    background: url(../images/icons/seller-comment@2x.png) 0px 20px no-repeat;
+    background: url(../images/icons/seller-comment@2x.png) 0px 22px no-repeat;
     background-size: 55px 55px; }
   .modal .modalbody .youcomment {
     margin-bottom: 32px;
-    background: url(../images/icons/you-comment@2x.png) 95% 25px no-repeat;
+    background: url(../images/icons/you-comment@2x.png) 100% 25px no-repeat;
     background-size: 55px 54px; }
     .modal .modalbody .youcomment .text {
       padding: 14px;
@@ -6434,7 +6433,7 @@ input[type="text"][readonly]:focus {
       border-radius: 3px;
       border: 1px solid #CFD2D3;
       color: #404A53;
-      margin-right: 80px; }
+      margin-right: 70px; }
     .modal .modalbody .youcomment small {
       text-align: right;
       margin-right: 85px; }
@@ -6664,7 +6663,7 @@ input[type="text"][readonly]:focus {
   .steps .modal .modalbody img {
     margin-bottom: 0px; }
   .dash .completed {
-    height: 455px; } }
+    height: 510px; } }
 
 @media only screen and (min-width: 64.063em) {
   .dash .end {

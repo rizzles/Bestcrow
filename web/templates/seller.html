@@ -23,6 +23,8 @@
 	    				<div class="small-12">
 	    					<p><b>A few steps remaining for completion</b></p>
 
+                            <p class="i"><em>Bookmark this page</em><br>The URL to this page is unique to this escrow. You'll need it to complete this transaction.</p>
+
                             {% if escrow['sellerstartedescrow'] %}
                                 {% if not escrow['buyerpayoutaddress'] %}
                                 <p class="ui">
@@ -38,12 +40,12 @@
                             {% else %}
                                 <p class="ui">
                             {% end %}
-                                    <span><em>Buyer funds the escrow account</em></span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.
+                                    <span><em>Buyer funds the escrow account</em></span><br>Buyer send the agreed upon amount of bitcoin to the multi-sig address.
                                 </p>
 
-	    					<p class="ui"><span><em>The product is ready to be shipped</em></span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
+	    					<p class="ui"><span><em>The product is ready to be shipped</em></span><br>Once the funds are safely held in escrow, you can ship the product with confidence.</p>
 
-                            <p class="ui"><span><em>The funds are released from escrow to you</em></span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
+                            <p class="ui"><span><em>The funds are released from escrow to you</em></span><br>When the buyer is happy with the transaction, the funds will be released from escrow you.</p>
 
 	    					<div class="top24">
 	    						<a href="#" class="button warning small radius">Open Dispute</a>
@@ -114,7 +116,7 @@
     				<div class="small-12">
     					<div class="left">
 	    					{% if not balance %}
-							<h1 class="balance">0.00 BTC</h1>
+							<h1 class="balance">0 BTC</h1>
 	                		{% else %}
 	                		<h1 class="balance">{{balance}} BTC</h1>
 	                		{% end %}
@@ -151,7 +153,7 @@
     	</div>
     </div>
 
-    <div class="fourth">
+    <div>
     	<div class="row">
     		<div class="small-12 large-10 large-offset-1 columns modal">
     			<div class="row modalheader">
@@ -159,7 +161,7 @@
     					<h4>Comments</h4>
     				</div>
     			</div>
-    			<div class="row modalbody">
+    			<div class="row modalbody commentsbody">
                     {% if not comments %}
                         <div class="small-12">
                             <p style="margin-bottom:0px">No comments yet</p>
@@ -167,14 +169,14 @@
                     {% else %}
                         {% for comment in comments %}
                             {% if comment['author'] == 'buyer' %}
-                                <div class="small-10 medium-8 buyercomment columns">
+                                <div class="small-10 medium-8 buyercomment">
                                     <small>{{ comment['posted'] }}</small>
                                     <p class="text">{{ comment['text'] }}</p>
                                 </div>
                                 <div class="small-2 medium-offset-4 columns">
                                 </div>
                             {% else %}
-                                <div class="small-10 small-offset-2 medium-8 medium-offset-4 youcomment columns">
+                                <div class="small-10 small-offset-2 medium-8 medium-offset-4 youcomment">
                                     <small>{{ comment['posted'] }}</small>
                                     <p class="text">{{ comment['text'] }}</p>
                                 </div>
@@ -188,7 +190,7 @@
     				</div>
 					<div class="small-12 medium-3 columns norightpad">
 						<a href="#" class="button expand radius leavecomment">
-							Leave comment
+							Leave Comment
 						</a>
 		            </div>
     			</div>

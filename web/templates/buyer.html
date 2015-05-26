@@ -12,6 +12,10 @@
 
     {% include "modules/buyercompleted.html" %}
 
+    {% if escrow['escrowcomplete'] %}
+        {% include "modules/receipt.html" %}
+    {% end %}
+
     {% if not escrow['buyerstartedescrow'] %}
     <div>
     	<div class="row">
@@ -74,7 +78,7 @@
     					<div class="left">
                             <h1 class="balance">{{balance}} BTC</h1>
 	                		<small>Pending confirmation: <span class="unconfirmed">{{unconfirmed}} BTC</span></small>
-	                		<p class="title">Escrow Address</p>	                		
+	                		<p class="title">Escrow Address to send the funds too</p>	                		
                 		</div>
                 		<div class="refresh right">
                 		</div>
@@ -94,7 +98,7 @@
     					<h4>Comments</h4>
     				</div>
     			</div>
-    			<div class="row modalbody">
+    			<div class="row modalbody commentsbody">
                     {% if not comments %}
                         <div class="small-12">
                             <p style="margin-bottom:0px">No comments yet</p>
@@ -102,14 +106,14 @@
                     {% else %}
                         {% for comment in comments %}
                             {% if comment['author'] == 'seller' %}
-                                <div class="ssmall-10 medium-8 sellercomment columns">
+                                <div class="small-10 medium-8 sellercomment">
                                     <small>{{ comment['posted'] }}</small>
                                     <p class="text">{{ comment['text'] }}</p>
                                 </div>   
                                 <div class="small-2 medium-offset-4 columns">
                                 </div>
                             {% else %}
-                                <div class="small-10 small-offset-2 medium-8 medium-offset-4 youcomment columns">
+                                <div class="small-10 small-offset-2 medium-8 medium-offset-4 youcomment">
                                     <small>{{ comment['posted'] }}</small>
                                     <p class="text">{{ comment['text'] }}</p>
                                 </div> 
@@ -131,17 +135,13 @@
     	</div>
     </div>
 
-    {% if escrow['escrowcomplete'] %}
-        {% include "modules/receipt.html" %}
-    {% end %}
-
-	<div class="bottom">
-		<div class="row">
-			<div class="small-12">
-				<p>Have a question? Email our support team at <a href="mailto:">support@bestcrow.io</a></p>
-			</div>
-		</div>
-	</div>
+    <div class="bottom">
+        <div class="row">
+            <div class="small-12">
+                <p>Have a question? Email our support team at <a href="mailto:">support@bestcrow.io</a></p>
+            </div>
+        </div>
+    </div>
 
 	<script src="/static/js/javascript-min.js"></script>
 	<script>
