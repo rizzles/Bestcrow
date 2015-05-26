@@ -80,6 +80,7 @@ class Application(tornado.web.Application):
 
             (r"/seller/join/(\w+)", SellerJoin),
             (r"/seller/(\w+)", Seller),
+            (r"/seller/receipt/(\w+)", SellerReceipt),
 
             (r"/recovery", Recovery),
             (r"/balance/(\w+)", BalanceHandler),
@@ -454,7 +455,7 @@ class BuyerReceipt(BaseHandler):
     def get(self, base58):
         escrow = self.get_buyer(base58)
         balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
-        self.render("receipt.html", escrow=escrow, balance=balance, unconfirmed=unconfirmed, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal)
+        self.render("buyerreceipt.html", escrow=escrow, balance=balance, unconfirmed=unconfirmed, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal)
 
 
 class Buyer(BaseHandler):
@@ -500,7 +501,7 @@ class Buyer(BaseHandler):
 class BuyerJoin(BaseHandler):
     def get(self, joinhash):
         escrow = self.get_joinhash_url(joinhash)
-        self.render("buyerjoin.html", escrow=escrow, joinhash=joinhash, errors="invalid")
+        self.render("buyerjoin.html", escrow=escrow, joinhash=joinhash, errors=None)
 
     def post(self, joinhash):
         address = self.get_argument("buyeraddress", None)
@@ -512,6 +513,7 @@ class BuyerJoin(BaseHandler):
             return
 
         escrow = self.set_buyer_address(joinhash, address)
+        self.update_step3_buyer(escrow['buyerurlhash'])
 
         self.redirect("/buyer/%s"%escrow['buyerurlhash'])
 
@@ -531,9 +533,9 @@ class Seller(BaseHandler):
             return
 
         comments = self.get_comments(escrow['commentid'])
-
         balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
-        self.render("seller.html", base58=base58, escrow=escrow, balance=balance, unconfirmed=unconfirmed, comments=comments)
+        
+        self.render("seller.html", base58=base58, escrow=escrow, balance=balance, unconfirmed=unconfirmed, comments=comments, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal)
         
     def post(self, base58):
         selleraddress = self.get_argument("selleraddress", None)
@@ -551,6 +553,13 @@ class Seller(BaseHandler):
 
         self.render('sellerstep2.html', base58=base58, escrow=escrow)
         return
+
+
+class SellerReceipt(BaseHandler):
+    def get(self, base58):
+        escrow = self.get_seller(base58)
+        balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
+        self.render("sellerreceipt.html", escrow=escrow, balance=balance, unconfirmed=unconfirmed, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal)
 
 
 class SellerJoin(BaseHandler):

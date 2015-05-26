@@ -25,8 +25,8 @@
 								<img src="/static/images/illustration/medium-refund@2x.png" class="ill">
 							</div>		
 							<div class="small-12 medium-9 medium-pull-3 columns">
-							        {% if errors == "invalid" %}
-								<p>That is an invalid bitcoin address</p>
+							    {% if errors == "invalid" %}
+								<p class="red">That is not a valid bitcoin address</p>
 								{% else %}
 								<p><em>An address for a refund</em></p>
 								{% end %}
