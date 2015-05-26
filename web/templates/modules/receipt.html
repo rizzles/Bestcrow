@@ -25,26 +25,26 @@
 		                        <p>Payment to seller</p>
 		                    </div>
 		                    <div class="small-4 columns">
-		                        <span><em>0.24 BTC</em></span>
+		                        <span><em>{{satoshi_to_btc(decimal.Decimal(escrow['fees']['seller']))}} BTC</em></span>
 		                    </div>
 		                    <div class="small-8 columns">
-		                        <p>Bestcrow fee</p>
+		                        <p>Bestcrow 1% fee</p>
 		                    </div>
 		                    <div class="small-4 columns">
-		                        <span><em>0.01 BTC</em></span>
+		                        <span><em>{{satoshi_to_btc(decimal.Decimal(escrow['fees']['bestcrow']))}} BTC</em></span>
 		                    </div>
 		                    <div class="small-8 columns">
 		                        <p>Bitcoin miner fee</p>
 		                    </div>
 		                    <div class="small-4 columns">
-		                        <span><em>0.002 BTC</em></span>
+		                        <span><em>{{satoshi_to_btc(decimal.Decimal(escrow['fees']['miner']))}} BTC</em></span>
 		                    </div>
 		                </div>
 		            </div>
 		        </div>
 		        <div class="row receipttotal">
 		            <div class="small-4 small-offset-8 columns">
-		                <p>Total: <b>0.24 BTC</b></p>
+		                <p>Total: <b>{{satoshi_to_btc(decimal.Decimal(escrow['fees']['seller'] + escrow['fees']['bestcrow'] + escrow['fees']['miner']))}} BTC</b></p>
 		            </div>
 		        </div>
                 <div class="row receiptcontact">

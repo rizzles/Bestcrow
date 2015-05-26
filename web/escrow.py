@@ -8,6 +8,7 @@ import pymongo
 import mnemonic
 import hashlib
 import urllib
+import decimal
 
 import tornado.ioloop
 import tornado.web
@@ -35,6 +36,7 @@ from pycoin.tx.TxOut import standard_tx_out_script
 from pycoin.tx.pay_to import ScriptMultisig, ScriptPayToPublicKey, ScriptNulldata
 from pycoin.tx.pay_to import address_for_pay_to_script, build_hash160_lookup, build_p2sh_lookup
 from pycoin.tx.pay_to import script_obj_from_address, script_obj_from_script
+import pycoin.convention
 
 import pymongo
 
@@ -164,12 +166,11 @@ class BaseHandler(tornado.web.RequestHandler):
         unconfirmed = resp['unconfirmedBalance']
         balance = resp['balance']
 
+        # negative amount still waiting to be confirmed
         if unconfirmed < 0:
-            print "UN", unconfirmed, type(unconfirmed)
-            print "BAL", balance, type(balance)
-            unconfirmed = 0
-            balance = balance - unconfirmed
-            print balance
+            balance += unconfirmed
+            if balance == 0:
+                balance = 0
 
         # update balance in db for this address
         return (balance, unconfirmed)
@@ -444,15 +445,22 @@ class BuyerSend(BaseHandler):
             logging.error("Communication with private key server error: %s"%e)
             return
 
-        #txid = self.broadcast_transaction(result.body)
-        #MONGODB.update({'_id':escrow['_id']}, {"$set": {"transactionid":txid, "transactiontime":datetime.datetime.utcnow(), "escrowcomplete": True}})
+        txid = self.broadcast_transaction(result.body)
+        MONGODB.update({'_id':escrow['_id']}, {"$set": {"transactionid":txid, "transactiontime":datetime.datetime.utcnow(), "escrowcomplete": True}})
         self.redirect("/buyer/receipt/%s"%base58)
 
 
 class BuyerReceipt(BaseHandler):
     def get(self, base58):
         escrow = self.get_buyer(base58)
-        self.render("receipt.html", escrow=escrow, balance=0)
+
+        ## TEMPORARY TESTING
+        #escrow['transactionid'] = "ad94kjadfi"
+        #escrow['transactiontime'] = datetime.datetime.utcnow()
+
+        print pycoin.convention.satoshi_to_btc(decimal.Decimal(escrow['fees']['seller']))
+    
+        self.render("receipt.html", escrow=escrow, balance=0, unconfirmed=0, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal)
 
 
 class Buyer(BaseHandler):
