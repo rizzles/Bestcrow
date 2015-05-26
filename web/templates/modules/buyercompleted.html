@@ -17,13 +17,15 @@
 	    					<p><b>A few steps remaining for completion</b></p>
                             {% end %}
 
+                            <p class="i"><em>Bookmark this page</em><br>The URL to this page is unique to this escrow. You'll need it to complete this transaction.</p>
+
                             {% if escrow['buyerstartedescrow'] %}
                                 {% if not escrow['sellerpayoutaddress'] %}
                                 <p class="ui">
                                 {% else %}
                                 <p class="i">
                                 {% end %}
-                                    <span><em>Send signup link to the seller</em></span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High Life Brooklyn twee craft beer tousled chillwave.
+                                    <em>Send signup link to the seller</em><br>Send the link below to the seller in this transaction. We need to get a payout address to be able to send the escrow funds too.
                                 </p>
                             {% end %}
 
@@ -34,7 +36,7 @@
                             {% else %}
                             <p class="ui">
                             {% end %}
-                                <span><em>Fund the escrow account</em></span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.
+                                <em>Fund the escrow account</em><br>Send the agreed upon escrow funds to the multi-sig bitcoin address.
                             </p>
 
                             {% if escrow['escrowcomplete'] %}
@@ -42,7 +44,7 @@
                             {% else %}
                             <p class="ui">
                             {% end %}
-                                <span><em>Release the funds to the seller</em></span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
+                                <em>Release the funds to the seller</em><br>When you are happy with the outcome of the transaction, release the funds to the seller.</p>
 
                             {% if not escrow['escrowcomplete'] %}
 	    					{% if balance > 0 %}

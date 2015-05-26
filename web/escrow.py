@@ -181,11 +181,11 @@ class BaseHandler(tornado.web.RequestHandler):
         resp = tornado.escape.json_decode(resp.body)
         print resp
         if resp['unconfirmedBalanceSat'] > 0:
-            bal = resp['unconfirmedBalanceSat']
+            satoshis = resp['unconfirmedBalanceSat']
         else:
-            bal = resp['balanceSat']
+            satoshis = resp['balanceSat']
 
-        fees = self.calc_fess(satoshis)
+        fees = self.calc_fees(satoshis)
 
         return fees
 
@@ -193,7 +193,7 @@ class BaseHandler(tornado.web.RequestHandler):
         logging.info("calculating fee")
         bestcrow = satoshis * 0.01
         logging.info("fee for bestcrow calculated at %s"%bestcrow)
-        seller = satoshis - bestcrowfee
+        seller = satoshis - bestcrow
         logging.info("total left for seller after our fee: %s"%seller)
 
         # calc miners fees to extract from seller price
@@ -209,7 +209,7 @@ class BaseHandler(tornado.web.RequestHandler):
             miner = 1
             seller -= miner
         logging.info("miners fee: %s"%miner)
-        logging.info("total going to seller after miners fee"%seller)
+        logging.info("total going to seller after miners fee: %s"%seller)
         fees = {'miner':miner, 'seller':seller, 'bestcrow':bestcrow}
         return fees
 
