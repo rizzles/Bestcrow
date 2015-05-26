@@ -1,0 +1,107 @@
+    <div>
+    	<div class="row">
+    		<div class="small-12 large-10 large-offset-1 columns modal completed">
+                <div class="btcbg">
+	    			<div class="row modalheader">
+	    				<div class="small-12">
+                            {% if escrow['escrowcomplete'] %}
+                            <h4>This escrow is complete</h4>
+                            {% else %}
+                            <h4>This escrow isn't complete</h4>
+                            {% end %}
+		    			</div>
+	    			</div>
+	    			<div class="row modalbody">
+	    				<div class="small-12">
+                            {% if not escrow['escrowcomplete'] %}
+	    					<p><b>A few steps remaining for completion</b></p>
+                            {% end %}
+
+                            {% if escrow['buyerstartedescrow'] %}
+                                {% if not escrow['sellerpayoutaddress'] %}
+                                <p class="ui">
+                                {% else %}
+                                <p class="i">
+                                {% end %}
+                                    <span><em>Send signup link to the seller</em></span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High Life Brooklyn twee craft beer tousled chillwave.
+                                </p>
+                            {% end %}
+
+                            {% if escrow['escrowcomplete'] %}
+                            <p class="i">
+	    			        {% elif balance or unconfirmed %}
+                            <p class="i">
+                            {% else %}
+                            <p class="ui">
+                            {% end %}
+                                <span><em>Fund the escrow account</em></span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.
+                            </p>
+
+                            {% if escrow['escrowcomplete'] %}
+	    					<p class="i">
+                            {% else %}
+                            <p class="ui">
+                            {% end %}
+                                <span><em>Release the funds to the seller</em></span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
+
+                            {% if not escrow['escrowcomplete'] %}
+	    					{% if balance > 0 %}
+	    					<div class="top24">
+	    						<a href="/buyer/send/{{escrow['buyerurlhash']}}" class="button primary small radius releasefunds">Release Funds</a>
+                                <a href="#" class="button warning small radius opendispute">Open Dispute</a>
+	    					</div>
+                            {% else %}
+                            <div class="top24">
+                                <a href="#" class="button warning small radius opendispute">Open Dispute</a>
+                            </div>
+	    					{% end %}
+                            {% end %}
+	    				</div>
+	    			</div>
+	    		</div>
+
+                <div class="areyousure">
+                    <div class="row modalheader">
+                        <div class="small-12">
+                            <h4>Huh?</h4>
+                        </div>
+                    </div>
+        			<p>Release funds in the escrow account to the seller?</p>
+        			<div class="row">
+        				<div class="small-10 small-offset-2 medium-6 medium-offset-3 columns">
+        					<ul class="no-bullet">
+                                <li><img src="/static/images/icons/check2@2x.png" width="16"> You’ve received the package</li>
+        						<li><img src="/static/images/icons/check2@2x.png" width="16"> You’re happy with the transaction</li>
+        						<li><img src="/static/images/icons/check2@2x.png" width="16"> You want the seller to get paid</li>
+        					</ul>
+        				</div>
+        			</div>
+        			<div class="row">
+        				<div class="small-12">
+        					<a href="/buyer/send/{{escrow['buyerurlhash']}}" class="button small radius">Release funds</a>
+        					<a href="#" class="button secondary small radius areyousurecancel">Cancel</a>
+        				</div>
+        			</div>
+        		</div>
+
+                <div class="dispute">
+                   <div class="row modalheader collapse">
+                        <div class="small-12">
+                            <h4>Open a dispute</h4>
+                        </div>
+                    </div>                    
+                    <div class="row modalbody">
+                        <div class="small-12 columns">
+                            <textarea></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <a href="#" class="button small radius">Submit Dispute</a>
+                            <a href="#" class="button secondary small radius disputecancel">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    	</div>
+    </div>

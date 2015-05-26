@@ -69,14 +69,15 @@ class MainHandler(BaseHandler):
         hextx = self.get_argument('hextx', None)
         subkeys = self.get_argument('subkeys', None)
         payoutaddress = self.get_argument('payoutaddress', None)
-        satoshis = self.get_argument('satoshis', None)
+        fees = self.get_argument('fees', None)
 
         print subkeys       
 
-        if not hextx or not subkeys or not payoutaddress or not satoshis:
+        if not hextx or not subkeys or not payoutaddress or not fees:
             logging.error("Did not receive trans or tree argument")
             return
 
+        fees = tornado.escape.json_decode(fees)        
         subkeys = tornado.escape.json_decode(subkeys)        
         seed = mnemonic.Mnemonic.to_seed(PHRASE)
         wallet = BIP32Node.from_master_secret(seed)
@@ -96,19 +97,12 @@ class MainHandler(BaseHandler):
 
         # first tx out, need another for the 1% to our wallet
         script = standard_tx_out_script(payoutaddress)
-
-        if int(satoshis) > 10000:
-            total = int(satoshis) - 10000
-        elif int(satoshis) > 1000:
-            total = int(satoshis) - 100
-        else:
-            total = int(satoshis) - 1
-        tx_out = TxOut(total, script)
-        # TODO: our wallet send for 1%
-        #script = standard_tx_out_script("1Dv9YWfVYMK1FjBhrCBc1diajSZKBj78MB")
-        #tx2_out = TxOut(50000, script)
+        tx_out = TxOut(fees['seller'], script)
+        # TODO: figure out final wallet. This is sending to my phone
+        script = standard_tx_out_script("1LhkvTTxFXam672vjwbABtkp9td7dxCwyB")
+        tx2_out = TxOut(fees['bestcrow'], script)
         
-        txs_out = [tx_out]
+        txs_out = [tx_out, tx2_out]
         tx2.txs_out = txs_out
 
         hash160_lookup = build_hash160_lookup(key.secret_exponent() for key in keys)

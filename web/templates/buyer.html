@@ -10,104 +10,20 @@
 
     {% include "modules/menu.html" %}
 
-    <div class="first">
-    	<div class="row">
-    		<div class="small-12 large-10 large-offset-1 columns modal completed">
-    			<div class="btcbg">
-	    			<div class="row modalheader">
-	    				<div class="small-12 columns">
-		    				<h5>This escrow isn't complete</h5>
-		    			</div>
-	    			</div>
-	    			<div class="row modalbody">
-	    				<div class="small-12 columns">
-	    					<p class="secondary">A few steps remaining for completion</p>
-
-                            {% if escrow['buyerstartedescrow'] %}
-                                {% if not escrow['sellerpayoutaddress'] %}
-                                <p class="ui">
-                                {% else %}
-                                <p class="i">
-                                {% end %}
-                                    <span class="black">Send signup link to the seller</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap. Hashtag typewriter banh mi, squid keffiyeh High Life Brooklyn twee craft beer tousled chillwave.
-                                </p>
-                            {% end %}
-
-	    			{% if balance or unconfirmed %}
-                            <p class="i">
-                            {% else %}
-                            <p class="ui">
-                            {% end %}
-                                <span class="black">Fund the escrow account</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.
-                            </p>
-
-	    					<p class="ui"><span class="black">Release the funds to the seller</span><br>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever street art fap.</p>
-
-	    					{% if balance > 0 %}
-	    					<div class="top24">
-	    						<a href="/buyer/send/{{escrow['buyerurlhash']}}" class="button primary small radius releasefunds">Release Funds</a>
-                                <a href="#" class="button warning small radius opendispute">Open Dispute</a>
-	    					</div>
-                            {% else %}
-                            <div class="top24">
-                                <a href="#" class="button warning small radius opendispute">Open Dispute</a>
-                            </div>
-	    					{% end %}
-	    				</div>
-	    			</div>
-	    		</div>
-
-                <div class="areyousure">
-        			<h5>Are you sure?</h5>
-        			<p>Release funds in the escrow account to the seller?</p>
-        			<div class="row">
-        				<div class="small-10 small-offset-2 medium-6 medium-offset-3 columns">
-        					<ul class="no-bullet">
-                                <li><img src="/static/images/icons/check2@2x.png" width="16"> You’ve received the package</li>
-        						<li><img src="/static/images/icons/check2@2x.png" width="16"> You’re happy with the transaction</li>
-        						<li><img src="/static/images/icons/check2@2x.png" width="16"> You want the seller to get paid</li>
-        					</ul>
-        				</div>
-        			</div>
-        			<div class="row">
-        				<div class="small-12">
-        					<a href="/buyer/send/{{escrow['buyerurlhash']}}" class="button small radius">Release funds</a>
-        					<a href="#" class="button secondary small radius areyousurecancel">Cancel</a>
-        				</div>
-        			</div>
-        		</div>
-
-                <div class="dispute">
-                    <h5>Open a dispute?</h5>
-                    <p>A problem with the transaction? We offer dispute resolution.</p>
-                    <div class="row">
-                        <div class="small-10 small-offset-1 columns">
-                            <textarea></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-12">
-                            <a href="#" class="button small radius">Submit Dispute</a>
-                            <a href="#" class="button secondary small radius disputecancel">Cancel</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    	</div>
-    </div>
+    {% include "modules/buyercompleted.html" %}
 
     {% if not escrow['buyerstartedescrow'] %}
-    <div class="second">
+    <div>
     	<div class="row">
     		<div class="small-12 large-10 large-offset-1 columns modal">
-    			<div class="warnbg">
+
 	    			<div class="row modalheader">
-	    				<div class="small-12 columns">
-		    				<h5>Warning</h5>
+	    				<div class="small-12">
+		    				<h4>Warning</h4>
 		    			</div>
 	    			</div>
 	    			<div class="row modalbody">
-	    				<div class="small-12 columns">
+	    				<div class="small-12">
 	    					<p class="warnp">You must control the private keys to this bitcoin address</p>
 	    					<p>This is the bitcoin address that the funds are going to be sent too when the transaction is complete. If you do not control this address, start a new escrow transaction.</p>
 	    					<div class="top24">
@@ -115,26 +31,46 @@
 	    					</div>
 	    				</div>
 	    			</div>
-	    		</div>
+
     		</div>
     	</div>
     </div>
     {% end %}
 
-    <div class="third">
-    	<div class="row collapsed">
-    		{% if not escrow['sellerpayoutaddress'] %}
-    		<div class="small-12 large-5 large-offset-1 columns modal bgblue">
-    		{% else %}
+    {% if not escrow['sellerpayoutaddress'] %}
+    <div>
+        <div class="row">
+            <div class="small-12 large-10 large-offset-1 columns modal">
+                <div class="row modalheader">
+                    <div class="small-12">
+                        <h4>Sign up the seller</h4>
+                    </div>
+                </div>
+                <div class="row modalbody">
+                    <div class="small-12">
+                        <p><em>Steps</em><br>
+                        Give this link to the seller in your escrow transaction. We need a bitcoin address from them that we can send the escrow funds too at the end of the transaction.</p>
+                        <label><em>URL for the seller</em>
+                            <input type="text" name="address" class="radius expand" autocomplete="off" readonly value="www.bestcrow.io/seller/join/{{escrow['joinurlhash']}}">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% end %}
+
+    <div>
+    	<div class="row">
     		<div class="small-12 large-10 large-offset-1 columns modal bgblue">
-    		{% end %}    		
     			<div class="row modalheader">
-    				<div class="small-12 columns">
-    					<h5>Funds in escrow</h5>
+    				<div class="small-12">
+    					<h4>Funds in escrow</h4>
     				</div>
     			</div>
     			<div class="row modalbody">
-    				<div class="small-12 columns">
+    				<div class="small-12">
     					<div class="left">
                             <h1 class="balance">{{balance}} BTC</h1>
 	                		<small>Pending confirmation: <span class="unconfirmed">{{unconfirmed}} BTC</span></small>
@@ -143,48 +79,25 @@
                 		<div class="refresh right">
                 		</div>
 	                	<input type="text" name="address" class="radius expand" autocomplete="off" readonly value="{{escrow['multisigaddress']}}">                		
-	                	<p class="title">Steps</p>
-         			{% if balance > 0 %}
-				<p>Release the funds to the seller when you are happy with the transaction..</p>
-				{% else %}
-	                	<p>Send the funds you want the seller to receive to this address</p>
-				{% end %}
     				</div>
     			</div>
     		</div>
-
-    		{% if not escrow['sellerpayoutaddress'] %}
-			<div class="small-12 large-5 columns end modal">
-    			<div class="row modalheader">
-    				<div class="small-12 columns">
-    					<h5>Sign up the seller</h5>
-    				</div>
-    			</div>
-    			<div class="row modalbody">
-    				<div class="small-12 columns">
-    					<p class="secondary">Steps</p>
-    					<p>Give this link to the seller in your escrow transaction. We need a bitcoin address from them that we can send the escrow funds too at the end of the transaction.</p>
-    					<p class="secondary">URL for the seller</p>
-    					<input type="text" name="address" class="radius expand" autocomplete="off" readonly value="www.bestcrow.io/seller/join/{{escrow['joinurlhash']}}">
-    				</div>
-    			</div>
-    		</div>
-    		{% end %}
-    	</div>
+        </div>
     </div>
 
-    <div class="fourth">
+
+    <div>
     	<div class="row">
     		<div class="small-12 large-10 large-offset-1 columns modal">
     			<div class="row modalheader">
-    				<div class="small-12 columns">
-    					<h5>Comments</h5>
+    				<div class="small-12">
+    					<h4>Comments</h4>
     				</div>
     			</div>
-    			<div class="row modalbody commentsbody">
+    			<div class="row modalbody">
                     {% if not comments %}
-                        <div class="small-12 columns">
-                            <p>No comments yet</p>
+                        <div class="small-12">
+                            <p style="margin-bottom:0px">No comments yet</p>
                         </div>
                     {% else %}
                         {% for comment in comments %}
@@ -205,10 +118,10 @@
                     {% end %}
     			</div>
                 <div class="row commentfooter">
-                    <div class="small-12 medium-9 columns">
+                    <div class="small-12 medium-9 columns noleftpad">
                         <input type="text" class="radius" name="comment" placeholder="Comment for seller" autocomplete="off" maxlength="255">
                     </div>
-                    <div class="small-12 medium-3 columns">
+                    <div class="small-12 medium-3 columns norightpad">
                         <a href="#" class="button expand radius leavecomment">
                             Leave Comment
                         </a>
@@ -218,65 +131,9 @@
     	</div>
     </div>
 
-    <div class="receipt">
-        <div class="row">
-            <div class="small-12 large-10 large-offset-1 columns modal">
-                <div class="row receiptheader">
-                    <div class="small-12 columns">
-                        <h5>Recipt</h5>
-                    </div>
-                </div>
-                <div class="row recieptdate">
-                    <div class="small-12 columns">
-                        <p>Transaction ID:</span> <span class="black">19dajnau83kadjfhu3iiasdjjh</span></p>
-                        <p>Transaction Date: <span class="black">January 18th, 2015</span></p>
-                    </div>
-                </div>
-                <div class="row modalbody receiptbody line">
-                    <div class="small-8 columns">
-                        <h5>Charge</h5>
-                    </div>
-                    <div class="small-4 columns">
-                        <h5>Cost</h5>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="small-8 columns">
-                        <p>Payment to seller</p>
-                    </div>
-                    <div class="small-4 columns">
-                        <span class="black">0.24 BTC</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="small-8 columns">
-                        <p>Bestcrow fee</p>
-                    </div>
-                    <div class="small-4 columns">
-                        <span class="black">0.01 BTC</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="small-8 columns">
-                        <p>Bitcoin miner fee</p>
-                    </div>
-                    <div class="small-4 columns">
-                        <span class="black">0.002 BTC</span>
-                    </div>
-                </div>
-                <div class="row total">
-                    <div class="small-4 small-offset-8 columns">
-                        <p>Total: <b class="black">0.24 BTC</b></p>
-                    </div>
-                </div>
-                <div class="row contact">
-                    <div class="small-12 columns">
-                        If you have any problems, please contact us <a href="mailto:support@bestcrow.io">support@bestcrow.io</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% if escrow['escrowcomplete'] %}
+        {% include "modules/receipt.html" %}
+    {% end %}
 
 	<div class="bottom">
 		<div class="row">

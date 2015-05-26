@@ -39,13 +39,13 @@ from pycoin.tx.pay_to import script_obj_from_address, script_obj_from_script
 import pymongo
 
 
-#MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
-MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
+MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
+#MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
 MONGODB = MONGOCONNECTION.escrow.demo
 MONGOCOMMENTS = MONGOCONNECTION.escrow.democomments
 
-#INSIGHT = "http://54.224.222.213:3000"
-INSIGHT = "http://localhost:3000"
+INSIGHT = "http://54.224.222.213:3000"
+#INSIGHT = "http://localhost:3000"
 #import emailer
 #from variables import *
 
@@ -143,7 +143,7 @@ class BaseHandler(tornado.web.RequestHandler):
         return escrow
 
     def update_step3_buyer(self, base58):
-        MONGODB.update({"buyerurlhash":base58},{"$set":{"step3":True}})
+        MONGODB.update({'buyerurlhash':base58},{"$set":{"step3":True}})
 
     def set_seller_address(self, joinhash, selleraddress):
         MONGODB.update({'joinurlhash':joinhash}, {'$set':{'sellerpayoutaddress':selleraddress}})
@@ -172,7 +172,6 @@ class BaseHandler(tornado.web.RequestHandler):
             print balance
 
         # update balance in db for this address
-        #MONGODB.update({'multisigaddress':address}, {'$set':{'multisigbalance':balance}})
         return (balance, unconfirmed)
 
     def get_balance_satoshis(self, address):
@@ -186,7 +185,33 @@ class BaseHandler(tornado.web.RequestHandler):
         else:
             bal = resp['balanceSat']
 
-        return str(bal)
+        fees = self.calc_fess(satoshis)
+
+        return fees
+
+    def calc_fees(self, satoshis):
+        logging.info("calculating fee")
+        bestcrow = satoshis * 0.01
+        logging.info("fee for bestcrow calculated at %s"%bestcrow)
+        seller = satoshis - bestcrowfee
+        logging.info("total left for seller after our fee: %s"%seller)
+
+        # calc miners fees to extract from seller price
+        miner = 0
+        if seller > 10000:
+            # this is the recommended fee for btc transactions
+            miner = 10000
+            seller -= miner
+        elif seller > 1000:
+            miner = 1000
+            seller -= miner
+        else:
+            miner = 1
+            seller -= miner
+        logging.info("miners fee: %s"%miner)
+        logging.info("total going to seller after miners fee"%seller)
+        fees = {'miner':miner, 'seller':seller, 'bestcrow':bestcrow}
+        return fees
 
     def broadcast_transaction(self, tx):
         logging.info("Broadcasting tx to bitcoin network")
@@ -283,7 +308,7 @@ class BaseHandler(tornado.web.RequestHandler):
         MONGODB.update({'_id':escrow['_id']},{'$set':escrow})
         return escrow
 
-    def create_raw_transaction(self, escrow, satoshis):
+    def create_raw_transaction(self, escrow, fees):
         logging.info('starting raw transaction to payout address %s'%escrow['sellerpayoutaddress'])
 
         # convenience method provided by pycoin to get spendables from insight server
@@ -296,14 +321,8 @@ class BaseHandler(tornado.web.RequestHandler):
             txs_in.append(s.tx_in())
 
         script = standard_tx_out_script(escrow['multisigaddress'])
-        # TODO: just a quick fee figure outer
-        if int(satoshis) > 10000:
-            total = int(satoshis) - 10000
-        elif int(satoshis) > 1000:
-            total = int(satoshis) - 100
-        else:
-            total = int(satoshis) - 1
-        tx_out = TxOut(total, script)
+
+        tx_out = TxOut(fees['seller'], script)
         txs_out = [tx_out]
 
         tx1 = Tx(version=1, txs_in=txs_in, txs_out=txs_out)
@@ -412,10 +431,11 @@ class BuySell(BaseHandler):
 class BuyerSend(BaseHandler):
     def get(self, base58):
         escrow = self.get_buyer(base58)
-        satoshis = self.get_balance_satoshis(escrow['multisigaddress'])
-        hextx  = self.create_raw_transaction(escrow, satoshis)
+        fees = self.get_balance_satoshis(escrow['multisigaddress'])
+        MONGODB.update({'_id':escrow['_id']},{'$set':{'fees':fees}})        
+        hextx  = self.create_raw_transaction(escrow, fees)
 
-        body = urllib.urlencode({'hextx':hextx, 'subkeys':tornado.escape.json_encode(escrow['subkeys']), 'payoutaddress':escrow['sellerpayoutaddress'], 'satoshis':satoshis})
+        body = urllib.urlencode({'hextx':hextx, 'subkeys':tornado.escape.json_encode(escrow['subkeys']), 'payoutaddress':escrow['sellerpayoutaddress'], 'fees':tornado.escape.json_encode(fees)})
 
         http_client = tornado.httpclient.HTTPClient()
         try:
@@ -424,15 +444,15 @@ class BuyerSend(BaseHandler):
             logging.error("Communication with private key server error: %s"%e)
             return
 
-        txid = self.broadcast_transaction(result.body)
-        MONGODB.update({'buyerurlhash': str(base58)}, {"$set": {"transactionid":txid, "transactiontime":datetime.datetime.utcnow(), "escrowcomplete": True}})
+        #txid = self.broadcast_transaction(result.body)
+        #MONGODB.update({'_id':escrow['_id']}, {"$set": {"transactionid":txid, "transactiontime":datetime.datetime.utcnow(), "escrowcomplete": True}})
         self.redirect("/buyer/receipt/%s"%base58)
 
 
 class BuyerReceipt(BaseHandler):
     def get(self, base58):
         escrow = self.get_buyer(base58)
-        self.render("receipt.html", escrow=escrow)
+        self.render("receipt.html", escrow=escrow, balance=0)
 
 
 class Buyer(BaseHandler):

@@ -39,10 +39,11 @@
 //   "foundation/components/type",
 //   "foundation/components/offcanvas",
 //   "foundation/components/visibility";
-
+$modalpadding: 30px 25px 28px 25px;
 
 p {
 	letter-spacing: 0.2px;
+	margin-bottom: 1rem;
 }
 
 .blue {
@@ -57,24 +58,22 @@ p {
 	color: $silver;
 }
 
-.secondary {
-	color: $secondary-color;
-}
-
 .top24 {
-	margin-top: 24px;
+	margin-top: 30px;
 }
 
-
+input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
+	margin-bottom: 6px;
+}
 
 button .button {
 	padding-top: 0.9rem;
 	padding-bottom: 0.9rem;
 }
 
-button.expand, .button.expand {
-	padding-bottom: 0.9em;
-}
+//button.expand, .button.expand {
+//	padding-bottom: 0.9em;
+//}
 
 button.warning, .button.warning {
 	box-shadow:inset 0px 0px 0px 2px mix($white, $warning-color, 37%);
@@ -300,14 +299,58 @@ input[type="text"][readonly]:focus
 }
 
 .modal {
+	margin-top: 50px;
 	background-color: $white;
 	border-radius: 4px;
+	color: rgba($secondary-color, 0.67);
+	em {
+		color: $secondary-color;
+		font-style: normal;
+	}	
+	b {
+		font-weight: 700;
+		color: $secondary-color;
+	}
+	h4 {
+		font-size: 18px;
+		letter-spacing: 0.6px;
+		line-height: 1;
+		margin: 0;
+		color: $secondary-color;
+		font-weight: bold;
+	}
+	h5 {
+		color: $secondary-color;
+		font-weight: bold;	
+	}
+	h6 {
+		color: rgba($secondary-color, 0.47);
+		font-size: 0.8rem;
+		font-weight: bold;
+		line-height: 0.6rem;
+		margin-bottom: 20px;
+	}
+
+	> .row {
+		padding: $modalpadding
+	}
+	.noleftpad {
+		padding-left: 0px;
+	}
+	.norightpad {
+		padding-right: 0px;
+	}
 
 	.btcbg {
+		/*
 		padding-left: 64px;
 		background: url(../images/icons/bitcoin@2x.png) 0px 22px no-repeat;
 		background-size: 48px 48px;
 		padding-bottom: 24px;
+		*/
+		> .row {
+			padding: $modalpadding
+		}
 	}
 	.warnbg {
 		padding-left: 64px;
@@ -317,15 +360,9 @@ input[type="text"][readonly]:focus
 
 	.modalheader {
 		background: url(../images/line.png) bottom right no-repeat;
-		background-size: 97% 1px;
-		margin-bottom: 24px;
-		h5 {
-			padding-top: 16px;
-			padding-bottom: 10px;
-			color: $secondary-color;
-			font-weight: bold;
-		}
+		background-size: 100% 1px;
 	}
+
 	.modalbody {
 		.refresh {
 			margin-top: 10px;
@@ -342,33 +379,21 @@ input[type="text"][readonly]:focus
 		.ill {
 			margin-bottom: 32px;
 		}
-		h5 {
-			color: $secondary-color;
-			font-weight: bold;	
-		}
-		p {
-			color: rgba($secondary-color, 0.67);
 
-		}
-		p.secondary {
-			color: $secondary-color;
-			font-weight: bold;
-			margin-bottom: 8px;
-		}
 		p.secondary .red {
 			color: $warning-color;
 		}
 		.ui {
 			padding-left: 22px;
-			margin-bottom: 8px;
+			margin-bottom: 10px;
 			background: url(../images/icons/unchecked@2x.png) 0px 4px no-repeat;
-			background-size: 14px 14px;
+			background-size: 16px 16px;
 		}
 		.i {
 			padding-left: 22px;
-			margin-bottom: 8px;
+			margin-bottom: 10px;
 			background: url(../images/icons/check@2x.png) 0px 4px no-repeat;
-			background-size: 14px 14px;
+			background-size: 16px 16px;
 		}
 		.black {
 			color: $secondary-color;
@@ -417,15 +442,13 @@ input[type="text"][readonly]:focus
 		}
 	}
 	.modalfooter {
-		margin-top: 24px;
-		padding: 16px 16px;
+		//padding: 16px 16px;
 		background-color: mix($black, $secondary-color, 27%);
 		color: rgba($white, 0.47);
 		border-radius: 0 0 4px 4px;
 	}
 	.commentfooter {
 		border-top: 1px solid #D3D6D9;
-		padding-top: 18px;
 		background-color: #F1F4F8;
 		color: rgba($white, 0.47);
 		border-radius: 0 0 4px 4px;
@@ -456,7 +479,7 @@ input[type="text"][readonly]:focus
 		margin-bottom: 0px;
 	}
 	.modalheader {
-		h5 {
+		h4 {
 			color: $white;
 		}
 	}
@@ -484,7 +507,7 @@ input[type="text"][readonly]:focus
 	background-color: $secondary-color;
 	margin-bottom: 256px;
 	.margin-top {
-		margin-top: 32px;
+		margin-top: 40px;
 	}
 	.first {
 		margin-top: 64px;
@@ -515,12 +538,9 @@ input[type="text"][readonly]:focus
 		position: relative;
 		height: 600px;
 	}
-	.completed .btcbg {
-		perspective: 400px;
-		transform-style: preserve-3d;		
-	}
+
+
 	.dispute {
-		padding-top: 20px;
 		position: absolute;
 		transition: all 100ms ease-out;
 		display: none;
@@ -529,16 +549,10 @@ input[type="text"][readonly]:focus
 		left: 0;
 		width: 100%;
 		border-radius: 4px;
-		text-align: center;
-		color: mix($white, $secondary-color, 37%);
-		h5 {
-			padding-top: 32px;
-			padding-bottom: 0px;
-			color: $secondary-color;
-			font-weight: bold;
-			margin-bottom: 2px;
-		}
 
+		.small-12 {
+			padding: $modalpadding;
+		}
 		.secondary {
 			width: 140px;
 			background-color: $clear;
@@ -552,8 +566,8 @@ input[type="text"][readonly]:focus
 			height: 200px;
 		}
 	}
+
 	.areyousure {
-		padding-top: 50px;
 		position: absolute;
 		transition: all 100ms ease-out;
 		display: none;
@@ -563,7 +577,6 @@ input[type="text"][readonly]:focus
 		width: 100%;
 		border-radius: 4px;
 		text-align: center;
-		color: mix($white, $secondary-color, 37%);
 		h5 {
 			padding-top: 32px;
 			padding-bottom: 0px;
@@ -593,7 +606,7 @@ input[type="text"][readonly]:focus
 		z-index: 100;
 		.modalheader {
 			background: url(../images/line.png) bottom right no-repeat;
-			background-size: 98% 1px;
+			background-size: 100% 1px;
 		}		
 	}
 
@@ -603,10 +616,6 @@ input[type="text"][readonly]:focus
 		margin-bottom: 8px;
 	}
 
-	label {
-		color: $smoke;
-		line-height: 1.4em;
-	}
 	input {
 		border-color: rgba(0,0,0,0.17);
 		box-shadow: none;
@@ -616,75 +625,42 @@ input[type="text"][readonly]:focus
 		border-color: rgba(0,0,0,0.17);
 	}
 
-	.first {
-		margin-top: 48px;
-	}
-
-	.second {
-		margin-top: 48px;
-	}
-
-	.third {
-		margin-top: 48px;
-	}
-	.fourth {
-		margin-top: 48px;
-	}
 	.receipt {
-		margin-top: 48px;
-		color: rgba(64, 74, 83, 0.67);
 		p {
 			margin-bottom: 0.3rem;
 		}
 		.black {
-			color: #333;
-		}
-	}
-	.receiptheader {
-		h5 {
-			padding-top: 16px;
-			padding-bottom: 10px;
 			color: $secondary-color;
-			font-weight: bold;
+		}
+		.recieptdate {
+			background: url(../images/line.png) bottom right no-repeat;
+			background-size: 100% 1px;
+			background-color: #F1F4F8;			
+			p {
+				margin-bottom: 0px;
+			}
+		}
+		.receipttotal {
+			background: url(../images/line.png) top right no-repeat, url(../images/line.png) bottom right no-repeat;
+			background-size: 100% 1px;
+			p {
+				position: relative;
+				left: -50px;
+			}
+		}
+		.receiptcontact {
+			text-align: center;
+			padding: 30px 0;
 		}
 	}
-	.recieptdate {
-		padding-top: 0.8rem;
-		background-color: #F1F4F8;
-		border-top: 1px solid #D3D6D9;
-		border-bottom: 1px solid #D3D6D9;	
-		color: rgba(64, 74, 83, 0.67);
-		.black {
-			color: #333;
-		}
-		p {
-			margin-bottom: 0.8rem;
-		}
-	}
-	.receiptbody {
-		padding-top: 32px;
-		margin-bottom: 16px;
-		.black {
-			color: #333;
-		}
-	}
-	.total {
-		background: url(../images/line.png) top right no-repeat, url(../images/line.png) bottom right no-repeat;
-		margin-top: 10px;
-		background-size: 98% 1px;
-		padding: 16px 0;
-		p {
-			position: relative;
-			left: -46px;
-		}
-	}
+
+
+
+
+
 	.line {
 		background: url(../images/line.png) bottom right no-repeat;
-		background-size: 98% 1px;
-	}
-	.contact {
-		text-align: center;
-		padding: 24px 0;
+		background-size: 100% 1px;
 	}
 
 }
@@ -760,9 +736,6 @@ input[type="text"][readonly]:focus
 	}
 	.steps {
 		.modal {
-			.modalheader {
-				background-size: 98% 1px;
-			}
 			.modalbody {
 				img {
 					margin-bottom: 0px;
@@ -793,13 +766,7 @@ input[type="text"][readonly]:focus
 			margin-top: 32px;
 		}
 	}
-	.steps {
-		.modal {
-			.modalheader {
-				background-size: 98% 1px;
-			}
-		}
-	}
+
 	input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], input[type="color"], textarea {
 		font-size: 1.04rem;
 	}
