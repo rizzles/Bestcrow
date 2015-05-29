@@ -42,7 +42,12 @@
                             {% else %}
                             <p class="ui">
                             {% end %}
-                                <em>Fund the escrow account</em><br>Send the agreed upon escrow funds to the multi-sig bitcoin address.
+                                {% if unconfirmed %}
+                                <em>Fund the escrow account</em> (funds are still confirming)<br>
+                                {% else %}
+                                <em>Fund the escrow account</em><br>
+                                {% end %}
+                                Send the agreed upon escrow funds to the multi-sig bitcoin address.
                             </p>
 
                             {% if escrow['escrowcomplete'] %}
@@ -60,6 +65,7 @@
 	    					</div>
                             {% else %}
                             <div class="top24">
+                                <a href="#" class="button radius disabled primary">Release Funds</a>
                                 <a href="#" class="button warning small radius opendispute">Open Dispute</a>
                             </div>
 	    					{% end %}
@@ -97,16 +103,15 @@
                         <div class="small-12">
                             <h4>Open a dispute</h4>
                         </div>
-                    </div>                    
+                        <div class="disputecancel"></div>
+                    </div>          
                     <div class="row modalbody">
                         <div class="small-12 columns">
-                            <textarea></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <a href="#" class="button small radius">Submit Dispute</a>
-                            <a href="#" class="button secondary small radius disputecancel">Cancel</a>
+                            <p>Having a problem with the transaction? Open a dispute and we will try out best to come to a resolution.</p>
+                            <textarea placeholder="A brief explanation of the dispute..."></textarea>
+                            <a href="#">Submit</a>
+                            <label for="fileupload" class="attach"></label>
+                            <input id="fileupload" type="file" multiple="multiple" name="_photos" accept="image/*" style="visibility: hidden"></input>
                         </div>
                     </div>
                 </div>

@@ -4769,6 +4769,39 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/static\/images\/icons\/paperclip.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1158,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/paperclip.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/paperclip.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/paperclip@2x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 2382,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/paperclip@2x.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/paperclip@2x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/paperclip@3x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 3574,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/paperclip@3x.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/paperclip@3x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/static\/images\/icons\/plus.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -5315,6 +5348,39 @@
 		"initialSize": 6711,
 		"inputAbbreviatedPath": "\/static\/images\/icons\/www@2x.png",
 		"outputAbbreviatedPath": "\/static\/images\/icons\/www@2x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/X.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 637,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/X.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/X.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/X@2x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1218,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/X@2x.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/X@2x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/X@3x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1656,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/X@3x.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/X@3x.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0

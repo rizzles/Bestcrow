@@ -27,7 +27,7 @@
                                 {% else %}
                                 <p class="i">
                                 {% end %}
-                                    <span><em>Send signup link to the buyer</em></span><br>Send the link below to the buyer in this transaction. We need to get a payout address to be able to send the escrow funds to.
+                                    <em>Send signup link to the buyer</em><br>Send the link below to the buyer in this transaction. We need to get a payout address to be able to send the escrow funds to.
                                 </p>
                             {% end %}
 
@@ -38,7 +38,12 @@
                             {% else %}
                                 <p class="ui">
                             {% end %}
-                                    <span><em>Buyer funds the escrow account</em></span><br>Buyer sends the agreed upon amount of bitcoin to the multi-sig address.
+                                    {% if unconfirmed %}
+                                    <em>Buyer funds the escrow account</em> (funds are still confirming)<br>
+                                    {% else %}
+                                    <em>Buyer funds the escrow account</em><br>
+                                    {% end %}
+                                    Buyer sends the agreed upon amount of bitcoin to the multi-sig address.
                                 </p>
 
                             {% if escrow['escrowcomplete'] %}
@@ -48,14 +53,15 @@
                             {% else %}
                                 <p class="ui">
                             {% end %}
-                                <span><em>The product is ready to be shipped</em></span><br>Once the funds are safely held in escrow, you can ship the product with confidence.</p>
+                                <em>The product is ready to be shipped</em><br>Once the funds are safely held in escrow, you can ship the product with confidence.</p>
 
                             {% if escrow['escrowcomplete'] %}
                             <p class="i">
                             {% else %}
                             <p class="ui">
                             {% end %}
-                                <span><em>The funds are released from escrow to you</em></span><br>When the buyer is happy with the transaction, the funds will be released from escrow you.</p>
+                                <em>The funds are released from escrow to you</em>
+                                <br>When the buyer is happy with the transaction, the funds will be released from escrow you.</p>
 
                             {% if not escrow['escrowcomplete'] %}
 	    					<div class="top24">

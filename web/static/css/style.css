@@ -6187,18 +6187,18 @@ button.warning:focus, .button.warning:focus {
   padding: 16px; }
 
 ::-webkit-input-placeholder {
-  color: rgba(64, 74, 83, 0.27); }
+  color: rgba(64, 74, 83, 0.37); }
 
 :-moz-placeholder {
   /* Firefox 18- */
-  color: rgba(64, 74, 83, 0.27); }
+  color: rgba(64, 74, 83, 0.37); }
 
 ::-moz-placeholder {
   /* Firefox 19+ */
-  color: rgba(64, 74, 83, 0.27); }
+  color: rgba(64, 74, 83, 0.37); }
 
 :-ms-input-placeholder {
-  color: rgba(64, 74, 83, 0.27); }
+  color: rgba(64, 74, 83, 0.37); }
 
 input[type="text"][readonly] {
   background-color: #404A53;
@@ -6507,6 +6507,12 @@ input[type="text"][readonly]:focus {
   .dash .completed {
     position: relative;
     height: 600px; }
+  .dash button.warning, .dash .button.warning {
+    box-shadow: none;
+    font-size: 0.9375rem;
+    color: #eb7c71; }
+  .dash .button.warning:hover {
+    color: #E86254; }
   .dash .dispute {
     position: absolute;
     -webkit-transition: all 100ms ease-out;
@@ -6516,9 +6522,44 @@ input[type="text"][readonly]:focus {
     top: 0;
     left: 0;
     width: 100%;
-    border-radius: 4px; }
+    border-radius: 4px;
+    background-color: #F1F4F8;
+    height: 100%; }
+    .dash .dispute a {
+      position: absolute;
+      right: 48px;
+      bottom: 92px; }
     .dash .dispute .small-12 {
       padding: 30px 25px 28px 25px; }
+    .dash .dispute .modalbody {
+      padding-left: 16px;
+      padding-right: 16px; }
+    .dash .dispute .disputecancel {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: url(../images/icons/X@2x.png) 0px 0px no-repeat;
+      background-size: 32px 64px;
+      width: 32px;
+      height: 32px; }
+    .dash .dispute .disputecancel:hover {
+      background: url(../images/icons/X@2x.png) 0px -32px no-repeat;
+      background-size: 32px 64px;
+      cursor: pointer; }
+    .dash .dispute .attach {
+      position: absolute;
+      left: 35px;
+      bottom: 88px;
+      background: url(../images/icons/paperclip@2x.png) 0px -32px no-repeat;
+      background-size: 32px 64px;
+      width: 32px;
+      height: 32px; }
+    .dash .dispute .attach:hover {
+      background: url(../images/icons/paperclip@2x.png) 0px 0px no-repeat;
+      background-size: 32px 64px;
+      cursor: pointer; }
+    .dash .dispute h4 {
+      color: #E86254; }
     .dash .dispute .secondary {
       width: 140px;
       background-color: transparent;
@@ -6527,7 +6568,10 @@ input[type="text"][readonly]:focus {
     .dash .dispute .secondary:hover {
       box-shadow: inset 0px 0px 0px 2px #868c92; }
     .dash .dispute textarea {
-      height: 200px; }
+      padding: 16px;
+      height: 315px;
+      border-radius: 3px;
+      background-color: white; }
   .dash .areyousure {
     position: absolute;
     -webkit-transition: all 100ms ease-out;
