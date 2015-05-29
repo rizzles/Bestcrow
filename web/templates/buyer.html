@@ -16,7 +16,7 @@
         {% include "modules/receipt.html" %}
     {% end %}
 
-    {% if not escrow['buyerstartedescrow'] %}
+    {% if not escrow['buyerstartedescrow'] and not escrow['escrowcomplete'] %}
     <div>
     	<div class="row">
     		<div class="small-12 large-10 large-offset-1 columns modal">
