@@ -556,10 +556,12 @@ input[type="text"][readonly]:focus
 		border-radius: 4px;
 		background-color: #F1F4F8;
 		height: 100%;
-		a {
+		button {
 			position: absolute;
-			right: 48px;
-			bottom: 92px;
+			right: 40px;
+			bottom: 82px;
+			background-color: $clear;
+			color: $primary-color;
 		}
 		.small-12 {
 			padding: $modalpadding;

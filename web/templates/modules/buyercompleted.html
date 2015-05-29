@@ -108,10 +108,12 @@
                     <div class="row modalbody">
                         <div class="small-12 columns">
                             <p>Having a problem with the transaction? Open a dispute and we will try out best to come to a resolution.</p>
-                            <textarea placeholder="A brief explanation of the dispute..."></textarea>
-                            <a href="#">Submit</a>
-                            <label for="fileupload" class="attach"></label>
-                            <input id="fileupload" type="file" multiple="multiple" name="_photos" accept="image/*" style="visibility: hidden"></input>
+                            <form enctype="multipart/form-data" action="/buyer/dispute/{{escrow['buyerurlhash']}}" method="POST">
+                                <textarea placeholder="A brief explanation of the dispute..." name="description"></textarea>
+                                <label for="fileupload" class="attach"></label>
+                                <input id="fileupload" type="file" multiple="multiple" name="photo" accept="image/*" style="visibility: hidden"></input>
+                                <button type="submit">Submit</button>
+                            </form>
                         </div>
                     </div>
                 </div>

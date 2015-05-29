@@ -76,7 +76,7 @@ class Application(tornado.web.Application):
             (r"/buyer/receipt/(\w+)", BuyerReceipt),            
             (r"/buyer", Buyer),
             (r"/buyer/(\w+)", Buyer),
-
+            (r"/buyer/dispute/(\w+)", BuyerDispute),
 
             (r"/seller/join/(\w+)", SellerJoin),
             (r"/seller/(\w+)", Seller),
@@ -456,6 +456,19 @@ class BuyerReceipt(BaseHandler):
         escrow = self.get_buyer(base58)
         balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
         self.render("buyerreceipt.html", escrow=escrow, balance=balance, unconfirmed=unconfirmed, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal)
+
+
+class BuyerDispute(BaseHandler):
+    def post(self, base58):
+        print self.request.files['photo'][0]['content_type']
+        print self.request.files['photo'][0]['filename']
+        filename = self.request.files['photo'][0]['filename']
+        content_type = self.request.files['photo'][0]['content_type']
+        file_body = self.request.files['photo'][0]['body']
+        f = open(filename, 'w')
+        f.write(file_body)
+        f.close()
+        self.write("file %s was uploaded"%filename)
 
 
 class Buyer(BaseHandler):

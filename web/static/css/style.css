@@ -6525,10 +6525,12 @@ input[type="text"][readonly]:focus {
     border-radius: 4px;
     background-color: #F1F4F8;
     height: 100%; }
-    .dash .dispute a {
+    .dash .dispute button {
       position: absolute;
-      right: 48px;
-      bottom: 92px; }
+      right: 40px;
+      bottom: 82px;
+      background-color: transparent;
+      color: #4BA0C9; }
     .dash .dispute .small-12 {
       padding: 30px 25px 28px 25px; }
     .dash .dispute .modalbody {
