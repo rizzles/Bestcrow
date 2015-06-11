@@ -1,3 +1,6 @@
 *.py~
 *.html~
+*.*~
 .DS_Store
+/web/dispute
+/design

@@ -61,12 +61,16 @@
 	    					{% if balance > 0 %}
 	    					<div class="top24">
 	    						<a href="/buyer/send/{{escrow['buyerurlhash']}}" class="button primary small radius releasefunds">Release Funds</a>
+                                {% if not dispute %}
                                 <a href="#" class="button warning small radius opendispute">Open Dispute</a>
+                                {% end %}
 	    					</div>
                             {% else %}
                             <div class="top24">
                                 <a href="#" class="button radius disabled primary">Release Funds</a>
+                                {% if not dispute %}
                                 <a href="#" class="button warning small radius opendispute">Open Dispute</a>
+                                {% end %}
                             </div>
 	    					{% end %}
                             {% end %}
@@ -111,9 +115,11 @@
                             <form enctype="multipart/form-data" action="/buyer/dispute/{{escrow['buyerurlhash']}}" method="POST">
                                 <textarea placeholder="A brief explanation of the dispute..." name="description"></textarea>
                                 <label for="fileupload" class="attach"></label>
-                                <input id="fileupload" type="file" multiple="multiple" name="photo" accept="image/*" style="visibility: hidden"></input>
-                                <button type="submit">Submit</button>
+                                <input id="fileupload" type="file" multiple name="photo" accept="image/*" style="visibility: hidden"></input>
+                                <button type="submit" class="submitdispute">Submit</button>
                             </form>
+                            <ul class="inline-list file-list">
+                            </ul>
                         </div>
                     </div>
                 </div>

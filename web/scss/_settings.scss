@@ -157,20 +157,22 @@ $charcoal    : rgba(0,0,0,0.57);
 $clear: rgba(0,0,0,0);
 
 
+$green: #56B082;
+$orange: #F08B26;
+$red: #E05555;
+$gray: #f5f5f5;
+
+
 
 // We use these as default colors throughout
 $primary-color: #4BA0C9;
 $secondary-color: #404A53;
 $third-color: #FCFDFD;
-// $alert-color: #f04124;
-// $success-color: #43AC6A;
+$alert-color: mix($white, $secondary-color, 8%);
+$dispute-color: #E05555;
+$success-color: $green;
 $warning-color: #E86254;
 $info-color: $clear;
-
-$green: #56B082;
-$orange: #F08B26;
-$red: #E05555;
-$gray: #f5f5f5;
 $placeholder: rgba($secondary-color,0.37);
 
 // We use these to control various global styles

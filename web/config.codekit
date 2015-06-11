@@ -1,6 +1,6 @@
 {
 "CodeKitInfo": "This is a CodeKit 2.x project configuration file. It is designed to sync project settings across multiple machines. MODIFYING THE CONTENTS OF THIS FILE IS A POOR LIFE DECISION. If you do so, you will likely cause CodeKit to crash. This file is not useful unless accompanied by the project that created it in CodeKit 2. This file is not backwards-compatible with CodeKit 1.x. For more information, see: http:\/\/incident57.com\/codekit",
-"creatorBuild": "18917",
+"creatorBuild": "19033",
 "files": {
 	"\/bower.json": {
 		"fileType": 524288,
@@ -488,7 +488,7 @@
 		},
 	"\/bower_components\/foundation\/js\/foundation.js": {
 		"fileType": 64,
-		"ignore": 1,
+		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/bower_components\/foundation\/js\/foundation.js",
 		"outputAbbreviatedPath": "\/static\/js\/javascript-min.js",
@@ -4238,11 +4238,66 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/dispute\/3PWYXnfVjmgS7zKU1Q3CSpozKZZ8TjqtnW\/E-Card-1.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 149749,
+		"inputAbbreviatedPath": "\/dispute\/3PWYXnfVjmgS7zKU1Q3CSpozKZZ8TjqtnW\/E-Card-1.jpg",
+		"outputAbbreviatedPath": "\/dispute\/3PWYXnfVjmgS7zKU1Q3CSpozKZZ8TjqtnW\/E-Card-1.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/dispute\/3PWYXnfVjmgS7zKU1Q3CSpozKZZ8TjqtnW\/hars.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 933744,
+		"inputAbbreviatedPath": "\/dispute\/3PWYXnfVjmgS7zKU1Q3CSpozKZZ8TjqtnW\/hars.jpg",
+		"outputAbbreviatedPath": "\/dispute\/3PWYXnfVjmgS7zKU1Q3CSpozKZZ8TjqtnW\/hars.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/dispute\/3PWYXnfVjmgS7zKU1Q3CSpozKZZ8TjqtnW\/palette553e74ec1504e.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 7487,
+		"inputAbbreviatedPath": "\/dispute\/3PWYXnfVjmgS7zKU1Q3CSpozKZZ8TjqtnW\/palette553e74ec1504e.png",
+		"outputAbbreviatedPath": "\/dispute\/3PWYXnfVjmgS7zKU1Q3CSpozKZZ8TjqtnW\/palette553e74ec1504e.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/js\/app.js": {
 		"fileType": 64,
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/js\/app.js",
+		"outputAbbreviatedPath": "\/static\/js\/javascript-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/native.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/native.js",
+		"outputAbbreviatedPath": "\/static\/js\/native.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 1,
+		"outputStyle": 0,
+		"syntaxCheckerStyle": 0
+		},
+	"\/native.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/native.js",
 		"outputAbbreviatedPath": "\/static\/js\/javascript-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
@@ -4472,6 +4527,28 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/static\/images\/icons\/bluesafe@1x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1935,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/bluesafe@1x.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/bluesafe@1x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/bluesafe@2x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 3614,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/bluesafe@2x.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/bluesafe@2x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/static\/images\/icons\/buyer-comment.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -4578,6 +4655,28 @@
 		"initialSize": 802,
 		"inputAbbreviatedPath": "\/static\/images\/icons\/circle@2x.png",
 		"outputAbbreviatedPath": "\/static\/images\/icons\/circle@2x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/completedx.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 284,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/completedx.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/completedx.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/completedx@2x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 526,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/completedx@2x.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/completedx@2x.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -4699,6 +4798,28 @@
 		"initialSize": 1228,
 		"inputAbbreviatedPath": "\/static\/images\/icons\/location@2x.png",
 		"outputAbbreviatedPath": "\/static\/images\/icons\/location@2x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/native-placeholder.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 106,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/native-placeholder.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/native-placeholder.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/icons\/native-placeholder@2x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 124,
+		"inputAbbreviatedPath": "\/static\/images\/icons\/native-placeholder@2x.png",
+		"outputAbbreviatedPath": "\/static\/images\/icons\/native-placeholder@2x.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -5616,6 +5737,39 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/static\/images\/native-logo.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 1749,
+		"inputAbbreviatedPath": "\/static\/images\/native-logo.png",
+		"outputAbbreviatedPath": "\/static\/images\/native-logo.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/native-logo@2x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 3713,
+		"inputAbbreviatedPath": "\/static\/images\/native-logo@2x.png",
+		"outputAbbreviatedPath": "\/static\/images\/native-logo@2x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/static\/images\/native-logo@3x.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 5811,
+		"inputAbbreviatedPath": "\/static\/images\/native-logo@3x.png",
+		"outputAbbreviatedPath": "\/static\/images\/native-logo@3x.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/static\/images\/placeholder20x20.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -5720,6 +5874,17 @@
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/static\/js\/javascript-min.js",
+		"outputAbbreviatedPath": "\/static\/js\/javascript-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/static\/js\/native.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/static\/js\/native.js",
 		"outputAbbreviatedPath": "\/static\/js\/javascript-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
@@ -5902,14 +6067,8 @@
 			},
 		{
 			"followForSyntaxChecking": 1,
-			"linkedFileAbbreviatedPath": "\/bower_components\/foundation\/js\/foundation.js",
-			"position": 1,
-			"type": 0
-			},
-		{
-			"followForSyntaxChecking": 1,
 			"linkedFileAbbreviatedPath": "\/bower_components\/velocity\/velocity.js",
-			"position": 2,
+			"position": 1,
 			"type": 0
 			}
 		]

@@ -32,6 +32,7 @@ from pycoin.key import Key
 from pycoin.serialize import h2b
 from pycoin.tx import Tx, TxIn, TxOut, SIGHASH_ALL, tx_utils
 from pycoin.tx.TxOut import standard_tx_out_script
+from pycoin.key.BIP32Node import BIP32Node
 
 from pycoin.tx.pay_to import ScriptMultisig, ScriptPayToPublicKey, ScriptNulldata
 from pycoin.tx.pay_to import address_for_pay_to_script, build_hash160_lookup, build_p2sh_lookup
@@ -45,6 +46,8 @@ MONGOCONNECTION = pymongo.Connection('54.224.222.213', 27017)
 #MONGOCONNECTION = pymongo.MongoClient('localhost', 27017)
 MONGODB = MONGOCONNECTION.escrow.demo
 MONGOCOMMENTS = MONGOCONNECTION.escrow.democomments
+MONGODISPUTE = MONGOCONNECTION.escrow.demodispute
+MONGOSUBKEYS = MONGOCONNECTION.escrow.demosubkeys4
 
 INSIGHT = "http://54.224.222.213:3000"
 #INSIGHT = "http://localhost:3000"
@@ -85,6 +88,10 @@ class Application(tornado.web.Application):
             (r"/recovery", Recovery),
             (r"/balance/(\w+)", BalanceHandler),
             (r"/comment/(\w+)", CommentHandler),
+
+            (r"/api/join", APIJoinHandler),            
+            (r"/api/(\w+)/(\w+)", APIRequestHandler),
+            (r"/api/(\w+)", APINewHandler),            
         ]
 
         tornado.web.Application.__init__(self, handlers, **settings)
@@ -145,8 +152,14 @@ class BaseHandler(tornado.web.RequestHandler):
         escrow = MONGODB.find_one({'joinurlhash': str(joinhash)})
         return escrow
 
+    def update_step1_buyer(self, base58):
+        MONGODB.update({'buyerurlhash':base58},{"$set":{"buyerstep1":True}})
+
+    def update_step1_seller(self, base58):
+        MONGODB.update({'sellerurlhash':base58},{"$set":{"sellerstep1":True}})
+
     def update_step3_buyer(self, base58):
-        MONGODB.update({'buyerurlhash':base58},{"$set":{"step3":True}})
+        MONGODB.update({'buyerurlhash':base58},{"$set":{"buyerstep3":True}})
 
     def set_seller_address(self, joinhash, selleraddress):
         MONGODB.update({'joinurlhash':joinhash}, {'$set':{'sellerpayoutaddress':selleraddress}})
@@ -157,6 +170,63 @@ class BaseHandler(tornado.web.RequestHandler):
         MONGODB.update({'joinurlhash':joinhash}, {'$set':{'buyerpayoutaddress':selleraddress}})
         escrow = MONGODB.find_one({'joinurlhash': str(joinhash)})
         return escrow
+
+    # this is for a escrow that was started in native client and doesn't have a multisig address yet
+    # the buyer/seller is joining at this step on the webpage
+    def create_multisig(self, escrow):
+        logging.info("starting creation of multisig address")
+        N, M = 2, 3
+        subkeydb = MONGOSUBKEYS.find_one();
+        # first time running and we don't have a subkey set in the database
+        if not subkeydb:
+            subkeydb = MONGOSUBKEYS.insert({'subkey':1});
+
+        # TODO: this has to be moved to the private key server
+        # create the first public key. Needed for signing up from the website or the native client.
+        subkey = subkeydb['subkey']
+        phrase = "sample core fitness wrong unusual inch hurry chaos myself credit welcome margin"
+        seed = mnemonic.Mnemonic.to_seed(phrase)
+        wallet = BIP32Node.from_master_secret(seed)
+        subkeys = []
+        keys = []
+
+        if not escrow.has_key('sellerpubky') or not escrow['sellerpubkey']:
+            logging.info('seller public key was not provided. We re making and storing the key')
+            subkey += 1
+            subkeystring = "0/0/"+str(subkey)
+            subkeys.append(subkeystring)
+            key1 = wallet.subkey_for_path(subkeystring)
+        else: 
+            logging.info('seller public key was provided from the native client')
+            key1 = Key.from_sec(h2b(escrow['sellerpubkey']))
+        keys.append(key1)
+
+        if not escrow.has_key('buyerpubkey') or not escrow['buyerpubkey']:
+            logging.info('buyer public key was not provided. We re making and storing the key')
+            subkey += 1
+            subkeystring = "0/0/"+str(subkey)
+            subkeys.append(subkeystring)
+            key2 = wallet.subkey_for_path(subkeystring)
+        else: 
+            logging.info('buyer public key was provided from the native client.')
+            key2 = Key.from_sec(h2b(escrow['buyerpubkey']))
+        keys.append(key2)
+
+        # this is our own, no matter what
+        subkey += 1
+        subkeystring = "0/0/"+str(subkey)
+        subkeys.append(subkeystring)
+        key3 = wallet.subkey_for_path(subkeystring)
+        keys.append(key3)
+
+        redeemscript = ScriptMultisig(n=N, sec_keys=[key.sec() for key in keys[:M]]).script()
+        multisigaddress = address_for_pay_to_script(redeemscript)
+        logging.info('multi-sig address was made: %s'%multisigaddress)
+
+        MONGOSUBKEYS.update({'_id':subkeydb['_id']}, {"$set":{'subkey':subkey}}) 
+        if escrow.has_key('_id'):
+            MONGODB.update({'_id':escrow['_id']}, {"$set":{'multisigaddress': multisigaddress, 'subkeys':subkeys}})
+        return (multisigaddress, subkeys)
 
     def get_balance(self, address):
         http_client = tornado.httpclient.HTTPClient()
@@ -226,14 +296,31 @@ class BaseHandler(tornado.web.RequestHandler):
         logging.info("Send out of escrow account was a success. Txid %s"%resp['txid'])
         return resp['txid']
 
-    def get_comments(self, commentid):
-        comments = MONGOCOMMENTS.find({'discussion_id': commentid}).sort('posted')
+    def add_dispute(self, dispute):
+        logging.info("inserting dispute comment from %s for address %s: %s"%(dispute['author'], dispute['multisigaddress'], dispute['text']))
+        MONGODISPUTE.insert({
+            'multisigaddress': dispute['multisigaddress'],
+            'posted': datetime.datetime.utcnow(),
+            'author': dispute['author'],
+            'photos': dispute['photos'],
+            'text': dispute['text']
+        })
+
+    def get_dispute(self, multisigaddress):
+        dispute = MONGODISPUTE.find({'multisigaddress': multisigaddress}).sort('posted')
+        disputes = []
+        for d in dispute:
+            d['posted'] = self.pretty_date(d['posted'])
+            disputes.append(d)
+        return disputes
+
+    def get_comments(self, joinurlhash):
+        comments = MONGOCOMMENTS.find({'joinurlhash': joinurlhash}).sort('posted')
         comms = []
         for comment in comments:
             comment['posted'] = self.pretty_date(comment['posted'])
             comms.append(comment)
         return comms
-
 
     # get three pre made mongo keys from the db
     def get_multisigaddress(self):
@@ -266,14 +353,22 @@ class BaseHandler(tornado.web.RequestHandler):
                   'buyerphrase': buyerphrase,
                   'sellerphrase': sellerphrase,
                   'joinurlhash': joinhash,
-                  'commentid': os.urandom(16).encode('hex'),
-                  'escrowcomplete': False}
+                  'escrowcomplete': False,
+                  'buyerapi': False,
+                  'sellerapi': False,
+                  'sellerpubkey': None,
+                  'buyerpubkey': None,
+                  'sellerstep1': False,
+                  'buyerstep1': False,
+                  'buyerstep3': False,
+                  'multisigaddress': None
+                }
 
         MONGODB.insert(escrow)
         if buyer:
-            return buyerhash
+            return buyerhash, joinhash
         else:
-            return sellerhash
+            return sellerhash, joinhash
 
     # find the entry in the db that was already started
     def find_started_escrow(self, buyerurlhash=None, sellerurlhash=None):
@@ -285,10 +380,12 @@ class BaseHandler(tornado.web.RequestHandler):
             escrow = MONGODB.find_one({'sellerurlhash':sellerurlhash})
         return escrow
 
-    # final step in the database entry
+    # final step in the database entry from a signup on the webpage
     def create_escrow(self, buyerurlhash=None, sellerurlhash=None, buyeraddress=None, selleraddress=None):
         N, M = 2, 3
-        key = self.get_multisigaddress()
+        #key = self.get_multisigaddress()
+        escrow = {}
+        multisigaddress, subkeys = self.create_multisig(escrow)
 
         if buyerurlhash:
             escrow = self.find_started_escrow(buyerurlhash=buyerurlhash)
@@ -300,15 +397,65 @@ class BaseHandler(tornado.web.RequestHandler):
             escrow['sellerstartedescrow'] = 1
 
         # pretty sure we don't need to store the redeem script. It can be created again on the key signer server
-        escrow['multisigaddress'] = key['multisigaddress']
-        escrow['subkeys'] = key['subkeys']
+        escrow['multisigaddress'] = multisigaddress
+        escrow['subkeys'] = subkeys
         escrow['sellerpayoutaddress'] = selleraddress
         escrow['buyerpayoutaddress'] = buyeraddress
-        escrow['step3'] = False
+        escrow['buyerstep3'] = False
         
         logging.info("updating new escrow in database with multi sig address = %s"%escrow['multisigaddress'])
         MONGODB.update({'_id':escrow['_id']},{'$set':escrow})
         return escrow
+
+    def create_api_escrow(self, buyerseller, pubkey):
+        N, M = 2, 3
+        logging.info('generating mnemonic phrase for new escrow')
+        
+        buyerhash, buyerphrase = self.make_hash()
+        sellerhash, sellerphrase = self.make_hash()
+        joinhash = os.urandom(16).encode('hex')
+
+        if buyerseller == 'buyer':
+            buyerstartedescrow = 1
+            sellerstartedescrow = 0
+            buyerpubkey = pubkey
+            sellerpubkey = None
+            buyerapi = True
+            sellerapi = False
+        elif buyerseller == 'seller':
+            buyerstartedescrow = 0
+            sellerstartedescrow = 1
+            buyerpubkey = None
+            sellerpubkey = pubkey
+            buyerapi = False
+            sellerapi = True
+
+        escrow = {'buyerurlhash': buyerhash,
+                  'sellerurlhash': sellerhash,
+                  'buyerphrase': buyerphrase,
+                  'sellerphrase': sellerphrase,
+                  'joinurlhash': joinhash,
+                  'escrowcomplete': False,
+                  'buyerapi': buyerapi,
+                  'sellerapi': sellerapi,
+                  'sellerpubkey': sellerpubkey,
+                  'buyerpubkey': buyerpubkey,
+                  'buyerstartedescrow': buyerstartedescrow,
+                  'sellerstartedescrow': sellerstartedescrow,
+                  'sellerstep1': True,
+                  'buyerstep1': True,                  
+                  'buyerstep3': True,
+                  'multisigaddress': None,
+                  'sellerpayoutaddress': None,
+                  'buyerpayoutaddress': None
+                }
+
+        MONGODB.insert(escrow)
+        if buyerseller == 'buyer':
+            return buyerhash, joinhash
+        else:
+            return sellerhash, joinhash
+
 
     def create_raw_transaction(self, escrow, fees):
         logging.info('starting raw transaction to payout address %s'%escrow['sellerpayoutaddress'])
@@ -378,6 +525,11 @@ class CommentHandler(BaseHandler):
             self.set_status(400)
             return
 
+        if not escrow:
+            logging.error("no escrow found for %s when leaving comment"%base58)
+            self.set_status(400)
+            return
+
         comment = self.get_argument("comment", None)
 
         if not comment:
@@ -385,14 +537,8 @@ class CommentHandler(BaseHandler):
             self.set_status(400)
             return
 
-        escrow = self.get_seller(base58)
-        if not escrow:
-            logging.error("no escrow found for %s when leaving comment"%base58)
-            self.set_status(400)
-            return
-
         MONGOCOMMENTS.insert({
-            'discussion_id': escrow['commentid'],
+            'multisigaddress': escrow['multisigaddress'],
             'posted': datetime.datetime.utcnow(),
             'author': author,
             'text': comment
@@ -423,10 +569,10 @@ class BuySell(BaseHandler):
     def post(self):
         seller = self.get_argument("buyerseller", None)
         if not seller:
-            ripe = self.start_escrow(buyer=True)
+            ripe, joinhash = self.start_escrow(buyer=True)
             self.redirect('/buyer/%s'%ripe)
         else:
-            ripe = self.start_escrow(buyer=False)
+            ripe, joinhash = self.start_escrow(buyer=False)
             self.redirect('/seller/%s'%ripe)
 
 
@@ -460,15 +606,45 @@ class BuyerReceipt(BaseHandler):
 
 class BuyerDispute(BaseHandler):
     def post(self, base58):
-        print self.request.files['photo'][0]['content_type']
-        print self.request.files['photo'][0]['filename']
-        filename = self.request.files['photo'][0]['filename']
-        content_type = self.request.files['photo'][0]['content_type']
-        file_body = self.request.files['photo'][0]['body']
-        f = open(filename, 'w')
-        f.write(file_body)
-        f.close()
-        self.write("file %s was uploaded"%filename)
+        escrow = self.get_buyer(base58)
+        description = self.get_argument("description", None)
+        photos = self.request.files
+
+        if not photos and not description:
+            logging.error("No description of photos submitted with dispute")
+            self.redirect("/buyer/%s"%escrow['buyerurlhash'])
+            return
+
+        p = []
+        if photos.has_key('photo'):
+            for photo in photos['photo']:
+                filename = photo['filename']
+                content_type = photo['content_type']
+                file_body = photo['body']
+                p.append({'filename':filename, 'content_type':content_type})
+                logging.info("buyer %s uploaded photo %s"%(escrow['buyerurlhash'], filename))
+                if not os.path.exists("dispute/%s"%escrow['multisigaddress']):
+                    os.makedirs("dispute/%s"%escrow['multisigaddress'])
+                f = open("dispute/%s/%s"%(escrow['multisigaddress'], filename), 'w+')
+                f.write(file_body)
+                f.close()
+
+        dispute = {}
+        if p:
+            dispute['photos'] = p
+        else:
+            dispute['photos'] = None
+
+        if description:
+            dispute['text'] = description
+        else:
+            dispute['text'] = None
+        
+        dispute['author'] = 'buyer'
+        dispute['multisigaddress'] = escrow['multisigaddress']
+        self.add_dispute(dispute)
+
+        self.redirect("/buyer/%s"%escrow['buyerurlhash'])
 
 
 class Buyer(BaseHandler):
@@ -480,18 +656,26 @@ class Buyer(BaseHandler):
             return
         
         # escrow was started in BuySell class, display first step
-        if not escrow.has_key('multisigaddress'):
+        if not escrow['buyerstep1']:
+            self.update_step1_buyer(base58)
             self.render('buyerstep1.html', base58=base58, escrow=escrow, errors=None)
             return
 
-        if not escrow['step3']:
+        if not escrow['buyerstep3']:
             self.update_step3_buyer(base58)
             self.render('buyerstep3.html', base58=base58, escrow=escrow)
             return
 
-        comments = self.get_comments(escrow['commentid'])
-        balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
-        self.render('buyer.html', base58=base58, escrow=escrow, balance=balance, unconfirmed=unconfirmed, comments=comments, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal)
+        comments = self.get_comments(escrow['joinurlhash'])
+        dispute = self.get_dispute(escrow['joinurlhash'])
+
+        if escrow['multisigaddress']:
+            balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
+        else:
+            balance = 0
+            unconfirmed = 0
+
+        self.render('buyer.html', base58=base58, escrow=escrow, balance=balance, unconfirmed=unconfirmed, comments=comments, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal, dispute=dispute)
 
     def post(self, base58):
         buyeraddress = self.get_argument("buyeraddress", None)
@@ -502,7 +686,7 @@ class Buyer(BaseHandler):
             self.render('buyerstep1.html', base58=base58, escrow=escrow, errors="invalid")
             return
 
-        if not escrow.has_key('multisigaddress'):
+        if not escrow.has_key('multisigaddress') or not escrow['multisigaddress']:
             # first time we're getting the payout address
             logging.info("first time buyer with public address of %s"%buyeraddress)
             escrow = self.create_escrow(buyerurlhash=base58, buyeraddress=buyeraddress)
@@ -525,11 +709,14 @@ class BuyerJoin(BaseHandler):
             self.render('buyerjoin.html', joinhash=joinhash, escrow=escrow, errors="invalid")
             return
 
+        # create multi sig address if we don't have one because escrow was started in native client
+        if not escrow['multisigaddress']:
+            self.create_multisig(escrow)
+
         escrow = self.set_buyer_address(joinhash, address)
         self.update_step3_buyer(escrow['buyerurlhash'])
 
         self.redirect("/buyer/%s"%escrow['buyerurlhash'])
-
 
 
 class Seller(BaseHandler):
@@ -541,14 +728,20 @@ class Seller(BaseHandler):
             return
 
         # escrow was just started, display first step
-        if not escrow.has_key('multisigaddress'):
+        if not escrow['sellerstep1']:
             self.render('sellerstep1.html', base58=base58, escrow=escrow, errors=None)
             return
 
-        comments = self.get_comments(escrow['commentid'])
-        balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
+        comments = self.get_comments(escrow['joinurlhash'])
+        dispute = self.get_dispute(escrow['joinurlhash'])
+
+        if escrow['multisigaddress']:
+            balance, unconfirmed = self.get_balance(escrow['multisigaddress'])
+        else:
+            balance = 0
+            unconfirmed = 0
         
-        self.render("seller.html", base58=base58, escrow=escrow, balance=balance, unconfirmed=unconfirmed, comments=comments, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal)
+        self.render("seller.html", base58=base58, escrow=escrow, balance=balance, unconfirmed=unconfirmed, comments=comments, satoshi_to_btc=pycoin.convention.satoshi_to_btc, decimal=decimal, dispute=dispute)
         
     def post(self, base58):
         selleraddress = self.get_argument("selleraddress", None)
@@ -559,7 +752,7 @@ class Seller(BaseHandler):
             self.render('sellerstep1.html', base58=base58, escrow=escrow, errors="invalid")
             return
 
-        if not escrow.has_key('multisigaddress'):
+        if not escrow.has_key('multisigaddress') or not escrow['multisigaddress']:
             # first time we're getting the seller payout address
             logging.info("first time seller with public address of %s"%selleraddress)
             escrow = self.create_escrow(sellerurlhash=base58, selleraddress=selleraddress)
@@ -589,8 +782,98 @@ class SellerJoin(BaseHandler):
             self.render('sellerjoin.html', joinhash=joinhash, escrow=escrow, errors="invalid")
             return
 
+        # create multi sig address if we don't have one because escrow was started in native client
+        if not escrow.has_key('multisigaddress') or not escrow['multisigaddress']:
+            self.create_multisig(escrow)
+
         escrow = self.set_seller_address(joinhash, address)
+        self.update_step1_seller(escrow['sellerurlhash'])
         self.redirect("/seller/%s"%escrow['sellerurlhash'])
+
+
+class APINewHandler(BaseHandler):
+    # this is first time request coming in from native client to start new escrow
+    def post(self, buyerseller):  
+        logging.info("Starting new escrow api call being made")
+        data = tornado.escape.json_decode(self.request.body)
+        pubkey = data['pubKey']
+        buyerseller = data['buyerSeller']
+
+        if buyerseller == 'buyer':
+            buyer = True
+        elif buyerseller == 'seller':
+            buyer = False   
+
+        escrowhash, joinhash = self.create_api_escrow(buyerseller, pubkey)
+        data = {'escrowhash': escrowhash, 'joinhash':joinhash}
+        self.write(tornado.escape.json_encode(data))
+
+
+class APIRequestHandler(BaseHandler):
+    def put(self, buyerseller, base58):
+        print self.request.body
+
+    # just a get request to find latest db data
+    def get(self, buyerseller, base58):
+        logging.info("API request coming in")
+        if buyerseller == 'buyer':
+            escrow = self.get_buyer(base58) 
+            escrow.pop("sellerurlhash", None)
+        elif buyerseller == 'seller':
+            escrow = self.get_seller(base58)
+            escrow.pop("buyerurlhash", None)                    
+        else: 
+            logging.error("Bad API request")
+            return
+
+        escrow.pop("_id", None)  
+        escrow.pop("buyerphrase", None)          
+        escrow.pop("sellerphrase", None)
+        print escrow['multisigaddress']
+        if escrow['multisigaddress']:
+            escrow['balance'], escrow['unconfirmed'] = self.get_balance(escrow['multisigaddress'])                
+        else:
+            escrow['balance'] = 0
+            escrow['unconfirmed'] = 0
+
+        self.write(tornado.escape.json_encode(escrow))
+
+
+class APIJoinHandler(BaseHandler):
+    def post(self):
+        logging.info('Join API request to join an existing escrow')
+        data = tornado.escape.json_decode(self.request.body)
+        pubkey = data['pubKey']
+        joinhash = data['joinHash'] 
+        buyerSeller = data['buyerSeller']
+        pubKey = data['pubKey']
+
+        escrow = self.get_joinhash_url(joinhash);
+
+        # TODO: Have to figure out how to get the buyer/seller payout address from native client
+        # probably going to do something on first boot of native client
+        if buyerSeller == 'buyer':
+            escrow['buyerpubkey'] = pubKey
+            escrow['buyerapi'] = True
+            # Change this for the payout address
+            escrow['buyerpayoutaddress'] = pubKey
+            escrowhash = escrow['buyerurlhash']
+        else:
+            escrow['sellerpubkey'] = pubKey
+            escrow['sellerapi'] = True
+            # Change this for the payout address            
+            escrow['sellerpayoutaddress'] = True
+            escrowhash = escrow['sellerurlhash']               
+
+        if not escrow['multisigaddress']:
+            escrow['multisigaddress'], escrow['subkeys'] = self.create_multisig(escrow)
+
+        print escrow['multisigaddress']
+
+        MONGODB.update({'_id':escrow['_id']},{'$set':escrow})
+        data = {'multisigaddress': escrow['multisigaddress'], 'escrowhash':escrowhash}
+        print data
+        self.write(tornado.escape.json_encode(data))
 
 
 def main():

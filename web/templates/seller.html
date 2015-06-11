@@ -43,6 +43,7 @@
 
     {% end %}
 
+    {% if escrow['multisigaddress'] %}
     <div class="third">
     	<div class="row">
     		<div class="small-12 large-10 large-offset-1 columns modal bgblue">
@@ -70,8 +71,8 @@
     		</div>
         </div>
 
+        {% if not escrow['buyerpayoutaddress'] and not escrow['buyerapi'] %}
         <div class="row">
-    		{% if not escrow['buyerpayoutaddress'] %}
 			<div class="small-12 large-10 large-offset-1 columns modal">
     			<div class="row modalheader">
     				<div class="small-12">
@@ -91,6 +92,7 @@
     		{% end %}
     	</div>
     </div>
+    {% end %}
 
     <div>
     	<div class="row">
@@ -102,7 +104,7 @@
     			</div>
     			<div class="row modalbody commentsbody">
                     {% if not comments %}
-                        <div class="small-12">
+                        <div class="small-12 emptycomment">
                             <p style="margin-bottom:0px">No comments yet</p>
                         </div>
                     {% else %}
@@ -147,91 +149,8 @@
     
 	<script src="/static/js/javascript-min.js"></script>
 	<script>
-        var entityMap = {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': '&quot;',
-            "'": '&#39;',
-            "/": '&#x2F;'
-        };
-
-        function escapeHtml(string) {
-            return String(string).replace(/[&<>"'\/]/g, function (s) {
-                return entityMap[s];
-            });
-        }
-
-        function balance(address) {
-            $.get("/balance/"+address, function(data) {
-                data = JSON.parse(data);
-                $(".balance").html(data['balance']+" BTC")
-                $(".unconfirmed").html(data['unconfirmed']+" BTC")
-            })
-        }
-
-        function sellercomment() {
-            var c = $("input[name='comment']").val();
-            if (!c) {
-                $(".leavecomment").blur();
-                return
-            }
-
-            c = escapeHtml(c);
-            $.post("/comment/{{escrow['sellerurlhash']}}", {"comment":c, "author":"seller"}, function(data) {
-                console.log(data);
-                $(".commentsbody").append('<div class="small-10 small-offset-2 medium-8 medium-offset-4 youcomment columns"><small>just now</small><p class="text">'+c+'</p></div>'); 
-            }).fail(function(){
-                console.log("Failed");
-            }).done(function() {
-                $("input[name='comment']").val('');
-            });
-        }
-
 		$(document).ready(function() {
-
-            $(".leavecomment").on("click", function(e) {
-                e.preventDefault();
-                sellercomment();
-            });
-
-			$("input").on("click", function() {
-				this.select();
-			});
-
-			$(".refresh").on("click", function() {
-				$(".refresh").velocity({
-					rotateZ: "360deg",
-				}, {
-					begin: function() {
-                        $(".balance").html("--- BTC");
-                        balance("{{escrow['multisigaddress']}}");
-                    },
-					complete: function() {
-                        $(".refresh").velocity('stop').velocity({rotateZ:'0deg'});
-                    }
-				})
-			})
-
-			$(".releasefunds").on("click", function(e) {
-				e.preventDefault();
-				$(".areyousure").velocity({
-					opacity: 1,
-					top: "0px"
-				}, {
-					display: "block"
-				});
-			});
-
-			$(".areyousurecancel").on("click", function(e) {
-				e.preventDefault();
-				$(".areyousure").velocity({
-					opacity: 0,
-					top: "-280px"
-				}, {
-					display: "none"
-				})
-			});
+            seller.init("{{escrow['sellerurlhash']}}", "{{escrow['multisigaddress']}}");
 		});
 	</script>
 </body>	

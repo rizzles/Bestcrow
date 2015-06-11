@@ -41,9 +41,22 @@
 //   "foundation/components/visibility";
 $modalpadding: 30px 25px 28px 25px;
 
+html {
+}
+.native {
+	overflow: hidden;
+}
 p {
 	letter-spacing: 0.2px;
 	margin-bottom: 1rem;
+}
+em {
+	color: $secondary-color;
+	font-style: normal;
+}	
+b {
+	font-weight: 700;
+	color: $secondary-color;
 }
 
 .blue {
@@ -77,7 +90,7 @@ button .button {
 
 button.warning, .button.warning {
 	box-shadow:inset 0px 0px 0px 2px mix($white, $warning-color, 37%);
-	background-color: $clear;
+	background-color: $clear;	
 	color: $warning-color;
 }
 
@@ -261,8 +274,6 @@ input[type="text"][readonly]:focus
 		p {
 			color: rgba($white, 0.67);
 		}
-
-
 	}
 	.third {
 		padding-top: 64px;
@@ -340,6 +351,14 @@ input[type="text"][readonly]:focus
 	.norightpad {
 		padding-right: 0px;
 	}
+	input {
+		border-color: rgba(0,0,0,0.17);
+		box-shadow: none;
+		color: $charcoal;
+	}
+	input:focus, input:hover {
+		border-color: rgba(0,0,0,0.17);
+	}
 
 	.btcbg {
 		/*
@@ -409,7 +428,7 @@ input[type="text"][readonly]:focus
 				border-radius: 3px;
 				border: 1px solid #A6CAE3;
 				color: $secondary-color;
-				margin-left: 70px;			
+				margin-left: 70px;
 			}
 			small {
 				text-align: right;
@@ -433,6 +452,10 @@ input[type="text"][readonly]:focus
 				border: 1px solid #CFD2D3;
 				color: $secondary-color;
 				margin-right: 70px;	
+				.photo {
+
+					color: mix($white, $secondary-color, 57%);
+				}
 			}
 			small {
 				text-align: right;
@@ -540,7 +563,7 @@ input[type="text"][readonly]:focus
 	button.warning, .button.warning {
 		box-shadow: none;
 		font-size: rem(15);
-		color: mix($white, $warning-color, 17%);
+		color: $warning-color;
 	}
 	.button.warning:hover {	
 		color: $warning-color;
@@ -562,6 +585,14 @@ input[type="text"][readonly]:focus
 			bottom: 82px;
 			background-color: $clear;
 			color: $primary-color;
+		}
+		.file-list {
+			position: absolute;
+			left: 80px;
+			bottom: 74px;
+			li {
+				font-size: rem(14);
+			}
 		}
 		.small-12 {
 			padding: $modalpadding;
@@ -667,14 +698,7 @@ input[type="text"][readonly]:focus
 		margin-bottom: 8px;
 	}
 
-	input {
-		border-color: rgba(0,0,0,0.17);
-		box-shadow: none;
-		color: $charcoal;
-	}
-	input:focus, input:hover {
-		border-color: rgba(0,0,0,0.17);
-	}
+
 
 	.receipt {
 		p {
@@ -767,6 +791,322 @@ input[type="text"][readonly]:focus
 .flip180 {
     transform: rotateY( 180deg );
 	transition:  150ms ease-out; 			
+}
+
+.flex-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: 100%;
+
+}
+
+#flex-nav-container {
+	order: 0;
+	min-width: 210px;	
+	height: 100vh;
+	background-color: #333D46;
+
+	.flex-nav {
+		.native-logo {
+			padding: 16px;
+			background-color: #28323B;
+		}
+		.native-menu {
+			padding: 16px 0 0 0;
+			h6 {
+				font-size: rem(14);
+				font-weight: bold;
+				text-transform: uppercase;
+				color: $white;
+				margin: 0;
+				padding-bottom: 8px;
+				padding-top: 32px;
+				padding-left: 16px;
+				letter-spacing: 1px;
+			}
+			a {
+				color: rgba($white, 0.54);
+				width: 100%;
+				display: block;
+				background: url(../images/icons/native-placeholder@2x.png) 16px 8px no-repeat;
+				background-size: 16px 16px;
+				padding-left: 24px;
+				padding: 8px 16px 8px 40px;			
+				line-height: 1em;
+				margin: 0;
+			}
+			a:hover {
+				color: $white;
+				background-color: #28323B;
+			}
+			a.active {
+				background-color: #28323B;
+			}
+		}
+	}
+}
+
+.flex-main {
+	display: flex;
+	height: 100vh;
+	order: 1;
+	width: 100%;
+	background-color: #404A52;
+  	justify-content: center;
+}
+
+.flex-getstarted {
+	display: flex;
+	flex-direction: rows;	
+	//flex-wrap: nowrap;
+	width: 100%;
+	h3 {
+		display: block;
+	}
+	h5 {
+		padding-bottom: 32px;
+		color: rgba($white, 0.57);
+	}
+	label {
+		text-align: left;
+		width: 100%;
+	}
+	a {
+		margin-top: 32px;
+	}
+	.flex-top {
+		display: flex;
+		padding-top: 64px;
+	}
+	.flex-center {
+		display: flex;
+		justify-content: center;
+		box-align: center;
+		align-items: center;
+		height: 50vh;
+		width: 100%;
+		div {
+			width: 100%;
+		}
+		input {
+			border-color: #458CBD;
+		}
+	}
+	.flex-getstarted-left {
+		display: flex;	
+		flex-direction: column;	
+		order: 0;
+		background-color: $primary-color;
+		width: 50%;
+		padding: 16px;
+		padding-top: 64px;
+		text-align: center;	
+		h5 {
+			color: rgba($white, 0.67);
+		}	
+	}
+	.flex-getstarted-right {
+		display: flex;
+		flex-direction: column;			
+		order: 1;
+		background-color: $secondary-color;
+		width: 50%;		
+		text-align: center;
+		padding: 16px;
+		padding-top: 64px;
+	}
+}
+.flex-content {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	background-color: #404A52;
+	width: 100%;
+	.flex-top-menu {
+		order: 0;
+		background-color: $white;
+		width: 100%;
+		height: 55px;
+		h5 {
+			color: rgba($black, 0.87);
+			text-align: center;				
+			font-weight: bold;
+			margin-top: 14px;
+		}
+		p {
+			color: $secondary-color;
+			margin-top: 14px;
+			text-align: center;							
+		}
+	}
+	.flex-content-body {
+		order: 1;
+		padding: 16px;
+	}
+	.flex-escrow {
+		background-color: $white;
+		color: rgba($secondary-color, 0.57);
+		margin: 16px;
+		padding: 16px;
+		overflow-y: scroll;
+		border-radius: 3px;
+		h5 {
+			color: $secondary-color;
+			font-weight: bold;
+			padding-bottom: 16px;
+			background: url(../images/line.png) bottom right no-repeat;
+			background-size: 100% 1px;
+			margin-bottom: 8px;
+		}
+		.flex-escrow-status {
+			padding: 16px;
+			margin-bottom: 32px;
+			background: url(../images/icons/bluesafe@2x.png) 16px 16px no-repeat;
+			background-size: 58px 58px;
+			background-color: mix($white, $primary-color, 93%);			
+			padding-left: 96px;
+		}
+		.ui {
+			padding-left: 22px;
+			margin-bottom: 10px;
+			background: url(../images/icons/unchecked@2x.png) 0px 4px no-repeat;
+			background-size: 16px 16px;
+		}
+		.i {
+			padding-left: 22px;
+			margin-bottom: 10px;
+			background: url(../images/icons/check@2x.png) 0px 4px no-repeat;
+			background-size: 16px 16px;
+		}
+		.button {
+			margin-top: 32px;
+			font-size: rem(13);
+			width: 200px;
+		}
+		.dispute {
+			background-color: $dispute-color;
+			margin-left: 24px;
+		}
+		.flex-escrow-amount {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			.flex-escrow-amount-item {
+				flex: flex-grow;
+				flex-grow: 1;
+				ul {
+					margin-bottom: 0.6rem;
+				}
+			}
+		}
+		.balance {
+			font-size: 72px;
+			line-height: 1em;
+			margin-top: 0px;
+			font-weight: 300;
+		}
+		.smallbalance {
+			font-size: rem(13);
+			position: relative;
+			top: 30px;
+			line-height: 1.3em;
+			margin-left: 8px;
+		}
+		.tiny {
+			margin: 0;
+			width: 150px;
+			position: relative;
+			font-size: rem(12);
+			background-color: $clear;
+			color: rgba($secondary-color, 0.47);
+			padding: 2px;
+			border-radius: 2px;
+			border: 1px solid rgba($secondary-color, 0.17);
+		}
+		.tiny:hover {
+			border: 1px solid rgba($secondary-color, 0.77);
+			color: rgba($secondary-color, 0.67);
+		}
+	}
+}
+
+.flex-table {
+	width: 100%;
+  	display: flex;
+  	flex-direction: column;
+  	justify-content: center;
+  	color: $secondary-color;
+  	padding: 16px;
+  	font-size: rem(14);
+
+	$dark-color: mix($white, $primary-color, 87%);
+	$light-color: $white;
+  	&-header {
+  		h5 {
+	  		color: $secondary-color;
+	  		padding: 16px;
+	  		font-weight: bold;
+	  	}
+	  	h6 {
+	  		color: mix($white, $secondary-color, 57%);
+	  		font-size: rem(12);
+	  		text-transform: uppercase;
+	  		letter-spacing: 0.1em;
+	  		font-weight: bold;
+	  	}
+	  	background-color: white;
+	  	border-radius: 3px 3px 0px 0px;
+	  	.flex-table-row {
+	  		padding-bottom: 8px;
+	  	}
+  	}
+  	&-row {
+  		width: 100%;
+  		padding: 16px;
+  		@include display(flex);
+  		@include flex-flow(row nowrap);
+  		&:nth-of-type(even) { background-color: $dark-color; }
+  		&:nth-of-type(odd) { background-color: $light-color; }
+  	    transition: all 0.2s ease-in-out;
+  	    opacity: 1;
+	  	&-item {
+	      	@include display(flex);
+	     	@include flex-flow(row nowrap);
+	      	flex-grow: 4;
+	      	flex-basis: 0;
+	      	@include word-wrap;
+	  	}
+	  	img {
+	  		height: 16px;
+	  		width: 16px;
+	  	}
+	  	.first {
+	  		flex-grow: 12;
+	  	}
+	  	.last {
+	  		flex-grow: 1;
+	  		flex-shrink: 1;
+	  		div {
+	  			margin-top: 6px;
+	  			margin-left: 8px;
+	  			background: url(../images/icons/completedx@2x.png) top left no-repeat;
+	  			background-size: 12px 24px;
+	  			height: 12px;
+	  			width: 12px;
+	  		}
+	  		div:hover {
+	  			cursor: pointer;
+	  			background: url(../images/icons/completedx@2x.png) 0px -12px no-repeat;
+	  			background-size: 12px 24px;
+	  			height: 12px;
+	  			width: 12px;
+	  		}
+	  	}
+	}
+	.hide {
+	    opacity: 0;
+	}
 }
 
 
